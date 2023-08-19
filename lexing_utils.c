@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:25:39 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/16 12:31:36 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/18 11:43:45 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ int	add_back(t_elem **elem, t_elem *new)
 		cursor = *elem;
 		while (cursor->next)
 			cursor = cursor->next;
-		// new->prev = cursor;
 		cursor->next = new;
-		// free(new);
 		return (1);
 	}
 }

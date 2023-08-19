@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/17 13:11:01 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/18 16:26:23 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,13 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
+typedef struct s_envp
+{
+	char			*title;
+	char			*content;
+	struct s_envp	*next;	
+}	t_envp;
+
 char	*ft_strjoin(char *s1, char c);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
@@ -127,6 +134,16 @@ void    pwd();
 void	echo(char **input);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+
+void    cd(char *path);
+void	ft_env(t_envp *envp);
+t_envp	*copy_env(char **envp);
+void	split_env(t_envp **list, char *envp);
+int	add_back_env(t_envp **head, t_envp *new);
+char	**env_2_d(t_envp *envp);
+int		count_nodes_env(t_envp *envp);
+int	count_content_length(t_envp *node);
+void export(t_envp **envp, char *var);
 
 
 #endif

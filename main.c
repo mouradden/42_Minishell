@@ -117,13 +117,15 @@ char *ft_strcat(char *dest, char *src)
 
 int main(int ac, char **av, char **envp)
 {
-	// int status;
+	int status;
 	char	*input;
 	t_env	*env;
 	t_elem	*node;
+	t_envp	*envp_copy;
+
 	(void)ac;
 	(void)av;
-	(void)envp;
+	envp_copy = copy_env(envp);
 	while(1)
 	{
 		env = malloc(sizeof(t_env));
@@ -131,11 +133,12 @@ int main(int ac, char **av, char **envp)
 		// env = 0;
 		env->elem = 0;
 		env->exit_status = 0;
+		
 		input = readline("\033[1;37;44m\033[34mMINISHELL $ \033[0m\033[0m");
 		add_history(input);
 		read_command(&env->elem, input);
 		if(check_syntax_errors(env))
-		{
+		{	
 			expand(&env->elem);
 			get_rid_of_spaces(&env->elem);
 			get_rid_of_quotes(&env->elem);
@@ -143,18 +146,27 @@ int main(int ac, char **av, char **envp)
 				if (env->cmd)
 
 				{
+					
 					if (!ft_strcmp(env->cmd->cmd_line[0], "pwd"))
 					pwd();
-					if (!ft_strcmp(env->cmd->cmd_line[0], "echo"))
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "echo"))
 						echo(env->cmd->cmd_line);
-				// else
-				// {//execve("/bin/ls", )
-				// 	pid_t pid = fork();
-				// 	if (pid == 0)
-				// 		execve(ft_strcat("/bin/", env->cmd->cmd_line[0]), env->cmd->cmd_line, envp);
-				// 	else if (pid > 0)
-				// 		waitpid(pid, &status, 0);
-				// }
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "cd"))
+						cd(env->cmd->cmd_line[1]);
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "exit"))
+						break ;
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "env"))
+						ft_env(envp_copy);
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "export"))
+						export(&envp_copy, env->cmd->cmd_line);
+				else
+				{//execve("/bin/ls", )
+					pid_t pid = fork();
+					if (pid == 0)
+						execve(ft_strcat("/bin/", env->cmd->cmd_line[0]), env->cmd->cmd_line, envp);
+					else if (pid > 0)
+						waitpid(pid, &status, 0);
+				}
 			}
 
 				// while (env->cmd)
