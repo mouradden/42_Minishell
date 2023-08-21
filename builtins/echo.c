@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 13:56:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/17 17:41:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:33:53 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,23 @@ void	echo(char **input)
 				nfalag = 1;
 			else
 			{
-				if (ft_strcmp(input[i], " ") && ft_strcmp(input[i], " "))
-					ft_putstr_fd(input[i], 1);
-				// if (input[i + 1])
-				// 	ft_putchar_fd(' ', 1);
+				ft_putstr_fd(input[i], 1);
+				if (input[i + 1] && ft_strcmp(input[i + 1], " "))
+					ft_putchar_fd(' ', 1);
 			}
 		}
 		i++;
 	}
 	while (input[i])
 	{
-		printf("->|%s|", input[i]);
-		ft_putstr_fd(input[i], 1);
-		if (ft_strcmp(input[i], " ") && input[i + 1])
+		if (!ft_strcmp(input[i], " "))
 			ft_putchar_fd(' ', 1);
+		else
+		{
+			ft_putstr_fd(input[i], 1);
+			if (input[i + 1] && ft_strcmp(input[i + 1], " "))
+				ft_putchar_fd(' ', 1);
+		}
 		i++;
 	}
 	if (nfalag != 1)

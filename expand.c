@@ -6,25 +6,25 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/09 15:20:09 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:55:52 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand(t_elem **elem)
+void	expand(t_env *env)
 {
 	t_elem		*cursor;
 	char		*var;
 
-	cursor = *elem;
+	cursor = env->elem;
 	while (cursor)
 	{
 		while (cursor && cursor->type != VAR)
 			cursor = cursor->next;
 		if (cursor && (cursor->state == NORMAL))
 		{
-			if (!getenv(&(cursor->content[1])))
+			if (!ft_get_env(env, &(cursor->content[1])))
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup("");
@@ -32,13 +32,13 @@ void	expand(t_elem **elem)
 			else
 			{
 				free(cursor->content);
-				var = getenv(&(cursor->content[1]));
+				var = ft_get_env(env, &(cursor->content[1]));
 				cursor->content = remove_spaces(var);
 			}
 		}
 		else if (cursor && (cursor->state == IN_DQUOTE))
 		{
-			if (!getenv(&(cursor->content[1])))
+			if (!ft_get_env(env, &(cursor->content[1])))
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup("");
@@ -46,13 +46,25 @@ void	expand(t_elem **elem)
 			else
 			{
 				free(cursor->content);
-				var = getenv(&(cursor->content[1]));
+				var = ft_get_env(env, &(cursor->content[1]));
 				cursor->content = ft_strdup(var);
 			}
 		}
 		if (cursor)
 			cursor = cursor->next;
 	}
+}
+
+char *ft_get_env(t_env *env, char *title)
+{
+	t_envp	*cursor;
+
+	cursor = env->envp;
+	while (cursor && ft_strcmp(cursor->title, title))
+		cursor = cursor->next;
+	if (cursor && !ft_strcmp(cursor->title, title))
+		return (cursor->content);
+	return (NULL);
 }
 
 char	*remove_spaces(char *str)

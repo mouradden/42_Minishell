@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/18 16:26:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/21 15:32:29 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,18 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
+typedef struct s_envp
+{
+	char			*title;
+	char			*content;
+	struct s_envp	*next;	
+}	t_envp;
+
 typedef struct s_env
 {
 	t_elem	*elem;
 	t_cmd	*cmd;
+	t_envp	*envp;
 	int		exit_status;
 }	t_env;
 
@@ -79,12 +87,7 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-typedef struct s_envp
-{
-	char			*title;
-	char			*content;
-	struct s_envp	*next;	
-}	t_envp;
+
 
 char	*ft_strjoin(char *s1, char c);
 int		ft_strlen(char *s);
@@ -106,7 +109,7 @@ t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
 
-void	expand(t_elem **elem);
+void	expand(t_env *env);
 char	*remove_spaces(char *str);
 int		check_syntax_errors(t_env *env);
 int		check_quotes(t_env *env);
@@ -143,7 +146,13 @@ int	add_back_env(t_envp **head, t_envp *new);
 char	**env_2_d(t_envp *envp);
 int		count_nodes_env(t_envp *envp);
 int	count_content_length(t_envp *node);
-void export(t_envp **envp, char *var);
+void export(t_envp **envp, char **var);
+void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
+char *ft_get_env(t_env *env, char *title);
+int check_duplicate(t_envp **envp, char *var);
+void	update_node(t_envp *envp, char *var_title, char *var_content);
+void	remove_node(t_envp **envp, char *var);
+void    unset(t_envp **envp, char *title);
 
 
 #endif

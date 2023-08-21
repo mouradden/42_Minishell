@@ -20,8 +20,14 @@ void	read_command(t_elem **elem, char *input)
 				len++;
 				j++;
 			}
-			add_back(elem, new_elem(input, &i, len, WORD));
+			if (input[j - 1] && input[j - 1] == '='
+				&& (input[j] == '\'' || input[j] == '"'))
+				parse_equal(elem, input, &i, j, len);
+			else
+				add_back(elem, new_elem(input, &i, len, WORD));
 		}
+		// else if (input[i] && input[i] == '=')
+		// 	parse_equal(elem, input, &i);
 		else if (input[i] && input[i] == '|')
 			add_back(elem, new_elem(input, &i, 1, PIPE));
 		else if (input[i] && input[i] == '\'')
@@ -51,6 +57,40 @@ void	read_command(t_elem **elem, char *input)
 			add_back(elem, new_elem(input, &i, 1, REDIR_IN));
 	}
 	isolate_quotes(elem);
+}
+
+void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
+{
+	int		j;
+	int		s_q;
+	int		d_q;
+
+	j = a - 1;
+	s_q = 0;
+	d_q = 0;
+	if (input[j] == '=' && input[j + 1]
+		&& (input[j + 1] == '\'' || input[j + 1] == '"'))
+	{
+		if (input[j + 1] == '\'')
+			s_q++;
+		if (input[j + 1] == '"')
+			d_q++;
+		j += 2;
+		while (input[j] && input[j + 1])
+		{
+			if (input[j] == '\'')
+				s_q++;
+			if (input[j] == '"')
+				d_q++;
+			if ((input[j] == '"' && input[j + 1] == ' ')
+				|| (input[j] == '\'' && input[j + 1] == ' ')
+					|| (input[j] == ' ' && (s_q % 2 == 0 || d_q % 2 == 0)))
+					break ;
+			len++;
+			j++;
+		}
+		add_back(elem, new_elem(input, i, len + 2, WORD));
+	}
 }
 
 void	isolate_quotes(t_elem **elem)
@@ -133,18 +173,25 @@ int main(int ac, char **av, char **envp)
 		// env = 0;
 		env->elem = 0;
 		env->exit_status = 0;
-		
-		input = readline("\033[1;37;44m\033[34mMINISHELL $ \033[0m\033[0m");
+		env->envp = envp_copy;
+		input = readline("MINISHELL $ ");
 		add_history(input);
 		read_command(&env->elem, input);
+
+		
+		// check_syntax_errors(env);
 		if(check_syntax_errors(env))
 		{	
-			expand(&env->elem);
+			expand(env);
+			// while (env->elem)
+			// {
+			// 	printf("content : %s\n", env->elem->content);
+			// 	env->elem = env->elem->next;
+			// }
 			get_rid_of_spaces(&env->elem);
 			get_rid_of_quotes(&env->elem);
 				env->cmd = split_line(env->elem);
 				if (env->cmd)
-
 				{
 					
 					if (!ft_strcmp(env->cmd->cmd_line[0], "pwd"))
@@ -156,18 +203,20 @@ int main(int ac, char **av, char **envp)
 					else if (!ft_strcmp(env->cmd->cmd_line[0], "exit"))
 						break ;
 					else if (!ft_strcmp(env->cmd->cmd_line[0], "env"))
-						ft_env(envp_copy);
+						ft_env(env->envp);
 					else if (!ft_strcmp(env->cmd->cmd_line[0], "export"))
-						export(&envp_copy, env->cmd->cmd_line);
-				else
-				{//execve("/bin/ls", )
-					pid_t pid = fork();
-					if (pid == 0)
-						execve(ft_strcat("/bin/", env->cmd->cmd_line[0]), env->cmd->cmd_line, envp);
-					else if (pid > 0)
-						waitpid(pid, &status, 0);
+						export(&env->envp, env->cmd->cmd_line);
+					else if (!ft_strcmp(env->cmd->cmd_line[0], "unset"))
+						unset(&env->envp, env->cmd->cmd_line[1]);
+					else
+					{//execve("/bin/ls", )
+						pid_t pid = fork();
+						if (pid == 0)
+							execve(ft_strcat("/bin/", env->cmd->cmd_line[0]), env->cmd->cmd_line, envp);
+						else if (pid > 0)
+							waitpid(pid, &status, 0);
+					}
 				}
-			}
 
 				// while (env->cmd)
 				// {
@@ -195,8 +244,10 @@ int main(int ac, char **av, char **envp)
 				free(env->elem);
 				env->elem = node;
 			}
+			break ;
 		}
 	}
 	clear_history();
+	while(1);
 	return (0);
 }

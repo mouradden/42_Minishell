@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:00:45 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/15 13:55:09 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:16:11 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,12 +248,14 @@ int	check_quotes(t_env *env)
 	count_single = 0;
 	while (cursor)
 	{
+		// printf("**********content :%s\n", cursor->content);
 		if (cursor->type == S_QUOTE && cursor->state == NORMAL)
 			count_single++;
 		if (cursor->type == D_QUOTE && cursor->state == NORMAL)
 			count_double++;
 		cursor = cursor->next;
 	}
+	// printf("single  : %d | double %d\n", count_single, count_double);
 	if (count_single % 2 || count_double % 2)
 		return (0);
 	return (1);

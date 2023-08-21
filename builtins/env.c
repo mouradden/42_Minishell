@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/18 17:42:13 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/21 15:15:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,32 @@ void	split_env(t_envp **list, char *envp)
 			j++;
 		}
 		node->title = extract_word(envp, &i, len);
-		if (envp[j] == '=')
+		
+		
+		if (envp[i] == '=')
+			i++;
+		len = 0;
+		if (envp[i] == '"' || envp[i] == '"')
 			i++;
 		j = i;
-		len = 0;
-		while (envp[j])
+		while (envp[j] && envp[j] != '"' && envp[j] != '\'')
 		{
 			len++;
 			j++;
 		}
+		
 		node->content = extract_word(envp, &i, len);
+		
+		if (envp[i] == '"' || envp[i] == '"')
+			i++;
 		node->next = NULL;
 	}
-	add_back_env(list, node);
+	if (check_duplicate(list, node->title))
+	{
+		update_node(*list, node->title, node->content);
+	}
+	else
+		add_back_env(list, node);
 }
 
 int	add_back_env(t_envp **head, t_envp *new)
