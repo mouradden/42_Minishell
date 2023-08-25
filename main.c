@@ -193,28 +193,65 @@ int main(int ac, char **av, char **envp)
 				env->cmd = split_line(env->elem);
 				if (env->cmd)
 				{
-					
-					if (!ft_strcmp(env->cmd->cmd_line[0], "pwd"))
-					pwd();
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "echo"))
-						echo(env->cmd->cmd_line);
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "cd"))
-						cd(env->cmd->cmd_line[1]);
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "exit"))
-						break ;
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "env"))
-						ft_env(env->envp);
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "export"))
-						export(&env->envp, env->cmd->cmd_line);
-					else if (!ft_strcmp(env->cmd->cmd_line[0], "unset"))
-						unset(&env->envp, env->cmd->cmd_line[1]);
-					else
-					{//execve("/bin/ls", )
-						pid_t pid = fork();
-						if (pid == 0)
-							execve(ft_strcat("/bin/", env->cmd->cmd_line[0]), env->cmd->cmd_line, envp);
-						else if (pid > 0)
-							waitpid(pid, &status, 0);
+						int i = 0;
+						int		count_pipes = count_delimter_pipe(env->elem) + 1;
+						// char *s = get_cmd_path(env->cmd->cmd_line[0], env->envp);
+						
+						if (count_pipes == 1)
+						{
+							if (!ft_strcmp(env->cmd->cmd_line[0], "exit"))
+								break ;
+							else
+								exec_one_command(env, envp);
+						}
+						else
+						{
+							pid_t *pid = malloc(sizeof(pid_t) * count_pipes);
+							int **fd = malloc(sizeof(int *) * (count_pipes - 1));
+							if (!fd)
+							{
+								printf("error malloc\n");
+								exit(1);
+							}
+							while (i < count_pipes - 1)
+							{
+								fd[i] = malloc(sizeof(int) * 2);
+								i++;
+							}
+							i = 0;
+							while (i < count_pipes - 1)
+							{
+								if (pipe(fd[i]) == -1)
+									exit(EXIT_FAILURE);
+								i++;
+							}
+							i = 0;
+							while (i < count_pipes)
+							{
+								pid[i] = fork();
+								if (pid[i] == 0)
+								{
+									if (env->cmd->redir)
+										duplicate_fd(fd, count_pipes, i);
+									exec_one_command(env, envp);
+
+									exit(1337);
+								}
+								// if (env->cmd->redir)
+								// 	threat_redir(env->cmd);
+								env->cmd = env->cmd->next;
+								i++;
+							}
+							i = 0;
+							while (i < count_pipes - 1)
+							{
+								close(fd[i][0]);
+								close(fd[i][1]);
+								i++;
+							}
+							i = 0;
+							while (i < count_pipes)
+								waitpid(pid[i++], &status, 0);
 					}
 				}
 
@@ -244,10 +281,8 @@ int main(int ac, char **av, char **envp)
 				free(env->elem);
 				env->elem = node;
 			}
-			break ;
 		}
 	}
 	clear_history();
-	while(1);
 	return (0);
 }

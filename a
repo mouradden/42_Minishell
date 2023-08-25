@@ -1,0 +1,27 @@
+total 296
+-rw-r--r--   1 mdenguir  candidates   1517 Aug 25 18:07 Makefile
+-rw-------   1 mdenguir  candidates      0 Aug 25 22:28 a
+drwxr-xr-x  15 mdenguir  candidates    510 Aug 25 22:28 builtins
+-rw-r--r--   1 mdenguir  candidates   5663 Aug 23 21:20 errors.c
+-rw-r--r--   1 mdenguir  candidates   5216 Aug 25 22:28 errors.o
+-rw-r--r--   1 mdenguir  candidates   1709 Aug 25 20:42 exec_utils.c
+-rw-r--r--   1 mdenguir  candidates   1232 Aug 25 22:28 exec_utils.o
+drwxr-xr-x   6 mdenguir  candidates    204 Aug 25 22:28 execution
+-rw-r--r--   1 mdenguir  candidates   2487 Aug 23 21:20 expand.c
+-rw-r--r--   1 mdenguir  candidates   2216 Aug 25 22:28 expand.o
+-rw-------   1 mdenguir  candidates      0 Aug 25 22:28 f
+-rw-r--r--   1 mdenguir  candidates   1712 Aug 25 12:48 ft_split.c
+-rw-r--r--   1 mdenguir  candidates   1716 Aug 25 22:28 ft_split.o
+-rw-r--r--   1 mdenguir  candidates    144 Aug 23 21:20 ft_strcmp.c
+-rw-r--r--   1 mdenguir  candidates   1923 Aug 23 21:20 lexing_utils.c
+-rw-r--r--   1 mdenguir  candidates   1596 Aug 25 22:28 lexing_utils.o
+-rw-r--r--   1 mdenguir  candidates   6068 Aug 25 20:51 main.c
+-rw-r--r--   1 mdenguir  candidates   6056 Aug 25 22:28 main.o
+-rwxr-xr-x   1 mdenguir  candidates  33312 Aug 25 22:28 minishell
+-rw-r--r--   1 mdenguir  candidates   4428 Aug 25 20:30 minishell.h
+-rw-r--r--   1 mdenguir  candidates   6389 Aug 25 10:43 parsing_utils.c
+-rw-r--r--   1 mdenguir  candidates   5424 Aug 25 22:28 parsing_utils.o
+-rw-r--r--   1 mdenguir  candidates   1348 Aug 23 21:20 tree.c
+-rw-r--r--   1 mdenguir  candidates    208 Aug 25 22:28 tree.o
+-rw-r--r--   1 mdenguir  candidates   2257 Aug 25 17:35 utils.c
+-rw-r--r--   1 mdenguir  candidates   2560 Aug 25 22:28 utils.o

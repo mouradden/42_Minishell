@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/21 15:32:29 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/25 20:30:18 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 enum e_state
 {
@@ -89,7 +90,7 @@ typedef struct s_redir
 
 
 
-char	*ft_strjoin(char *s1, char c);
+char	*ft_strjoin(char *s1, char *s2);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
 int		is_space(int c);
@@ -154,5 +155,12 @@ void	update_node(t_envp *envp, char *var_title, char *var_content);
 void	remove_node(t_envp **envp, char *var);
 void    unset(t_envp **envp, char *title);
 
+int	count_words(const char *s, char c);
+int	len_word(const char *s, char c);
+char	**ft_split(char const *s, char c);
+
+char    *get_cmd_path(char *cmd, t_envp *envp);
+void	exec_one_command(t_env *env ,char **envp);
+void	duplicate_fd(int **fd, int count_pipes, int i);
 
 #endif
