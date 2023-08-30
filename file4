@@ -1,0 +1,48 @@
+Makefile
+builtins
+errors.c
+exec_utils.c
+execution
+expand.c
+file
+file4
+free_data.c
+ft_split.c
+hello_world.txt
+herdoc_file
+lexing_utils.c
+main.c
+minishell
+minishell.h
+parsing_utils.c
+print_cmd.c
+test
+tree.c
+utils.c
+total 272
+drwxr-xr-x  26 mdenguir  candidates    884 Aug 30 10:26 .
+drwxr-xr-x   9 mdenguir  candidates    306 Aug 23 21:20 ..
+-rw-r--r--   1 mdenguir  candidates   6148 Aug 23 21:21 .DS_Store
+drwxr-xr-x  13 mdenguir  candidates    442 Aug 25 22:38 .git
+drwxr-xr-x   3 mdenguir  candidates    102 Aug 23 21:20 .vscode
+-rw-r--r--   1 mdenguir  candidates   1541 Aug 29 22:26 Makefile
+drwxr-xr-x   9 mdenguir  candidates    306 Aug 30 10:25 builtins
+-rw-r--r--   1 mdenguir  candidates   5663 Aug 23 21:20 errors.c
+-rw-r--r--   1 mdenguir  candidates   1743 Aug 26 22:12 exec_utils.c
+drwxr-xr-x   4 mdenguir  candidates    136 Aug 30 10:25 execution
+-rw-r--r--   1 mdenguir  candidates   2521 Aug 28 15:45 expand.c
+-rw-------   1 mdenguir  candidates    227 Aug 29 22:32 file
+-rw-------   1 mdenguir  candidates    213 Aug 30 10:26 file4
+-rw-r--r--   1 mdenguir  candidates   1101 Aug 29 18:46 free_data.c
+-rw-r--r--   1 mdenguir  candidates   1712 Aug 25 12:48 ft_split.c
+-rw-------   1 mdenguir  candidates     12 Aug 28 15:31 hello_world.txt
+-rw-------   1 mdenguir  candidates     14 Aug 30 10:25 herdoc_file
+-rw-r--r--   1 mdenguir  candidates   1923 Aug 23 21:20 lexing_utils.c
+-rw-r--r--   1 mdenguir  candidates   5403 Aug 30 10:25 main.c
+-rwxr-xr-x   1 mdenguir  candidates  37648 Aug 30 10:25 minishell
+-rw-r--r--   1 mdenguir  candidates   4588 Aug 29 20:31 minishell.h
+-rw-r--r--   1 mdenguir  candidates   6416 Aug 29 22:17 parsing_utils.c
+-rw-r--r--   1 mdenguir  candidates    477 Aug 29 20:30 print_cmd.c
+-rw-------   1 mdenguir  candidates   2624 Aug 26 12:27 test
+-rw-r--r--   1 mdenguir  candidates   1348 Aug 23 21:20 tree.c
+-rw-r--r--   1 mdenguir  candidates   2356 Aug 26 22:37 utils.c

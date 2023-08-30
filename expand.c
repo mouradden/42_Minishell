@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/21 10:55:52 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:45:22 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ char *ft_get_env(t_env *env, char *title)
 	t_envp	*cursor;
 
 	cursor = env->envp;
-	while (cursor && ft_strcmp(cursor->title, title))
+	while (cursor && cursor->title && ft_strcmp(cursor->title, title))
 		cursor = cursor->next;
-	if (cursor && !ft_strcmp(cursor->title, title))
+	if (cursor && cursor->title && !ft_strcmp(cursor->title, title))
 		return (cursor->content);
 	return (NULL);
 }

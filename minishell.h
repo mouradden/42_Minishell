@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/25 20:30:18 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:47:39 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ typedef struct s_env
 	t_elem	*elem;
 	t_cmd	*cmd;
 	t_envp	*envp;
+	int		in;
+	int		out;
 	int		exit_status;
 }	t_env;
 
@@ -96,6 +98,7 @@ int		ft_strcmp(char *s1, char *s2);
 int		is_space(int c);
 int		is_special(int c);
 
+void	read_command(t_elem **elem, char *input);
 char	*extract_word(char *input, int *index, int len);
 void	isolate_quotes(t_elem **elem);
 int		add_back(t_elem **elem, t_elem *new);
@@ -160,7 +163,18 @@ int	len_word(const char *s, char c);
 char	**ft_split(char const *s, char c);
 
 char    *get_cmd_path(char *cmd, t_envp *envp);
-void	exec_one_command(t_env *env ,char **envp);
-void	duplicate_fd(int **fd, int count_pipes, int i);
+// void	exec_one_command(t_env *env ,char **envp);
 
+
+//-----
+int		duplicate_redir(t_env *env);
+void	exec_one_command(t_env *env ,char **envp, int fdd);
+
+//-----
+
+void	duplicate_fd(int **fd, int count_pipes, int i);
+// void	duplicate_redir(t_env *env);
+void free_elem(t_env **env);
+void	exec_one_command_herdoc(t_env *env ,char **envp);
+void printf_cmd(t_env *env);
 #endif

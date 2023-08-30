@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/25 17:35:46 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:18:51 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ int	ft_strcmp(char *s1, char *s2)
 	int		i;
 
 	i = 0;
-	if (!s2)
-		return (-1);
+	if (s1 == NULL)
+		ft_putstr_fd("error from strcmp s1\n", 2);
+	if (s2 == NULL)
+		ft_putstr_fd("error from strcmp s2\n", 2);
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;
 	return (s1[i] - s2[i]);
@@ -97,7 +99,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		index++;
 	}
 	joined[s1_len + index] = '\0';
-	free(s1);
+	// free(s1);
 	return (joined);
 }
 

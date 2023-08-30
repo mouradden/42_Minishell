@@ -57,6 +57,7 @@ void	read_command(t_elem **elem, char *input)
 			add_back(elem, new_elem(input, &i, 1, REDIR_IN));
 	}
 	isolate_quotes(elem);
+	// printf("|%s|\n", (*elem)->content);
 }
 
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
@@ -155,12 +156,18 @@ char *ft_strcat(char *dest, char *src)
 	return (res);
 }
 
+int	is_builting(char *cmd)
+{
+	(void)cmd;
+	// if (cmd = "exit")
+	return (0);
+}
+
 int main(int ac, char **av, char **envp)
 {
 	int status;
 	char	*input;
 	t_env	*env;
-	t_elem	*node;
 	t_envp	*envp_copy;
 
 	(void)ac;
@@ -174,6 +181,8 @@ int main(int ac, char **av, char **envp)
 		env->elem = 0;
 		env->exit_status = 0;
 		env->envp = envp_copy;
+		env->in = dup(STDIN_FILENO);
+		env->out = dup(STDOUT_FILENO);
 		input = readline("MINISHELL $ ");
 		add_history(input);
 		read_command(&env->elem, input);
@@ -190,97 +199,88 @@ int main(int ac, char **av, char **envp)
 			// }
 			get_rid_of_spaces(&env->elem);
 			get_rid_of_quotes(&env->elem);
-				env->cmd = split_line(env->elem);
-				if (env->cmd)
-				{
-						int i = 0;
-						int		count_pipes = count_delimter_pipe(env->elem) + 1;
-						// char *s = get_cmd_path(env->cmd->cmd_line[0], env->envp);
-						
-						if (count_pipes == 1)
-						{
-							if (!ft_strcmp(env->cmd->cmd_line[0], "exit"))
-								break ;
-							else
-								exec_one_command(env, envp);
-						}
-						else
-						{
-							pid_t *pid = malloc(sizeof(pid_t) * count_pipes);
-							int **fd = malloc(sizeof(int *) * (count_pipes - 1));
-							if (!fd)
-							{
-								printf("error malloc\n");
-								exit(1);
-							}
-							while (i < count_pipes - 1)
-							{
-								fd[i] = malloc(sizeof(int) * 2);
-								i++;
-							}
-							i = 0;
-							while (i < count_pipes - 1)
-							{
-								if (pipe(fd[i]) == -1)
-									exit(EXIT_FAILURE);
-								i++;
-							}
-							i = 0;
-							while (i < count_pipes)
-							{
-								pid[i] = fork();
-								if (pid[i] == 0)
-								{
-									if (env->cmd->redir)
-										duplicate_fd(fd, count_pipes, i);
-									exec_one_command(env, envp);
-
-									exit(1337);
-								}
-								// if (env->cmd->redir)
-								// 	threat_redir(env->cmd);
-								env->cmd = env->cmd->next;
-								i++;
-							}
-							i = 0;
-							while (i < count_pipes - 1)
-							{
-								close(fd[i][0]);
-								close(fd[i][1]);
-								i++;
-							}
-							i = 0;
-							while (i < count_pipes)
-								waitpid(pid[i++], &status, 0);
-					}
-				}
-
-				// while (env->cmd)
-				// {
-				// 	int i = 0;
-				// 	while (env->cmd->cmd_line[i])
-				// 	{
-				// 		printf("cmd   |%s| **\n", env->cmd->cmd_line[i]);
-				// 		i++;
-				// 	}
-				// 	printf("--- redir--\n");
-				// 	while (env->cmd->redir)
-				// 	{
-				// 		printf("====>%d || %s\n", env->cmd->redir->type, env->cmd->redir->file_name);
-				// 		env->cmd->redir = env->cmd->redir->next;
-				// 	}
-				// 	printf("---end redir--\n");
-				// 			printf("--------------------\n");
-				// 	env->cmd = env->cmd->next;
-				// }
-			// }
-			while (env->elem)
+			env->cmd = split_line(env->elem);
+			if (env->cmd)
 			{
-				node = env->elem->next;
-				free(env->elem->content);
-				free(env->elem);
-				env->elem = node;
+				int i = 0;
+				int		count_pipes = count_delimter_pipe(env->elem) + 1;
+				int fdd;
+				fdd = duplicate_redir(env);
+				// if (count_pipes == 1 && is_builting(env->cmd->cmd_line[0]))
+				if (count_pipes == 1 && 1 == 0)
+				{
+					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "exit"))
+						break ;
+					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "pwd"))
+						pwd();
+					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "echo"))
+						echo(env->cmd->cmd_line);
+					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "cd"))
+						cd(env->cmd->cmd_line[1]);
+					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "env"))
+						ft_env(env->envp);
+					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "export"))
+						export(&env->envp, env->cmd->cmd_line);
+					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "unset"))
+						unset(&env->envp, env->cmd->cmd_line[1]);
+				}
+				else
+				{
+					pid_t *pid = malloc(sizeof(pid_t) * count_pipes);
+					int **fd = malloc(sizeof(int *) * (count_pipes - 1));
+					if (!fd)
+					{
+						printf("error malloc\n");
+						exit(1);
+					}
+					while (i < count_pipes - 1)
+					{
+						fd[i] = malloc(sizeof(int) * 2);
+						i++;
+					}
+					i = 0;
+					while (i < count_pipes - 1)
+					{
+						if (pipe(fd[i]) == -1)
+							exit(EXIT_FAILURE);
+						i++;
+					}
+					i = 0;
+					// int status1;
+					while (i < count_pipes)
+					{
+						dup2(env->in, STDIN_FILENO);
+						dup2(env->out, STDOUT_FILENO);
+						pid[i] = fork();
+						// if (env->cmd->redir && env->cmd->redir->type == HERDOC)
+						// {
+						// 	exec_one_command_herdoc(env, envp);
+						// 	waitpid(pid[i], &status1, 0);
+						// 	dprintf(2, "pid %d finished\n", i);
+						// }
+						if (pid[i] == 0)
+						{
+							if (count_pipes > 1)
+								duplicate_fd(fd, count_pipes, i);
+							exec_one_command(env, envp, fdd);
+							exit(1337);
+						}
+						env->cmd = env->cmd->next;
+						i++;
+					}
+					i = 0;
+					while (i < count_pipes - 1)
+					{
+						close(fd[i][0]);
+						close(fd[i][1]);
+						i++;
+					}
+					i = 0;
+					while (i < count_pipes)
+						waitpid(pid[i++], &status, 0);
+				}
 			}
+			free_elem(&env);
 		}
 	}
 	clear_history();

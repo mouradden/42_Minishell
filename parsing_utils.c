@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/25 10:43:03 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/29 22:17:10 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,8 @@ t_cmd	*split_line(t_elem *list)
 	{
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
-		cmd_line = malloc(count_before_pipe(start) * sizeof(char *) + 1);
+
+		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
 		i = 0;
 		if (!cursor)
 			redir = detect_redir_final(start);
@@ -159,14 +160,14 @@ t_cmd	*split_line(t_elem *list)
 			redir = detect_redir(start, cursor);
 		while (start && start != cursor)
 		{
-			if (ft_strcmp_redir(start->content, redir)
+			if (start->content && ft_strcmp_redir(start->content, redir)
 				&& start->type != REDIR_IN && start->type != REDIR_ADD
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
 			{
 				cmd_line[i] = start->content;
 				i++;
 			}
-				start = start->next;
+			start = start->next;
 		}
 		cmd_line[i] = 0;
 		add_back_cmd(&cmd, cmd_line, redir);
@@ -316,7 +317,7 @@ int	ft_strcmp_redir(char *str, t_redir *redir)
 	c = redir;
 	while (c)
 	{
-		if (!ft_strcmp(str, c->file_name))
+		if (str && !ft_strcmp(str, c->file_name))
 			return (0);
 		c = c->next;
 	}

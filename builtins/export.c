@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/21 17:05:35 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:20:13 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int check_duplicate(t_envp **envp, char *var)
 	cursor = *envp;
 	while (cursor)
 	{
-		if (!ft_strcmp(cursor->title, var))
+		if (cursor->title && !ft_strcmp(cursor->title, var))
 			return (1);
 		cursor = cursor->next;
 	}
@@ -45,7 +45,7 @@ void	update_node(t_envp *envp, char *var_title, char *var_content)
 	cursor = envp;
 	while (cursor)
 	{
-		if (!ft_strcmp(cursor->title, var_title))
+		if (cursor->title && !ft_strcmp(cursor->title, var_title))
 		{
 			free(cursor->content);
 			cursor->content = var_content;
@@ -63,7 +63,7 @@ void	remove_node(t_envp **envp, char *var)
 	cursor = *envp;
 	while (cursor->next)
 	{
-		if (!ft_strcmp(cursor->next->title, var))
+		if (cursor->next->title && !ft_strcmp(cursor->next->title, var))
 		{
 			node_temp = cursor->next->next;
 			free(cursor->next->title);

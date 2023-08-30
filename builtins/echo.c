@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 13:56:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/21 11:33:53 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:19:39 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	echo(char **input)
 	}
 	while (input[i])
 	{
-		if (!ft_strcmp(input[i], " "))
+		if (input[i] && !ft_strcmp(input[i], " "))
 			ft_putchar_fd(' ', 1);
 		else
 		{
