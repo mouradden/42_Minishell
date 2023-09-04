@@ -6,7 +6,7 @@
 #    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/26 10:35:31 by mdenguir          #+#    #+#              #
-#    Updated: 2023/08/30 12:20:18 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/02 11:50:59 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
 	${CC} ${CFLAGS} -o $@ -c $^
 
 ${NAME} : ${OBJECTS}
-	${CC} ${CFLAGS} -lreadline ${OBJECTS} -o ${NAME}
-# -L/goinfre/mdenguir/homebrew/opt/readline/lib
+	${CC}   ${CFLAGS} -lreadline ${OBJECTS} -o ${NAME} -L/goinfre/mdenguir/homebrew/opt/readline/lib
+# -L/goinfre/mdenguir/homebrew/opt/readline/lib #-I/goinfre/obouhrir/homebrew/opt/readline/include/
 clean :
 	rm -f ${OBJECTS}
 

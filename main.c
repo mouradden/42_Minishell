@@ -26,8 +26,6 @@ void	read_command(t_elem **elem, char *input)
 			else
 				add_back(elem, new_elem(input, &i, len, WORD));
 		}
-		// else if (input[i] && input[i] == '=')
-		// 	parse_equal(elem, input, &i);
 		else if (input[i] && input[i] == '|')
 			add_back(elem, new_elem(input, &i, 1, PIPE));
 		else if (input[i] && input[i] == '\'')
@@ -85,8 +83,8 @@ void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
 				d_q++;
 			if ((input[j] == '"' && input[j + 1] == ' ')
 				|| (input[j] == '\'' && input[j + 1] == ' ')
-					|| (input[j] == ' ' && (s_q % 2 == 0 || d_q % 2 == 0)))
-					break ;
+					|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q) || (d_q % 2 == 0 && d_q))))
+						break ;
 			len++;
 			j++;
 		}
@@ -158,9 +156,36 @@ char *ft_strcat(char *dest, char *src)
 
 int	is_builting(char *cmd)
 {
-	(void)cmd;
-	// if (cmd = "exit")
-	return (0);
+	// (void)cmd;
+	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "echo")
+		|| !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset")))
+		return (0);
+	else
+		return (1);
+}
+void sig_check(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		rl_redisplay();
+		signal(sig, sig_check);
+	}
+	else if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+
+
+	}
+}
+
+void	sig_check_herdoc(int sig)
+{
+	if (sig == SIGINT)
+		exit(1);
 }
 
 int main(int ac, char **av, char **envp)
@@ -168,36 +193,44 @@ int main(int ac, char **av, char **envp)
 	int status;
 	char	*input;
 	t_env	*env;
-	t_envp	*envp_copy;
+	t_envp *copy_envp = copy_env(envp);
 
 	(void)ac;
 	(void)av;
-	envp_copy = copy_env(envp);
+	
+	env = malloc(sizeof(t_env));
+	env->in = dup(STDIN_FILENO);
+	env->out = dup(STDOUT_FILENO);
+	
+	env->envp = copy_envp;
+	signal(SIGQUIT, SIG_IGN);
 	while(1)
 	{
-		env = malloc(sizeof(t_env));
+		signal(SIGINT, sig_check);
 		env->elem = malloc(sizeof(t_elem));
-		// env = 0;
 		env->elem = 0;
 		env->exit_status = 0;
-		env->envp = envp_copy;
-		env->in = dup(STDIN_FILENO);
-		env->out = dup(STDOUT_FILENO);
 		input = readline("MINISHELL $ ");
+		if (!input)
+		{
+			// free()
+			exit(0);
+		}
 		add_history(input);
 		read_command(&env->elem, input);
 
 		
-		// check_syntax_errors(env);
 		if(check_syntax_errors(env))
 		{	
 			expand(env);
-			// while (env->elem)
-			// {
-			// 	printf("content : %s\n", env->elem->content);
-			// 	env->elem = env->elem->next;
-			// }
+			expand_word(env);
+			
 			get_rid_of_spaces(&env->elem);
+		// while (env->elem)
+		// 	{
+		// 		printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
+		// 		env->elem = env->elem->next;
+		// 	}
 			get_rid_of_quotes(&env->elem);
 			env->cmd = split_line(env->elem);
 			if (env->cmd)
@@ -206,8 +239,7 @@ int main(int ac, char **av, char **envp)
 				int		count_pipes = count_delimter_pipe(env->elem) + 1;
 				int fdd;
 				fdd = duplicate_redir(env);
-				// if (count_pipes == 1 && is_builting(env->cmd->cmd_line[0]))
-				if (count_pipes == 1 && 1 == 0)
+				if (count_pipes == 1 && !is_builting(env->cmd->cmd_line[0]))
 				{
 					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "exit"))
 						break ;
@@ -218,11 +250,11 @@ int main(int ac, char **av, char **envp)
 					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "cd"))
 						cd(env->cmd->cmd_line[1]);
 					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "env"))
-						ft_env(env->envp);
+						ft_env(&copy_envp);
 					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "export"))
-						export(&env->envp, env->cmd->cmd_line);
+						export(&copy_envp, env->cmd->cmd_line);
 					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "unset"))
-						unset(&env->envp, env->cmd->cmd_line[1]);
+						unset(&copy_envp, env->cmd->cmd_line[1]);
 				}
 				else
 				{
@@ -281,8 +313,10 @@ int main(int ac, char **av, char **envp)
 				}
 			}
 			free_elem(&env);
+			// free_env(&env);
 		}
 	}
 	clear_history();
+	free(input);
 	return (0);
 }

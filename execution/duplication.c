@@ -6,12 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 18:03:54 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/30 16:11:10 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/04 10:12:12 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 void	duplicate_fd(int **fd, int count_pipes, int i)
 {
 	if (i == 0)
@@ -45,68 +44,59 @@ void	duplicate_fd(int **fd, int count_pipes, int i)
 
 int	duplicate_redir(t_env *env)
 {
-	int		fd = -1;
+	int		fd;
+	pid_t pid;
 	t_cmd	*cmd;
 	t_redir *red;
 
+	gl_sig = 0;
 	cmd = env->cmd;
 	while (cmd)
 	{
-			red = cmd->redir;
-			while (red)
+		red = cmd->redir;
+		while (red)
+		{
+			if (red->type == HERDOC)
 			{
-				
-				// if (cmd->redir->type == ADD)
-				// {
-				// 	fd = open(cmd->redir->file_name, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
-				// 	if (!fd)
-				// 		ft_putstr_fd("error openning file\n", 2);
-				// 	if (dup2(fd, STDOUT_FILENO) == -1)
-				// 		ft_putstr_fd("error duplication ADD\n", 2);
-				// }
-				// else if (cmd->redir->type == APPEND)
-				// {
-				// 	fd = open(cmd->redir->file_name, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR);
-				// 	if (!fd)
-				// 		ft_putstr_fd("error openning file\n", 2);
-				// 	if (dup2(fd, STDOUT_FILENO) == -1)
-				// 		ft_putstr_fd("error duplication APPEND \n", 2);
-				// }
-				// else if (cmd->redir->type == INPUT)
-				// {
-				// 	fd = open(cmd->redir->file_name, O_RDONLY);
-				// 	if (!fd)
-				// 		ft_putstr_fd("error openning file\n", 2);
-				// 	if (dup2(fd, STDIN_FILENO) == -1)
-				// 		ft_putstr_fd("error duplication INPUT\n", 2);
-				// }
-				// else
-				if (fd != -1)
-					close(fd);
-				if (red->type == HERDOC)
+				pid = fork();
+				if (pid == 0)
 				{
 					fd = open("herdoc_file", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
 					if (!fd)
 						ft_putstr_fd("error openning file\n", 2);
 					
 					char *input = "";
+					t_env *env;
+						env = malloc(sizeof(t_env));
+						env = 0;
+						
 					while (1)
-					{
+					{	
+						signal(SIGINT, sig_check_herdoc);
 						input = readline("> ");
 						if (!input)
 							break;
-						if (!ft_strcmp(input, red->file_name))
+						if (input && red->file_name && !ft_strcmp(input, red->file_name))
 								break;
-						// t_ malloc(sizeof(t_;	
-						// elem = malloc(sizeof(t_elem));
-						// elem = 0;
-						// read_command(&elem, input);
-						// ft_putstr_fd(elem->content, 2);
-						// ft_putchar_fd('\n', 2);
-						// expand(
+						// ft_putstr_fd("here\n", 2);
+			// 			env->elem = malloc(sizeof(t_elem));
+			// 			env->elem = 0;
+			// 			read_command(&env->elem, input);
+			// while (env->elem)
+			// {
+			// 	dprintf(2, "content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
+			// 	env->elem = env->elem->next;
+			// }
+			// 			// ft_putstr_fd(env->elem->content, 2);
+			// 			// ft_putchar_fd('\n', 2);
+			// 			// expand(env);
+			// 			ft_putstr_fd(env->elem->content, fd);
+			// 			ft_putchar_fd('\n', fd);
+			// 			free_elem(&env);
+						if (check_dollar(input) > -1)
+							expand_input_herdoc(input);
 						ft_putstr_fd(input, fd);
 						ft_putchar_fd('\n', fd);
-						
 					}
 					close(fd);
 					fd = open("herdoc_file", O_RDONLY);
@@ -116,11 +106,24 @@ int	duplicate_redir(t_env *env)
 						ft_putstr_fd("error dpulication INPUT HERDOC\n", 2);
 					}
 				}
-				red = red->next;
-				// if (cmd->redir)
-				// 	dup2(env->in, STDIN_FILENO);
+				waitpid(pid, NULL, 0);
 			}
+			red = red->next;
+			if (red)
+				dup2(env->in, STDIN_FILENO);
+		}
 		cmd = cmd->next;
 	}
 	return (fd);
 }
+
+// char	*expand_input_herdoc(char *input)
+// {
+// 	int		index;
+// 	char	*res;
+
+// 	if (check_dollar(input) != 0)
+// 	{
+// 		res = ft_strjoin("", extract_word(input, 0, ))
+// 	}
+// }

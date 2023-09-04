@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/30 12:18:51 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/02 14:05:22 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ void	free_double(char **str)
 
 int	is_space(int c)
 {
-	if (c == ' ')
+	if (c == ' ' || c == '\t')
 		return (1);
 	return (0);
 }
 
 int	is_special(int c)
 {
-	return (c == ' ' || c == '<' || c == '>' || c == '\n'
-		|| c == '$' || c == '|' || c == '\'' || c == '"');
+	return (c == ' ' || c == '\t' || c == '<' || c == '>'
+		|| c == '\n' || c == '|' || c == '\'' || c == '"');
 }
 
 int	ft_strcmp(char *s1, char *s2)

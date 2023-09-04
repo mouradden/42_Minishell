@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/21 15:15:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:57:30 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,8 @@ void	split_env(t_envp **list, char *envp)
 			j++;
 		}
 		node->title = extract_word(envp, &i, len);
-		
-		
 		if (envp[i] == '=')
-			i++;
+			node->equal = extract_word(envp, &i, 1);
 		len = 0;
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
@@ -123,7 +121,6 @@ void	split_env(t_envp **list, char *envp)
 			len++;
 			j++;
 		}
-		
 		node->content = extract_word(envp, &i, len);
 		
 		if (envp[i] == '"' || envp[i] == '"')
@@ -135,17 +132,18 @@ void	split_env(t_envp **list, char *envp)
 		update_node(*list, node->title, node->content);
 	}
 	else
+	{
 		add_back_env(list, node);
+	}
 }
 
-int	add_back_env(t_envp **head, t_envp *new)
+void	add_back_env(t_envp **head, t_envp *new)
 {
 	t_envp		*cursor;
 
 	if (*head == NULL)
 	{
 		*head = new;
-		return (1);
 	}
 	else
 	{
@@ -153,22 +151,27 @@ int	add_back_env(t_envp **head, t_envp *new)
 		while (cursor->next)
 			cursor = cursor->next;
 		cursor->next = new;
-		return (1);
 	}
 }
 
-void	ft_env(t_envp *envp)
+void	ft_env(t_envp **envp)
 {
 	t_envp	*cursor;
 
-	cursor = envp;
+	cursor = *envp;
 	while (cursor)
 	{
-		ft_putstr_fd(cursor->title, 1);
-		ft_putchar_fd('=', 1);
-		ft_putstr_fd(cursor->content, 1);
-		ft_putchar_fd('\n', 1);
+		if (cursor->title)
+		{
+			ft_putstr_fd(cursor->title, 1);
+			if (!ft_strcmp(cursor->equal, "="))
+			{
+				ft_putchar_fd('=', 1);
+				ft_putstr_fd(cursor->content, 1);
+				ft_putchar_fd('\n', 1);
+			}
+		}
+		
 		cursor = cursor->next;
 	}
-	
 }

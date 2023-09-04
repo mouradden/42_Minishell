@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/29 22:17:10 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:25:57 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,35 @@ void	get_rid_of_spaces(t_elem **list)
 	t_elem	*cursor;
 	t_elem	*temp;
 
-	cursor = *list;
+	
 	if (!(*list))
 		return ;
-	cursor = *list;
-	while (cursor->next)
+	while ((*list)->type == WHITE_SPACE
+			&& (*list)->state == NORMAL)
 	{
-		if (cursor->next->type == WHITE_SPACE
-			&& cursor->next->state == NORMAL)
+		temp = (*list)->next;
+		free((*list)->content);
+		free(*list);
+		*list = temp;
+		if (!(*list))
+			return ;
+	}
+	if (*list)
+	{
+		cursor = *list;
+		while (cursor->next)
 		{
-			temp = cursor->next;
-			cursor->next = cursor->next->next;
-			free(temp->content);
-			free(temp);
+			if (cursor->next->type == WHITE_SPACE
+				&& cursor->next->state == NORMAL)
+			{
+				temp = cursor->next;
+				cursor->next = cursor->next->next;
+				free(temp->content);
+				free(temp);
+			}
+			else
+				cursor = cursor->next;
 		}
-		else
-			cursor = cursor->next;
 	}
 }
 
@@ -298,17 +311,17 @@ int	count_nodes(t_elem *start)
 	return (count);
 }
 
-void	free_redir(t_redir *redir)
-{
-	t_redir		*cursor;
+// void	free_redir(t_redir *redir)
+// {
+// 	t_redir		*cursor;
 
-	while (redir)
-	{
-		cursor = redir->next;
-		free(redir);
-		redir = cursor;
-	}
-}
+// 	while (redir)
+// 	{
+// 		cursor = redir->next;
+// 		free(redir);
+// 		redir = cursor;
+// 	}
+// }
 
 int	ft_strcmp_redir(char *str, t_redir *redir)
 {

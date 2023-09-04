@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:25:39 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/18 11:43:45 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/03 15:49:07 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ t_elem	*new_elem(char *content, int *index, int len, enum e_token token)
 	new->next = NULL;
 	// new->prev = NULL;
 	new->type = token;
-	new->state = NORMAL;
+	// new->state = NORMAL;
 	return (new);
 }
