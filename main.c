@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
+/*   Updated: 2023/09/04 12:12:40 by mdenguir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	read_command(t_elem **elem, char *input)
@@ -223,23 +235,23 @@ int main(int ac, char **av, char **envp)
 		if(check_syntax_errors(env))
 		{	
 			expand(env);
-			expand_word(env);
 			
 			get_rid_of_spaces(&env->elem);
-		// while (env->elem)
-		// 	{
-		// 		printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
-		// 		env->elem = env->elem->next;
-		// 	}
 			get_rid_of_quotes(&env->elem);
+			
+			// while (env->elem)
+			// {
+			// 	printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
+			// 	env->elem = env->elem->next;
+			// }
 			env->cmd = split_line(env->elem);
 			if (env->cmd)
 			{
 				int i = 0;
-				int		count_pipes = count_delimter_pipe(env->elem) + 1;
+				int		count_commands = count_delimter_pipe(env->elem) + 1;
 				int fdd;
 				fdd = duplicate_redir(env);
-				if (count_pipes == 1 && !is_builting(env->cmd->cmd_line[0]))
+				if (count_commands == 1 && !is_builting(env->cmd->cmd_line[0]))
 				{
 					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "exit"))
 						break ;
@@ -258,20 +270,20 @@ int main(int ac, char **av, char **envp)
 				}
 				else
 				{
-					pid_t *pid = malloc(sizeof(pid_t) * count_pipes);
-					int **fd = malloc(sizeof(int *) * (count_pipes - 1));
+					pid_t *pid = malloc(sizeof(pid_t) * count_commands);
+					int **fd = malloc(sizeof(int *) * (count_commands - 1));
 					if (!fd)
 					{
 						printf("error malloc\n");
 						exit(1);
 					}
-					while (i < count_pipes - 1)
+					while (i < count_commands - 1)
 					{
 						fd[i] = malloc(sizeof(int) * 2);
 						i++;
 					}
 					i = 0;
-					while (i < count_pipes - 1)
+					while (i < count_commands - 1)
 					{
 						if (pipe(fd[i]) == -1)
 							exit(EXIT_FAILURE);
@@ -279,7 +291,7 @@ int main(int ac, char **av, char **envp)
 					}
 					i = 0;
 					// int status1;
-					while (i < count_pipes)
+					while (i < count_commands)
 					{
 						dup2(env->in, STDIN_FILENO);
 						dup2(env->out, STDOUT_FILENO);
@@ -292,8 +304,8 @@ int main(int ac, char **av, char **envp)
 						// }
 						if (pid[i] == 0)
 						{
-							if (count_pipes > 1)
-								duplicate_fd(fd, count_pipes, i);
+							if (count_commands > 1)
+								duplicate_fd(fd, count_commands, i);
 							exec_one_command(env, envp, fdd);
 							exit(1337);
 						}
@@ -301,14 +313,14 @@ int main(int ac, char **av, char **envp)
 						i++;
 					}
 					i = 0;
-					while (i < count_pipes - 1)
+					while (i < count_commands - 1)
 					{
 						close(fd[i][0]);
 						close(fd[i][1]);
 						i++;
 					}
 					i = 0;
-					while (i < count_pipes)
+					while (i < count_commands)
 						waitpid(pid[i++], &status, 0);
 				}
 			}

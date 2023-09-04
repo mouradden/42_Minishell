@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 18:03:54 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/04 10:12:12 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:46:59 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,17 @@ void	duplicate_fd(int **fd, int count_pipes, int i)
 	else if (i == count_pipes - 1)
 	{
 		dup2(fd[i - 1][0], STDIN_FILENO);
-		// if(close(fd[i - 1][0]) != 0 )
-		// 	dprintf(2, "1/  %d not closed\n", i - 1);
 	}
 	else
 	{
 		dup2(fd[i - 1][0], STDIN_FILENO);
 		dup2(fd[i][1], STDOUT_FILENO);
-	// 	if (close(fd[i - 1][0]) != 0)
-	// 	dprintf(2, "2/  %d 0 not closed\n", i - 1);
 	}
 	i = 0;
 	while (i < count_pipes - 1)
 	{
-		if (close(fd[i][0]) != 0)
-		{
-			dprintf(2, "3/  %d 0 not closed\n", i);
-			perror("Error closing file");
-		}
-		if (close(fd[i][1]) != 0)
-			dprintf(2, "4/  %d  1 not closed\n", i);;
+		close(fd[i][0]);
+		close(fd[i][1]);
 		i++;
 	}
 }
@@ -61,14 +52,14 @@ int	duplicate_redir(t_env *env)
 				pid = fork();
 				if (pid == 0)
 				{
-					fd = open("herdoc_file", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
+					fd = open("/tmp/herdoc_file", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
 					if (!fd)
 						ft_putstr_fd("error openning file\n", 2);
 					
 					char *input = "";
-					t_env *env;
-						env = malloc(sizeof(t_env));
-						env = 0;
+					// t_env *env;
+					// 	env = malloc(sizeof(t_env));
+					// 	env = 0;
 						
 					while (1)
 					{	
@@ -78,28 +69,12 @@ int	duplicate_redir(t_env *env)
 							break;
 						if (input && red->file_name && !ft_strcmp(input, red->file_name))
 								break;
-						// ft_putstr_fd("here\n", 2);
-			// 			env->elem = malloc(sizeof(t_elem));
-			// 			env->elem = 0;
-			// 			read_command(&env->elem, input);
-			// while (env->elem)
-			// {
-			// 	dprintf(2, "content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
-			// 	env->elem = env->elem->next;
-			// }
-			// 			// ft_putstr_fd(env->elem->content, 2);
-			// 			// ft_putchar_fd('\n', 2);
-			// 			// expand(env);
-			// 			ft_putstr_fd(env->elem->content, fd);
-			// 			ft_putchar_fd('\n', fd);
-			// 			free_elem(&env);
-						if (check_dollar(input) > -1)
-							expand_input_herdoc(input);
-						ft_putstr_fd(input, fd);
+						
+						ft_putstr_fd(expand_input_herdoc(env, input), fd);
 						ft_putchar_fd('\n', fd);
 					}
 					close(fd);
-					fd = open("herdoc_file", O_RDONLY);
+					fd = open("/tmp/herdoc_file", O_RDONLY);
 					if (dup2(fd, STDIN_FILENO) == -1)
 					{
 						perror("dup2");
@@ -117,13 +92,32 @@ int	duplicate_redir(t_env *env)
 	return (fd);
 }
 
-// char	*expand_input_herdoc(char *input)
-// {
-// 	int		index;
-// 	char	*res;
+char	*expand_input_herdoc(t_env *env, char *input)
+{
+	int		index_dollar;
+	int		index;
+	int		len;
+	char	*res = "";
 
-// 	if (check_dollar(input) != 0)
-// 	{
-// 		res = ft_strjoin("", extract_word(input, 0, ))
-// 	}
-// }
+	index = 0;
+	while (input[index])
+	{
+		len = index;
+		while (input[len] && !is_special(input[len])
+			&& input[len] != '=' && input[len] != '$')
+				len++;
+		res = ft_strjoin(res, extract_word(input, &index, len - index));
+		if (is_special(input[len]))
+			res = ft_strjoin(res, extract_word(input, &index, 1));
+		if (input[index] == '$')
+		{
+			index_dollar = check_dollar(input);
+			index++;
+			len = index;
+			while (input[len] && !is_special(input[len]) && input[len] != '=')
+				len++;
+			res = ft_strjoin(res, ft_get_env(env, extract_word(input, &index, len - index)));
+		}
+	}
+	return (res);	
+}

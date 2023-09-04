@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/02 13:12:00 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:43:58 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void	free_envp(t_env **env);
 void	free_env(t_env **env);
 
 void	expand_word(t_env *env);
-
+char	*expand_input_herdoc(t_env *env, char *input);
 
 void    rl_replace_line(const char *text, int clear_undo);
 

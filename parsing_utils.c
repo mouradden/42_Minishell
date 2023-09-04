@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/02 19:25:57 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/04 12:36:16 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	get_rid_of_spaces(t_elem **list)
 				cursor = cursor->next;
 		}
 	}
+	cursor = *list;
 }
 
 void	get_rid_of_quotes(t_elem **list)
