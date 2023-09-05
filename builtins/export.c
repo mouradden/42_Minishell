@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/01 18:54:54 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:01:12 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void export(t_envp **envp, char **var)
 {
 	int		i;
+	int		j;
+	char	**splitted_var;
 
+	i = 0;
 	
 	if (!var[1])
 		display_export(envp);
@@ -24,11 +27,50 @@ void export(t_envp **envp, char **var)
 		i = 1;
 		while (var[i])
 		{
-			// printf("-->|%s|\n", var[i]);
-			split_env(envp, var[i]);
+			if ((is_contains(var[i], '=') > -1) && is_contains_before_equal(var[i], ' '))
+			{
+				splitted_var = ft_split(var[i], ' ');
+				j = 0;
+				while (splitted_var[j])
+				{
+					split_env(envp, splitted_var[j]);
+					j++;
+				}
+				
+			}
+			else
+				split_env(envp, var[i]);
 			i++;
 		}
 	}
+}
+
+int	is_contains_before_equal(char *str, int c)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] != '=')
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	is_contains(char *str, int c)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 void	display_export(t_envp **envp)
@@ -60,7 +102,7 @@ int check_duplicate(t_envp **envp, char *var)
 	cursor = *envp;
 	while (cursor)
 	{
-		if (cursor->title && !ft_strcmp(cursor->title, var))
+		if (cursor->title && var && !ft_strcmp(cursor->title, var))
 			return (1);
 		cursor = cursor->next;
 	}
@@ -74,7 +116,7 @@ void	update_node(t_envp *envp, char *var_title, char *var_content)
 	cursor = envp;
 	while (cursor)
 	{
-		if (cursor->title && !ft_strcmp(cursor->title, var_title))
+		if (cursor->title && var_title && !ft_strcmp(cursor->title, var_title))
 		{
 			free(cursor->content);
 			cursor->content = var_content;
@@ -92,7 +134,7 @@ void	remove_node(t_envp **envp, char *var)
 	cursor = *envp;
 	while (cursor->next)
 	{
-		if (cursor->next->title && !ft_strcmp(cursor->next->title, var))
+		if (cursor->next->title && var && !ft_strcmp(cursor->next->title, var))
 		{
 			node_temp = cursor->next->next;
 			free(cursor->next->title);

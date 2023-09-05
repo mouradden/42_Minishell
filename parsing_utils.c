@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/04 12:36:16 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:21:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,22 +127,36 @@ void	get_rid_of_quotes(t_elem **list)
 	t_elem	*cursor;
 	t_elem	*temp;
 
-	cursor = *list;
 	if (!(*list))
 		return ;
-	cursor = *list;
-	while (cursor->next)
+	if (!(*list))
+		return ;
+	while (((*list)->type == S_QUOTE || (*list)->type == D_QUOTE)
+			&& (*list)->state == NORMAL)
 	{
-		if ((cursor->next->type == S_QUOTE || cursor->next->type == D_QUOTE)
-			&& cursor->next->state == NORMAL)
+		temp = (*list)->next;
+		free((*list)->content);
+		free(*list);
+		*list = temp;
+		if (!(*list))
+			return ;
+	}
+	if (*list)
+	{
+		cursor = *list;
+		while (cursor->next)
 		{
-			temp = cursor->next;
-			cursor->next = cursor->next->next;
-			free(temp->content);
-			free(temp);
+			if ((cursor->next->type == S_QUOTE || cursor->next->type == D_QUOTE)
+				&& cursor->next->state == NORMAL)
+			{
+				temp = cursor->next;
+				cursor->next = cursor->next->next;
+				free(temp->content);
+				free(temp);
+			}
+			else
+				cursor = cursor->next;
 		}
-		else
-			cursor = cursor->next;
 	}
 }
 

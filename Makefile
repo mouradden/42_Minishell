@@ -6,11 +6,11 @@
 #    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/26 10:35:31 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/02 11:50:59 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/05 17:01:37 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SOURCES = main.c utils.c tree.c parsing_utils.c lexing_utils.c expand.c exec_utils.c errors.c ./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
+SOURCES = main.c utils.c parsing_utils.c lexing_utils.c expand.c exec_utils.c errors.c ./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
 ./builtins/unset.c ft_split.c ./execution/exec_one.c  ./execution/duplication.c free_data.c print_cmd.c
 
 OBJECTS = ${SOURCES:.c=.o}

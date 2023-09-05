@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 18:03:54 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/04 15:46:59 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:41:24 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	duplicate_redir(t_env *env)
 						if (input && red->file_name && !ft_strcmp(input, red->file_name))
 								break;
 						
-						ft_putstr_fd(expand_input_herdoc(env, input), fd);
+						ft_putstr_fd(expand_input(env, input), fd);
 						ft_putchar_fd('\n', fd);
 					}
 					close(fd);
@@ -92,7 +92,7 @@ int	duplicate_redir(t_env *env)
 	return (fd);
 }
 
-char	*expand_input_herdoc(t_env *env, char *input)
+char	*expand_input(t_env *env, char *input)
 {
 	int		index_dollar;
 	int		index;
