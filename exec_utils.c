@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:42:17 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/04 10:31:44 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:43:20 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 char	*get_cmd_path(char *cmd, t_envp *envp)
 {
-	t_envp		*cursor;
-	char		**paths;
-	int			i;
+	char	*path;
+	char	*str;
+	t_envp	*cursor;
+	char	**paths;
+	int		i;
 
 	cursor = envp;
 	while (cursor && cursor->title && ft_strcmp(cursor->title, "PATH"))
@@ -26,12 +28,11 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 		paths = ft_split(cursor->content, ':');
 	else
 		return (NULL);
-	
 	i = 0;
 	while (paths[i])
 	{
-		char *path = ft_strjoin(paths[i], "/");
-		char *str = ft_strjoin(path, cmd);
+		path = ft_strjoin(paths[i], "/");
+		str = ft_strjoin(path, cmd);
 		free(path);
 		if (access(str, F_OK) == 0 && access(str, X_OK) == 0)
 			return (str);
@@ -48,7 +49,6 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 // 	{
 // 		fd = open(cmd->redir->file_name, O_CREAT | O_WRONLY);
 // 		if (!fd)
-// 			ft_putstr_fd(2, "error openning file\n");
-		
+// 			ft_putstr_fd(2, "error openning file\n");	
 // 	}
 // }

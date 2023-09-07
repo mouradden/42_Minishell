@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/01 11:17:41 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:58:38 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_env(t_env **env)
+void	free_env(t_env **env)
 {
 	// free_envp(env);
 	// free_cmd(env);
@@ -21,7 +21,7 @@ void free_env(t_env **env)
 
 void	free_elem(t_env **env)
 {
-	t_elem      *node;
+	t_elem	*node;
 
 	while ((*env)->elem)
 	{
@@ -35,7 +35,7 @@ void	free_elem(t_env **env)
 void	free_redir(t_redir *redir)
 {
 	t_redir	*cursor;
-	t_redir *tmp;
+	t_redir	*tmp;
 
 	cursor = redir;
 	while (cursor)
@@ -47,7 +47,7 @@ void	free_redir(t_redir *redir)
 	}
 }
 
-void free_cmd(t_env **env)
+void	free_cmd(t_env **env)
 {
 	t_cmd		*cursor;
 	t_cmd		*tmp;

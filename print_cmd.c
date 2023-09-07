@@ -1,10 +1,12 @@
 #include "minishell.h"
 
-void printf_cmd(t_env *env)
+void	printf_cmd(t_env *env)
 {
+	int	i;
+
 	while (env->cmd)
 	{
-		int i = 0;
+		i = 0;
 		while (env->cmd->cmd_line[i])
 		{
 			printf("cmd   |%s| **\n", env->cmd->cmd_line[i]);
@@ -17,8 +19,7 @@ void printf_cmd(t_env *env)
 			env->cmd->redir = env->cmd->redir->next;
 		}
 		printf("---end redir--\n");
-				printf("--------------------\n");
+		printf("--------------------\n");
 		env->cmd = env->cmd->next;
 	}
-
 }

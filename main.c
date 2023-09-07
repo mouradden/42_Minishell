@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 18:22:13 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:13:15 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	read_command(t_elem **elem, char *input)
 			len = 0;
 			j = i;
 			while (input[j])
-			{	
+			{
 				j++;
 				len++;
 				if (input[j] && is_special(input[j]))
@@ -95,8 +95,8 @@ void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
 				d_q++;
 			if ((input[j] == '"' && input[j + 1] == ' ')
 				|| (input[j] == '\'' && input[j + 1] == ' ')
-					|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q) || (d_q % 2 == 0 && d_q))))
-						break ;
+				|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q) || (d_q % 2 == 0 && d_q))))
+				break ;
 			len++;
 			j++;
 		}
@@ -134,10 +134,10 @@ void	isolate_quotes(t_elem **elem)
 	}
 }
 
-char *ft_strcat(char *dest, char *src)
+char	*ft_strcat(char *dest, char *src)
 {
-	int 	i;
-	int 	j;
+	int		i;
+	int		j;
 	char	*res;
 
 	i = 0;
@@ -170,13 +170,14 @@ int	is_builting(char *cmd)
 {
 	// (void)cmd;
 	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "echo")
-		|| !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
-		|| !ft_strcmp(cmd, "unset")))
+			|| !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
+			|| !ft_strcmp(cmd, "unset")))
 		return (0);
 	else
 		return (1);
 }
-void sig_check(int sig)
+
+void	sig_check(int sig)
 {
 	if (sig == SIGQUIT)
 	{
@@ -189,8 +190,6 @@ void sig_check(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-
-
 	}
 }
 
@@ -200,23 +199,27 @@ void	sig_check_herdoc(int sig)
 		exit(1);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	int status;
+	int		status;
 	char	*input;
 	t_env	*env;
-	t_envp *copy_envp = copy_env(envp);
+	t_envp	*copy_envp;
+	int		i;
+	int		count_commands;
+	int		fdd;
+	pid_t	*pid;
+	int		**fd;
 
 	(void)ac;
 	(void)av;
-	
+	copy_envp = copy_env(envp);
 	env = malloc(sizeof(t_env));
 	env->in = dup(STDIN_FILENO);
 	env->out = dup(STDOUT_FILENO);
-	
 	env->envp = copy_envp;
 	signal(SIGQUIT, SIG_IGN);
-	while(1)
+	while (1)
 	{
 		signal(SIGINT, sig_check);
 		env->elem = malloc(sizeof(t_elem));
@@ -230,15 +233,11 @@ int main(int ac, char **av, char **envp)
 		}
 		add_history(input);
 		read_command(&env->elem, input);
-
-		
-		if(check_syntax_errors(env))
-		{	
-			
+		if (check_syntax_errors(env))
+		{
 			get_rid_of_spaces(&env->elem);
 			get_rid_of_quotes(&env->elem);
 			expand(env);
-			
 			// while (env->elem)
 			// {
 			// 	printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
@@ -247,9 +246,8 @@ int main(int ac, char **av, char **envp)
 			env->cmd = split_line(env->elem);
 			if (env->cmd)
 			{
-				int i = 0;
-				int		count_commands = count_delimter_pipe(env->elem) + 1;
-				int fdd;
+				i = 0;
+				count_commands = count_delimter_pipe(env->elem) + 1;
 				fdd = duplicate_redir(env);
 				if (count_commands == 1 && !is_builting(env->cmd->cmd_line[0]))
 				{
@@ -270,8 +268,8 @@ int main(int ac, char **av, char **envp)
 				}
 				else
 				{
-					pid_t *pid = malloc(sizeof(pid_t) * count_commands);
-					int **fd = malloc(sizeof(int *) * (count_commands - 1));
+					pid = malloc(sizeof(pid_t) * count_commands);
+					fd = malloc(sizeof(int *) * (count_commands - 1));
 					if (!fd)
 					{
 						printf("error malloc\n");

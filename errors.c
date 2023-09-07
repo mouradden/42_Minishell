@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:00:45 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 16:58:29 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:40:36 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	check_syntax_errors(t_env *env)
 // 	int		index;
 
 // 	index = 1;
-	
 // }
 int	check_syntax_pipes(t_env *env)
 {
@@ -163,6 +162,7 @@ int	is_redir_exist(t_elem *start, t_elem *end)
 	}
 	return (0);
 }
+
 int	check_consecutive_pipes(t_elem *elem)
 {
 	t_elem		*cursor;

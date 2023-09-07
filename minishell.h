@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 15:34:37 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:18:29 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ enum e_redir
 	HERDOC,
 };
 
-
 typedef struct s_elem
 {
 	char			*content;
@@ -92,8 +91,6 @@ typedef struct s_redir
 	char			*file_name;
 	struct s_redir	*next;
 }	t_redir;
-
-
 
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strlen(char *s);
@@ -139,46 +136,45 @@ void	get_rid_of_spaces(t_elem **list);
 char	*ft_strcat(char *dest, char *src);
 void	get_rid_of_quotes(t_elem **list);
 
-void    pwd();
+void	pwd(void);
 void	echo(char **input);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 
-void    cd(char *path);
+void	cd(char *path);
 void	ft_env(t_envp **envp);
 t_envp	*copy_env(char **envp);
 void	split_env(t_envp **list, char *envp);
 void	add_back_env(t_envp **head, t_envp *new);
 char	**env_2_d(t_envp *envp);
 int		count_nodes_env(t_envp *envp);
-int	count_content_length(t_envp *node);
-void export(t_envp **envp, char **var);
+int		count_content_length(t_envp *node);
+void	export(t_envp **envp, char **var);
 void	display_export(t_envp **envp);
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
-char *ft_get_env(t_env *env, char *title);
-int check_duplicate(t_envp **envp, char *var);
+char	*ft_get_env(t_env *env, char *title);
+int		check_duplicate(t_envp **envp, char *var);
 void	update_node(t_envp *envp, char *var_title, char *var_content);
 void	remove_node(t_envp **envp, char *var);
-void    unset(t_envp **envp, char *title);
-int	is_builting(char *cmd);
-int	count_words(const char *s, char c);
-int	len_word(const char *s, char c);
+void	unset(t_envp **envp, char *title);
+int		is_builting(char *cmd);
+int		count_words(const char *s, char c);
+int		len_word(const char *s, char c);
 char	**ft_split(char const *s, char c);
 
-char    *get_cmd_path(char *cmd, t_envp *envp);
+char	*get_cmd_path(char *cmd, t_envp *envp);
 // void	exec_one_command(t_env *env ,char **envp);
-
 
 //-----
 int		duplicate_redir(t_env *env);
-void	exec_one_command(t_env *env ,char **envp, int fdd);
+void	exec_one_command(t_env *env, char **envp, int fdd);
 
 //-----
 
 void	duplicate_fd(int **fd, int count_pipes, int i);
 // void	duplicate_redir(t_env *env);
-void free_elem(t_env **env);
-void printf_cmd(t_env *env);
+void	free_elem(t_env **env);
+void	printf_cmd(t_env *env);
 
 // ----CLEAN UP---
 void	free_double(char **str);
@@ -189,11 +185,11 @@ void	free_env(t_env **env);
 
 void	expand_word(t_env *env);
 char	*expand_input(t_env *env, char *input);
-int	is_contains(char *str, int c);
-int	is_contains_before_equal(char *str, int c);
+int		is_contains(char *str, int c);
+int		is_contains_before_equal(char *str, int c);
 
-void    rl_replace_line(const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 
-void sig_check(int sig);
-void sig_check_herdoc(int sig);
+void	sig_check(int sig);
+void	sig_check_herdoc(int sig);
 #endif

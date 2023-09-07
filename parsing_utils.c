@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 18:21:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:21:53 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		count_delimter_pipe(t_elem *list)
+int	count_delimter_pipe(t_elem *list)
 {
-	t_elem		*cursor;
-	int			count;
+	t_elem	*cursor;
+	int		count;
 
 	cursor = list;
 	count = 0;
@@ -89,11 +89,10 @@ void	get_rid_of_spaces(t_elem **list)
 	t_elem	*cursor;
 	t_elem	*temp;
 
-	
 	if (!(*list))
 		return ;
 	while ((*list)->type == WHITE_SPACE
-			&& (*list)->state == NORMAL)
+		&& (*list)->state == NORMAL)
 	{
 		temp = (*list)->next;
 		free((*list)->content);
@@ -132,7 +131,7 @@ void	get_rid_of_quotes(t_elem **list)
 	if (!(*list))
 		return ;
 	while (((*list)->type == S_QUOTE || (*list)->type == D_QUOTE)
-			&& (*list)->state == NORMAL)
+		&& (*list)->state == NORMAL)
 	{
 		temp = (*list)->next;
 		free((*list)->content);
@@ -179,7 +178,6 @@ t_cmd	*split_line(t_elem *list)
 	{
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
-
 		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
 		i = 0;
 		if (!cursor)
@@ -286,9 +284,11 @@ t_redir	*detect_redir_final(t_elem *start)
 	}
 	return (redir);
 }
+
 void	add_back_redir(t_redir **redir, t_redir *new)
 {
 	t_redir		*cursor;
+
 	if (*redir == NULL)
 		*redir = new;
 	else
@@ -300,7 +300,7 @@ void	add_back_redir(t_redir **redir, t_redir *new)
 	}
 }
 
-t_redir	*new_redir(enum e_redir	type, char *file_name)
+t_redir	*new_redir(enum e_redir type, char *file_name)
 {
 	t_redir		*new;
 
