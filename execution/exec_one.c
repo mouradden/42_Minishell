@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/04 11:14:36 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:39:17 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_one_command(t_env *env ,char **envp, int fdd)
+void	exec_one_command(t_env *env, char **envp, int fdd)
 {
 	char	*path;
 	int		fd;
+	t_redir	*redis;
 
 	if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "pwd"))
 		pwd();
@@ -31,7 +32,6 @@ void	exec_one_command(t_env *env ,char **envp, int fdd)
 		unset(&env->envp, env->cmd->cmd_line[1]);
 	else
 	{
-		t_redir *redis;
 		path = get_cmd_path(env->cmd->cmd_line[0], env->envp);
 		// if (!path)
 		// {
@@ -60,11 +60,11 @@ void	exec_one_command(t_env *env ,char **envp, int fdd)
 			{
 				if (access(redis->file_name, F_OK) == 0)
 				{
-					fd = open(redis->file_name, O_RDONLY |  S_IRUSR);
+					fd = open(redis->file_name, O_RDONLY | S_IRUSR);
 					if (!fd)
 						ft_putstr_fd("error openning file\n", 2);
 					if (dup2(fd, STDIN_FILENO) == -1)
-						ft_putstr_fd("error duplication INPUT\n", 2);	
+						ft_putstr_fd("error duplication INPUT\n", 2);
 				}
 				else
 					perror(redis->file_name);
@@ -78,11 +78,10 @@ void	exec_one_command(t_env *env ,char **envp, int fdd)
 					exit (1);
 				}
 			}
-		redis = redis->next;
+			redis = redis->next;
 		}
 		if (!access(env->cmd->cmd_line[0], X_OK))
 			path = env->cmd->cmd_line[0];
-		
 		if (env->cmd->cmd_line[0])
 		{
 			if (execve(path, env->cmd->cmd_line, envp) == -1)
@@ -90,9 +89,7 @@ void	exec_one_command(t_env *env ,char **envp, int fdd)
 				ft_putstr_fd(env->cmd->cmd_line[0], 2);
 				ft_putstr_fd(": command not found\n", 2);
 			}
-			
 		}
 	}
 	close(fdd);
 }
-
