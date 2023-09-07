@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 13:56:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/26 22:19:39 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:26:14 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	echo(char **input)
 	if (nfalag != 1)
 		ft_putchar_fd('\n', 1);
 }
-
-
 
 void	ft_putstr_fd(char *s, int fd)
 {

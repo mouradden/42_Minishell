@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 15:57:07 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:27:47 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 char	**env_2_d(t_envp *envp)
 {
@@ -35,7 +34,7 @@ char	**env_2_d(t_envp *envp)
 	return (res);
 }
 
-int		count_nodes_env(t_envp *envp)
+int	count_nodes_env(t_envp *envp)
 {
 	t_envp	*cursor;
 	int		count;
@@ -122,7 +121,6 @@ void	split_env(t_envp **list, char *envp)
 			j++;
 		}
 		node->content = extract_word(envp, &i, len);
-		
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
 		node->next = NULL;
@@ -168,11 +166,9 @@ void	ft_env(t_envp **envp)
 			{
 				ft_putchar_fd('=', 1);
 				ft_putstr_fd(cursor->content, 1);
-				
 			}
 			ft_putchar_fd('\n', 1);
 		}
-		
 		cursor = cursor->next;
 	}
 }

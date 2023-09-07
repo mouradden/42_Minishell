@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:16:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/16 11:56:52 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:30:00 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	pwd()
+void	pwd(void)
 {
-	char		buffer[1024];
+	char	buffer[1024];
 
 	getcwd(buffer, sizeof(buffer));
 	printf("%s\n", buffer);

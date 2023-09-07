@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/05 17:01:12 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:28:55 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void export(t_envp **envp, char **var)
+void	export(t_envp **envp, char **var)
 {
 	int		i;
 	int		j;
 	char	**splitted_var;
 
 	i = 0;
-	
 	if (!var[1])
 		display_export(envp);
 	else
@@ -36,7 +35,6 @@ void export(t_envp **envp, char **var)
 					split_env(envp, splitted_var[j]);
 					j++;
 				}
-				
 			}
 			else
 				split_env(envp, var[i]);
@@ -95,7 +93,7 @@ void	display_export(t_envp **envp)
 	}
 }
 
-int check_duplicate(t_envp **envp, char *var)
+int	check_duplicate(t_envp **envp, char *var)
 {
 	t_envp	*cursor;
 
