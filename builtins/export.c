@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:28:55 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/08 10:30:46 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,11 @@ int	check_duplicate(t_envp **envp, char *var)
 	return (0);
 }
 
-void	update_node(t_envp *envp, char *var_title, char *var_content)
+void	update_node(t_envp **envp, char *var_title, char *var_content)
 {
 	t_envp	*cursor;
 
-	cursor = envp;
+	cursor = *envp;
 	while (cursor)
 	{
 		if (cursor->title && var_title && !ft_strcmp(cursor->title, var_title))

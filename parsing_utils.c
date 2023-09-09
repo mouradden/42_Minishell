@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 18:21:53 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 13:07:51 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,16 @@ void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir)
 	t_cmd		*new;
 
 	new = malloc(sizeof(t_cmd));
+	printf("new : %p\n", new);
 	if (!new)
 		return ;
-	new->redir = malloc(sizeof(t_redir));
 	new->cmd_line = line;
+	printf("line : %p\n", line);
 	new->redir = redir;
+	printf("redir : %p\n", redir);
 	new->next = NULL;
-	if (!(*cmd_list))
+	cursor = *cmd_list;
+	if (!cursor)
 	{
 		*cmd_list = new;
 	}
@@ -68,13 +71,13 @@ void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir)
 	}
 }
 
-int	count_cmd(t_elem *list)
+int	count_cmd(t_elem **list)
 {
 	int		count;
 	t_elem	*cursor;
 
 	count = 0;
-	cursor = list;
+	cursor = *list;
 	while (cursor)
 	{
 		if (cursor->type == PIPE)
@@ -118,7 +121,6 @@ void	get_rid_of_spaces(t_elem **list)
 				cursor = cursor->next;
 		}
 	}
-	cursor = *list;
 }
 
 void	get_rid_of_quotes(t_elem **list)
@@ -159,9 +161,9 @@ void	get_rid_of_quotes(t_elem **list)
 	}
 }
 
-t_cmd	*split_line(t_elem *list)
+void	split_line(t_cmd **cmd, t_elem **list)
 {
-	t_cmd		*cmd;
+	// t_cmd		*cmd;
 	t_elem		*start;
 	t_elem		*cursor;
 	char		**cmd_line;
@@ -169,9 +171,10 @@ t_cmd	*split_line(t_elem *list)
 	int			count;
 	t_redir		*redir;
 
-	start = list;
-	cursor = list;
-	cmd = NULL;
+	start = *list;
+	cursor = *list;
+	// cmd = NULL;
+	
 	count = count_cmd(list) + 1;
 	redir = NULL;
 	while (cursor)
@@ -179,6 +182,7 @@ t_cmd	*split_line(t_elem *list)
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
 		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
+		printf("cmd line :%p\n", cmd_line);
 		i = 0;
 		if (!cursor)
 			redir = detect_redir_final(start);
@@ -190,20 +194,22 @@ t_cmd	*split_line(t_elem *list)
 				&& start->type != REDIR_IN && start->type != REDIR_ADD
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
 			{
-				cmd_line[i] = start->content;
+				cmd_line[i] = ft_strdup(start->content);
+				// printf("# cmd line : %p", cmd_line[i]);
 				i++;
 			}
 			start = start->next;
 		}
 		cmd_line[i] = 0;
-		add_back_cmd(&cmd, cmd_line, redir);
+		add_back_cmd(cmd, cmd_line, redir);
+		// printf("cmd : --%p\n", cmd);
 		if (cursor && start)
 		{
 			cursor = cursor->next;
 			start = start->next;
 		}
 	}
-	return (cmd);
+	// return (cmd);
 }
 
 t_redir	*detect_redir(t_elem *start, t_elem *end)
@@ -212,9 +218,9 @@ t_redir	*detect_redir(t_elem *start, t_elem *end)
 	enum e_redir	type;
 	char			*file_name;
 
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
+	// redir = malloc(sizeof(t_redir));
+	// if (!redir)
+	// 	return (NULL);
 	redir = NULL;
 	type = NONE;
 	file_name = "\0";

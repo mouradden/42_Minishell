@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 18:18:29 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 11:58:52 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_elem
 	enum e_token	type;
 	enum e_state	state;
 	struct s_elem	*next;
-	struct s_elem	*prev;
+	// struct s_elem	*prev;
 }	t_elem;
 
 typedef struct s_cmd
@@ -108,7 +108,7 @@ char	*ft_strdup(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
-t_cmd	*split_line(t_elem *list);
+void	split_line(t_cmd **cmd ,t_elem **list);
 t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
@@ -120,7 +120,7 @@ int		check_quotes(t_env *env);
 int		check_syntax_pipes(t_env *env);
 int		check_consecutive_pipes(t_elem *elem);
 int		check_before_pipe(t_elem *elem);
-int		count_cmd(t_elem *list);
+int		count_cmd(t_elem **list);
 int		check_after_pipe(t_elem *elem);
 int		check_invalid_redir(t_elem *elem);
 int		check_redir_syntax(t_env *env);
@@ -154,7 +154,7 @@ void	display_export(t_envp **envp);
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
 char	*ft_get_env(t_env *env, char *title);
 int		check_duplicate(t_envp **envp, char *var);
-void	update_node(t_envp *envp, char *var_title, char *var_content);
+void	update_node(t_envp **envp, char *var_title, char *var_content);
 void	remove_node(t_envp **envp, char *var);
 void	unset(t_envp **envp, char *title);
 int		is_builting(char *cmd);
@@ -167,19 +167,19 @@ char	*get_cmd_path(char *cmd, t_envp *envp);
 
 //-----
 int		duplicate_redir(t_env *env);
-void	exec_one_command(t_env *env, char **envp, int fdd);
+void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
 
 //-----
 
 void	duplicate_fd(int **fd, int count_pipes, int i);
 // void	duplicate_redir(t_env *env);
-void	free_elem(t_env **env);
+void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
 
 // ----CLEAN UP---
 void	free_double(char **str);
 void	free_redir(t_redir *redir);
-void	free_cmd(t_env **env);
+void	free_cmd(t_env *env);
 void	free_envp(t_env **env);
 void	free_env(t_env **env);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:42:17 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:43:20 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 12:17:53 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 	{
 		path = ft_strjoin(paths[i], "/");
 		str = ft_strjoin(path, cmd);
-		free(path);
+		// free(path);
 		if (access(str, F_OK) == 0 && access(str, X_OK) == 0)
 			return (str);
 		i++;

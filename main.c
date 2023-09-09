@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 18:13:15 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 15:31:10 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,8 @@ int	main(int ac, char **av, char **envp)
 {
 	int		status;
 	char	*input;
-	t_env	*env;
-	t_envp	*copy_envp;
+	t_env	env;
+	// t_envp	*copy_envp;
 	int		i;
 	int		count_commands;
 	int		fdd;
@@ -213,18 +213,18 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	copy_envp = copy_env(envp);
-	env = malloc(sizeof(t_env));
-	env->in = dup(STDIN_FILENO);
-	env->out = dup(STDOUT_FILENO);
-	env->envp = copy_envp;
+	
+	// env = NULL;
+	
+	// env->envp = NULL;
+	env.envp = copy_env(envp);
+	env.in = dup(STDIN_FILENO);
+	env.out = dup(STDOUT_FILENO);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		signal(SIGINT, sig_check);
-		env->elem = malloc(sizeof(t_elem));
-		env->elem = 0;
-		env->exit_status = 0;
+		env.exit_status = 0;
 		input = readline("MINISHELL $ ");
 		if (!input)
 		{
@@ -232,44 +232,51 @@ int	main(int ac, char **av, char **envp)
 			exit(0);
 		}
 		add_history(input);
-		read_command(&env->elem, input);
-		if (check_syntax_errors(env))
+		env.elem = NULL;
+		read_command(&env.elem, input);
+		if (check_syntax_errors(&env))
 		{
-			get_rid_of_spaces(&env->elem);
-			get_rid_of_quotes(&env->elem);
-			expand(env);
-			// while (env->elem)
+			get_rid_of_spaces(&env.elem);
+			get_rid_of_quotes(&env.elem);
+			expand(&env);
+			// while (env.elem)
 			// {
-			// 	printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
-			// 	env->elem = env->elem->next;
+			// 	printf("content : |%s|  type :|%d|\n", env.elem->content, env.elem->type);
+			// 	env.elem = env.elem->next;
 			// }
-			env->cmd = split_line(env->elem);
-			if (env->cmd)
+			env.cmd = NULL;
+			split_line(&env.cmd, &env.elem);
+			// printf_cmd(&env);
+			t_cmd *cmd = env.cmd;
+			// printf("cmd : %p\n", env.);
+			if (cmd)
 			{
 				i = 0;
-				count_commands = count_delimter_pipe(env->elem) + 1;
-				fdd = duplicate_redir(env);
-				if (count_commands == 1 && !is_builting(env->cmd->cmd_line[0]))
+				count_commands = count_delimter_pipe(env.elem) + 1;
+				fdd = duplicate_redir(&env);
+				if (count_commands == 1 && !is_builting(cmd->cmd_line[0]))
 				{
-					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "exit"))
+					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
 						break ;
-					if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "pwd"))
+					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 						pwd();
-					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "echo"))
-						echo(env->cmd->cmd_line);
-					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "cd"))
-						cd(env->cmd->cmd_line[1]);
-					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "env"))
-						ft_env(&copy_envp);
-					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "export"))
-						export(&copy_envp, env->cmd->cmd_line);
-					else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "unset"))
-						unset(&copy_envp, env->cmd->cmd_line[1]);
+					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
+						echo(cmd->cmd_line);
+					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
+						cd(cmd->cmd_line[1]);
+					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
+						ft_env(&env.envp);
+					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
+						export(&env.envp, cmd->cmd_line);
+					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "unset"))
+						unset(&env.envp, cmd->cmd_line[1]);
 				}
 				else
 				{
 					pid = malloc(sizeof(pid_t) * count_commands);
+					printf("--%p\n", pid);
 					fd = malloc(sizeof(int *) * (count_commands - 1));
+					printf("==%p\n", fd);
 					if (!fd)
 					{
 						printf("error malloc\n");
@@ -291,8 +298,8 @@ int	main(int ac, char **av, char **envp)
 					// int status1;
 					while (i < count_commands)
 					{
-						dup2(env->in, STDIN_FILENO);
-						dup2(env->out, STDOUT_FILENO);
+						dup2(env.in, STDIN_FILENO);
+						dup2(env.out, STDOUT_FILENO);
 						pid[i] = fork();
 						// if (env->cmd->redir && env->cmd->redir->type == HERDOC)
 						// {
@@ -304,10 +311,10 @@ int	main(int ac, char **av, char **envp)
 						{
 							if (count_commands > 1)
 								duplicate_fd(fd, count_commands, i);
-							exec_one_command(env, envp, fdd);
+							exec_one_command(&env, cmd, envp, fdd);
 							exit(1337);
 						}
-						env->cmd = env->cmd->next;
+						cmd = cmd->next;
 						i++;
 					}
 					i = 0;
@@ -322,11 +329,27 @@ int	main(int ac, char **av, char **envp)
 						waitpid(pid[i++], &status, 0);
 				}
 			}
-			free_elem(&env);
 			// free_env(&env);
 		}
+		free_elem(&env);
+		free_cmd(&env);
+		free(input);
+		free(pid);
+		// i = 0;
+		// while (i < count_commands - 1)
+		// {
+		// 	free(fd[i]);
+
+		// 	i++;
+		// }
+		// free(fd[0]);
+		// free(fd[1]);
+		free(fd);
+		system("leaks minishell");
 	}
 	clear_history();
-	free(input);
+	
 	return (0);
 }
+
+

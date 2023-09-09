@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:39:17 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 13:36:37 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	exec_one_command(t_env *env, char **envp, int fdd)
+void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 {
 	char	*path;
 	int		fd;
 	t_redir	*redis;
 
-	if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "pwd"))
+	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 		pwd();
-	else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "echo"))
-		echo(env->cmd->cmd_line);
-	else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "cd"))
-		cd(env->cmd->cmd_line[1]);
-	else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "env"))
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
+		echo(cmd->cmd_line);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
+		cd(cmd->cmd_line[1]);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
 		ft_env(&env->envp);
-	else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "export"))
-		export(&env->envp, env->cmd->cmd_line);
-	else if (env->cmd->cmd_line[0] && !ft_strcmp(env->cmd->cmd_line[0], "unset"))
-		unset(&env->envp, env->cmd->cmd_line[1]);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
+		export(&env->envp, cmd->cmd_line);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "unset"))
+		unset(&env->envp, cmd->cmd_line[1]);
 	else
 	{
-		path = get_cmd_path(env->cmd->cmd_line[0], env->envp);
+		path = get_cmd_path(cmd->cmd_line[0], env->envp);
 		// if (!path)
 		// {
 		// 	dprintf(2, "%s : command not found\n" , env->cmd->cmd_line[0]);
 		// }
-		redis = env->cmd->redir;
+		redis = cmd->redir;
 		while (redis)
 		{
 			if (redis && redis->type == ADD)
@@ -80,13 +80,13 @@ void	exec_one_command(t_env *env, char **envp, int fdd)
 			}
 			redis = redis->next;
 		}
-		if (!access(env->cmd->cmd_line[0], X_OK))
-			path = env->cmd->cmd_line[0];
-		if (env->cmd->cmd_line[0])
+		if (!access(cmd->cmd_line[0], X_OK))
+			path = cmd->cmd_line[0];
+		if (cmd->cmd_line[0])
 		{
-			if (execve(path, env->cmd->cmd_line, envp) == -1)
+			if (execve(path, cmd->cmd_line, envp) == -1)
 			{
-				ft_putstr_fd(env->cmd->cmd_line[0], 2);
+				ft_putstr_fd(cmd->cmd_line[0], 2);
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:00:45 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:40:36 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 11:33:36 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_syntax_errors(t_env *env)
 // }
 int	check_syntax_pipes(t_env *env)
 {
-	if (count_cmd(env->elem))
+	if (count_cmd(&env->elem))
 	{
 		if (!check_before_pipe(env->elem))
 			return (0);
@@ -220,7 +220,7 @@ int	check_after_pipe(t_elem *elem)
 	int			n;
 
 	cursor = elem;
-	n = count_cmd(cursor);
+	n = count_cmd(&cursor);
 	while (n && cursor)
 	{
 		while (cursor && cursor->type != PIPE)

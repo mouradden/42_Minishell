@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:27:47 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/09 12:44:55 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	**env_2_d(t_envp *envp)
 	i = 0;
 	index = 0;
 	res = malloc(count_nodes_env(envp) * sizeof(char *) + 1);
+	printf("res env :%p\n", res);
 	while (cursor)
 	{
 		res[i] = malloc(count_content_length(cursor) + 2);
@@ -76,9 +77,9 @@ t_envp	*copy_env(char **envp)
 	int		i;
 
 	i = 0;
-	list = malloc(sizeof(t_envp));
-	if (!list)
-		return (NULL);
+	// list = malloc(sizeof(t_envp));
+	// if (!list)
+	// 	return (NULL);
 	list = NULL;
 	while (envp[i])
 	{
@@ -88,17 +89,18 @@ t_envp	*copy_env(char **envp)
 	return (list);
 }
 
-void	split_env(t_envp **list, char *envp)
+void	split_env(t_envp **list, char *envp) //create seperated title and content ...ß
 {
 	t_envp	*node;
+	char	*title;
+	char	*content;
+	char	*equal;
 	int		i;
 	int		len;
 	int		j;
 
 	i = 0;
-	node = malloc(sizeof(t_envp));
-	if (!node)
-		return ;
+	
 	while (envp[i])
 	{
 		j = i;
@@ -108,9 +110,9 @@ void	split_env(t_envp **list, char *envp)
 			len++;
 			j++;
 		}
-		node->title = extract_word(envp, &i, len);
+		title = extract_word(envp, &i, len);
 		if (envp[i] == '=')
-			node->equal = extract_word(envp, &i, 1);
+			equal = extract_word(envp, &i, 1);
 		len = 0;
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
@@ -120,17 +122,23 @@ void	split_env(t_envp **list, char *envp)
 			len++;
 			j++;
 		}
-		node->content = extract_word(envp, &i, len);
+		content = extract_word(envp, &i, len);
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
-		node->next = NULL;
 	}
-	if (check_duplicate(list, node->title))
+	if (check_duplicate(list, title))
 	{
-		update_node(*list, node->title, node->content);
+		update_node(list, title, content);
 	}
 	else
 	{
+		node = malloc(sizeof(t_envp));
+		if (!node)
+			return ;
+		node->title = title;
+		node->content = content;
+		node->equal = equal;
+		node->next = NULL;
 		add_back_env(list, node);
 	}
 }
