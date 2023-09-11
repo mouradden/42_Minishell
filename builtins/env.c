@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/09/11 10:18:29 by mdenguir         ###   ########.fr       */
+=======
+/*   Updated: 2023/09/11 10:52:14 by yoamzil          ###   ########.fr       */
+>>>>>>> 73657372121ff5c1d731ffc7668823b7114c6c31
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +92,19 @@ t_envp	*copy_env(char **envp)
 	return (list);
 }
 
+int	check_title(char *title)
+{
+	int	i;
+
+	i = 0;
+	if (title[i])
+	{
+		if (title[i] == '_' || (title[i] >= 'a' && title[i] <= 'z') || (title[i] >= 'A' && title[i] <= 'Z'))
+			return (1);
+	}
+	return (0);
+}
+
 void	split_env(t_envp **list, char *envp) //create seperated title and content ...ß
 {
 	t_envp	*node;
@@ -110,6 +127,13 @@ void	split_env(t_envp **list, char *envp) //create seperated title and content .
 			j++;
 		}
 		title = extract_word(envp, &i, len);
+		if (!check_title(title))
+		{
+			ft_putstr_fd("export: `", 1);
+			ft_putstr_fd(envp, 1);
+			ft_putstr_fd("`: not a valid identifier\n", 1);
+			break ;
+		}
 		if (envp[i] == '=')
 			equal = extract_word(envp, &i, 1);
 		len = 0;
@@ -125,11 +149,11 @@ void	split_env(t_envp **list, char *envp) //create seperated title and content .
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
 	}
-	if (check_duplicate(list, title))
+	if (check_title(title) && check_duplicate(list, title))
 	{
 		update_node(list, title, content);
 	}
-	else
+	else if (check_title(title) && !check_duplicate(list, title))
 	{
 		node = malloc(sizeof(t_envp));
 		if (!node)

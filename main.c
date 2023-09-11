@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/10 22:42:42 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:39:08 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,7 +325,7 @@ int	main(int ac, char **av, char **envp)
 			}
 		}
 		free_env(&env, input, fd, count_commands);
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	clear_history();
 	free_envp(&env);
