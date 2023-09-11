@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 22:22:11 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 12:05:27 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		index++;
 	}
 	joined[s1_len + index] = '\0';
-	free(s1);
+	// free(s1);
 	return (joined);
 }
 

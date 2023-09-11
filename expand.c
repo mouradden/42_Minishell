@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:36:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 12:05:48 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	expand_word(t_env *env)
 		{
 			join = "";
 			i = check_dollar(cursor->content);
-			if (i == 0)
+			
+			if (i != 0)
 				join = ft_strjoin(join, extract_word(cursor->content, 0, i));
 			j = i;
 			len = 0;
@@ -72,7 +73,7 @@ void	expand(t_env *env)
 	t_elem		*cursor;
 	char		*var;
 
-	// expand_word(env);
+	expand_word(env);
 	cursor = env->elem;
 	while (cursor)
 	{

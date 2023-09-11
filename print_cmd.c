@@ -24,11 +24,11 @@ void	printf_cmd(t_env *env)
 	}
 }
 
-void	print_elem(t_env env)
+void	print_elem(t_env *env)
 {
-	while (env.elem)
+	while (env->elem)
 	{
-		printf("content : |%s|  type :|%d|\n", env.elem->content, env.elem->type);
-		env.elem = env.elem->next;
+		printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
+		env->elem = env->elem->next;
 	}
 }

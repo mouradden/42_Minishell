@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 10:34:56 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 11:55:52 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void	duplicate_fd(int **fd, int count_pipes, int i);
 // void	duplicate_redir(t_env *env);
 void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
-void	print_elem(t_env env);
+void	print_elem(t_env *env);
 
 // ----CLEAN UP---
 void	free_double(char **str);

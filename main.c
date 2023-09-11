@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:33:44 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 12:07:02 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,6 @@ void	read_command(t_elem **elem, char *input)
 	{
 		if (input[i] && is_space(input[i]))
 			add_back(elem, new_elem(input, &i, 1, WHITE_SPACE));
-		else if (input[i] && input[i] == '$')
-		{
-			len = 0;
-			j = i;
-			while (input[j])
-			{
-				j++;
-				len++;
-				if (input[j] && is_special(input[j]))
-					break ;
-			}
-			add_back(elem, new_elem(input, &i, len, VAR));
-		}
 		else if (input[i] && !is_special(input[i]))
 		{
 			j = i;
@@ -50,6 +37,19 @@ void	read_command(t_elem **elem, char *input)
 				parse_equal(elem, input, &i, j, len);
 			else
 				add_back(elem, new_elem(input, &i, len, WORD));
+		}
+		else if (input[i] && input[i] == '$')
+		{
+			len = 0;
+			j = i;
+			while (input[j])
+			{
+				j++;
+				len++;
+				if (input[j] && is_special(input[j]))
+					break ;
+			}
+			add_back(elem, new_elem(input, &i, len, VAR));
 		}
 		else if (input[i] && input[i] == '|')
 			add_back(elem, new_elem(input, &i, 1, PIPE));
@@ -240,7 +240,7 @@ int	main(int ac, char **av, char **envp)
 			get_rid_of_spaces(&env.elem);
 			get_rid_of_quotes(&env.elem);
 			expand(&env);
-			// print_elem(env);
+			// print_elem(&env);
 			env.cmd = NULL;
 			split_line(&env.cmd, &env.elem);
 			// printf_cmd(&env);
@@ -325,7 +325,7 @@ int	main(int ac, char **av, char **envp)
 			}
 		}
 		free_env(&env, input, fd, count_commands);
-		// system("leaks minishell");
+		system("leaks minishell");
 	}
 	clear_history();
 	free_envp(&env);

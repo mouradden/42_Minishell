@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:41:20 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:41:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 11:49:22 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,50 +101,10 @@ int	check_title(char *title)
 	return (0);
 }
 
-void	split_env(t_envp **list, char *envp) //create seperated title and content ...ß
+void	add_to_env(t_envp **list, char *title, char *content, char *equal)
 {
 	t_envp	*node;
-	char	*title;
-	char	*content;
-	char	*equal;
-	int		i;
-	int		len;
-	int		j;
-
-	i = 0;
 	
-	while (envp[i])
-	{
-		j = i;
-		len = 0;
-		while (envp[j] && envp[j] != '=')
-		{
-			len++;
-			j++;
-		}
-		title = extract_word(envp, &i, len);
-		if (!check_title(title))
-		{
-			ft_putstr_fd("export: `", 1);
-			ft_putstr_fd(envp, 1);
-			ft_putstr_fd("`: not a valid identifier\n", 1);
-			break ;
-		}
-		if (envp[i] == '=')
-			equal = extract_word(envp, &i, 1);
-		len = 0;
-		if (envp[i] == '"' || envp[i] == '"')
-			i++;
-		j = i;
-		while (envp[j] && envp[j] != '"' && envp[j] != '\'')
-		{
-			len++;
-			j++;
-		}
-		content = extract_word(envp, &i, len);
-		if (envp[i] == '"' || envp[i] == '"')
-			i++;
-	}
 	if (check_title(title) && check_duplicate(list, title))
 	{
 		update_node(list, title, content);
@@ -160,6 +120,51 @@ void	split_env(t_envp **list, char *envp) //create seperated title and content .
 		node->next = NULL;
 		add_back_env(list, node);
 	}
+}
+
+void	split_env(t_envp **list, char *envp)
+{
+	char	*title;
+	char	*content;
+	char	*equal;
+	int		i;
+	int		len;
+	int		j;
+
+	i = 0;
+	while (envp[i])
+	{
+		j = i;
+		// len = 0;
+		while (envp[j] && envp[j] != '=')
+		{
+			// len++;
+			j++;
+		}
+		title = extract_word(envp, &i, j - i);
+		if (!check_title(title))
+		{
+			ft_putstr_fd("export: `", 1);
+			ft_putstr_fd(envp, 1);
+			ft_putstr_fd("`: not a valid identifier\n", 1);
+			break ;
+		}
+		if (envp[i] == '=')
+			equal = extract_word(envp, &i, 1);
+		len = 0;
+		if (envp[i] == '"' || envp[i] == '"')
+			i++;
+		j = i;
+		while (envp[j] && envp[j] != '"' && envp[j] != '\'')
+		{
+			// len++;
+			j++;
+		}
+		content = extract_word(envp, &i, j - i);
+		if (envp[i] == '"' || envp[i] == '"')
+			i++;
+	}
+	add_to_env(list, title, content, equal);
 }
 
 void	add_back_env(t_envp **head, t_envp *new)
