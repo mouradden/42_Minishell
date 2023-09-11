@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 10:38:33 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/11 11:14:42 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_env(t_env *env, __unused char *input,__unused int **fd,__unused int count_commands)
 {
-	int		i;
+	// int		i;
 // dprintf(2, "--->|%d|\n", count_commands);
 	free_elem(env);
 	free_cmd(env);
@@ -26,13 +26,13 @@ void	free_env(t_env *env, __unused char *input,__unused int **fd,__unused int co
 		
 		// free(fd);
 	// }
-	i = 0;
-	while (i < count_commands - 1)
-	{
-		free(fd[i++]);
-		i++;
-	}
-	free(fd);
+	// i = 0;
+	// while (i < count_commands - 1)
+	// {
+	// 	free(fd[i++]);
+	// 	i++;
+	// }
+	// free(fd);
 }
 
 void	free_elem(t_env *env)

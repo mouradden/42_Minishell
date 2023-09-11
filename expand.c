@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 10:35:03 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 11:36:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	expand_word(t_env *env)
 				len++;
 			}
 			join = ft_strjoin(join, extract_word(cursor->content, &i, len));
-			free(cursor->content);
+			// free(cursor->content);
 			cursor->content = join;
 		}
 		cursor = cursor->next;
@@ -72,20 +72,20 @@ void	expand(t_env *env)
 	t_elem		*cursor;
 	char		*var;
 
-	expand_word(env);
+	// expand_word(env);
 	cursor = env->elem;
 	while (cursor)
 	{
 		while (cursor && cursor->type != VAR)
 			cursor = cursor->next;
-		if (cursor && !ft_strcmp(cursor->state, "$?"))
-		{
-			free(cursor->content);
-			cursor->content = ft_strdup(ft_itoa(env->exit_status));
-		}
 		if (cursor && (cursor->state == NORMAL))
 		{
-			if (!ft_get_env(env, &(cursor->content[1])))
+			if (cursor && !ft_strcmp(cursor->content, "$?"))
+			{
+				free(cursor->content);
+				cursor->content = ft_strdup(ft_itoa(env->exit_status));
+			}
+			else if (!ft_get_env(env, &(cursor->content[1])))
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup("");
@@ -99,7 +99,12 @@ void	expand(t_env *env)
 		}
 		else if (cursor && (cursor->state == IN_DQUOTE))
 		{
-			if (!ft_get_env(env, &(cursor->content[1])))
+			if (cursor && !ft_strcmp(cursor->content, "$?"))
+			{
+				free(cursor->content);
+				cursor->content = ft_strdup(ft_itoa(env->exit_status));
+			}
+			else if (!ft_get_env(env, &(cursor->content[1])))
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup("");
