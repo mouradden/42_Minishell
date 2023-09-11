@@ -23,3 +23,12 @@ void	printf_cmd(t_env *env)
 		env->cmd = env->cmd->next;
 	}
 }
+
+void	print_elem(t_env env)
+{
+	while (env.elem)
+	{
+		printf("content : |%s|  type :|%d|\n", env.elem->content, env.elem->type);
+		env.elem = env.elem->next;
+	}
+}

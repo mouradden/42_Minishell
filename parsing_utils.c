@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 13:07:51 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 21:26:01 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,10 @@ void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir)
 	t_cmd		*new;
 
 	new = malloc(sizeof(t_cmd));
-	printf("new : %p\n", new);
 	if (!new)
 		return ;
 	new->cmd_line = line;
-	printf("line : %p\n", line);
 	new->redir = redir;
-	printf("redir : %p\n", redir);
 	new->next = NULL;
 	cursor = *cmd_list;
 	if (!cursor)
@@ -163,7 +160,6 @@ void	get_rid_of_quotes(t_elem **list)
 
 void	split_line(t_cmd **cmd, t_elem **list)
 {
-	// t_cmd		*cmd;
 	t_elem		*start;
 	t_elem		*cursor;
 	char		**cmd_line;
@@ -173,8 +169,6 @@ void	split_line(t_cmd **cmd, t_elem **list)
 
 	start = *list;
 	cursor = *list;
-	// cmd = NULL;
-	
 	count = count_cmd(list) + 1;
 	redir = NULL;
 	while (cursor)
@@ -182,7 +176,6 @@ void	split_line(t_cmd **cmd, t_elem **list)
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
 		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
-		printf("cmd line :%p\n", cmd_line);
 		i = 0;
 		if (!cursor)
 			redir = detect_redir_final(start);
@@ -195,21 +188,18 @@ void	split_line(t_cmd **cmd, t_elem **list)
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
 			{
 				cmd_line[i] = ft_strdup(start->content);
-				// printf("# cmd line : %p", cmd_line[i]);
 				i++;
 			}
 			start = start->next;
 		}
 		cmd_line[i] = 0;
 		add_back_cmd(cmd, cmd_line, redir);
-		// printf("cmd : --%p\n", cmd);
 		if (cursor && start)
 		{
 			cursor = cursor->next;
 			start = start->next;
 		}
 	}
-	// return (cmd);
 }
 
 t_redir	*detect_redir(t_elem *start, t_elem *end)
@@ -218,9 +208,6 @@ t_redir	*detect_redir(t_elem *start, t_elem *end)
 	enum e_redir	type;
 	char			*file_name;
 
-	// redir = malloc(sizeof(t_redir));
-	// if (!redir)
-	// 	return (NULL);
 	redir = NULL;
 	type = NONE;
 	file_name = "\0";
@@ -258,9 +245,9 @@ t_redir	*detect_redir_final(t_elem *start)
 
 	if (!count_redir(start))
 		return (NULL);
-	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (NULL);
+	// redir = malloc(sizeof(t_redir));
+	// if (!redir)
+	// 	return (NULL);
 	redir = NULL;
 	type = NONE;
 	file_name = "\0";
@@ -331,18 +318,6 @@ int	count_nodes(t_elem *start)
 	}
 	return (count);
 }
-
-// void	free_redir(t_redir *redir)
-// {
-// 	t_redir		*cursor;
-
-// 	while (redir)
-// 	{
-// 		cursor = redir->next;
-// 		free(redir);
-// 		redir = cursor;
-// 	}
-// }
 
 int	ft_strcmp_redir(char *str, t_redir *redir)
 {

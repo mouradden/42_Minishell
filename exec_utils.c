@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:42:17 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 12:17:53 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 22:43:16 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 	cursor = envp;
 	while (cursor && cursor->title && ft_strcmp(cursor->title, "PATH"))
 		cursor = cursor->next;
-	// printf("+++++|%s|\n", cursor->content);
 	if (cursor && cursor->title && !ft_strcmp(cursor->title, "PATH"))
 		paths = ft_split(cursor->content, ':');
 	else
@@ -33,22 +32,9 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 	{
 		path = ft_strjoin(paths[i], "/");
 		str = ft_strjoin(path, cmd);
-		// free(path);
 		if (access(str, F_OK) == 0 && access(str, X_OK) == 0)
 			return (str);
 		i++;
 	}
 	return (NULL);
 }
-
-// void	threat_redir(t_cmd *cmd)
-// {
-// 	int		fd;
-
-// 	if (cmd->redir->type == ADD)
-// 	{
-// 		fd = open(cmd->redir->file_name, O_CREAT | O_WRONLY);
-// 		if (!fd)
-// 			ft_putstr_fd(2, "error openning file\n");	
-// 	}
-// }

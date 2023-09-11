@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:25:39 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 13:17:45 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 21:04:12 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*extract_word(char *input, int *index, int len)
 	if (len == 0)
 		return (NULL);
 	word = malloc (len + 1);
-	// printf("word :%p\n", word);
 	if (!word)
 		return (NULL);
 	i = 0;
@@ -73,16 +72,12 @@ t_elem	*new_elem(char *content, int *index, int len, enum e_token token)
 	char	*s;
 
 	new = malloc(sizeof(t_elem));
-	printf("new elem :%p\n", new);
 	s = extract_word(content, index, len);
-	printf("word elem :%p\n", s);
 	if (!s)
 		return (NULL);
 	new->content = s;
-	// free(s);
 	new->len = len;
 	new->next = NULL;
-	// new->prev = NULL;
 	new->type = token;
 	new->state = NORMAL;
 	return (new);

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 22:53:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 12:44:55 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 22:28:21 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	**env_2_d(t_envp *envp)
 	i = 0;
 	index = 0;
 	res = malloc(count_nodes_env(envp) * sizeof(char *) + 1);
-	printf("res env :%p\n", res);
 	while (cursor)
 	{
 		res[i] = malloc(count_content_length(cursor) + 2);

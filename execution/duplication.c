@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   duplication.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 18:03:54 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:36:08 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/10 22:36:19 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	duplicate_fd(int **fd, int count_pipes, int i)
 
 int	duplicate_redir(t_env *env)
 {
-	int		fd;
+	int		fd = -1;
+	// int 	ret_fd;
 	pid_t	pid;
 	t_cmd	*cmd;
 	t_redir	*red;
@@ -51,35 +52,35 @@ int	duplicate_redir(t_env *env)
 			if (red->type == HERDOC)
 			{
 				pid = fork();
+				fd = 0;
 				if (pid == 0)
 				{
 					fd = open("/tmp/herdoc_file", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
 					if (!fd)
 						ft_putstr_fd("error openning file\n", 2);
-					char *input = "";
-					// t_env *env;
-					// 	env = malloc(sizeof(t_env));
-					// 	env = 0;
+					char *input;
 					while (1)
 					{
 						signal(SIGINT, sig_check_herdoc);
 						input = readline("> ");
 						if (!input)
+						{
+							free(input);
 							break ;
+						}
 						if (input && red->file_name && !ft_strcmp(input, red->file_name))
+						{
+							free(input);
 							break ;
+						}
 						ft_putstr_fd(expand_input(env, input), fd);
 						ft_putchar_fd('\n', fd);
 					}
 					close(fd);
-					fd = open("/tmp/herdoc_file", O_RDONLY);
-					if (dup2(fd, STDIN_FILENO) == -1)
-					{
-						perror("dup2");
-						ft_putstr_fd("error dpulication INPUT HERDOC\n", 2);
-					}
+					exit(1);
 				}
 				waitpid(pid, NULL, 0);
+				fd = open("/tmp/herdoc_file", O_RDONLY);
 			}
 			red = red->next;
 			if (red)
@@ -95,7 +96,7 @@ char	*expand_input(t_env *env, char *input)
 	int		index_dollar;
 	int		index;
 	int		len;
-	char	*res = "";
+	char	*res = NULL;
 
 	index = 0;
 	while (input[index])

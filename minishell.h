@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 11:58:52 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:52:45 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <signal.h>
 
 int	gl_sig;
 
@@ -175,14 +176,14 @@ void	duplicate_fd(int **fd, int count_pipes, int i);
 // void	duplicate_redir(t_env *env);
 void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
+void	print_elem(t_env env);
 
 // ----CLEAN UP---
 void	free_double(char **str);
 void	free_redir(t_redir *redir);
 void	free_cmd(t_env *env);
-void	free_envp(t_env **env);
-void	free_env(t_env **env);
-
+void	free_envp(t_env *env);
+void	free_env(t_env *env, char *input, int **fd, int count_commands);
 void	expand_word(t_env *env);
 char	*expand_input(t_env *env, char *input);
 int		is_contains(char *str, int c);

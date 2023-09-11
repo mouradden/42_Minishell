@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 12:05:33 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 21:03:42 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ char	*remove_spaces(char *str)
 	i = 0;
 	index = 0;
 	result = malloc(sizeof(ft_strlen(str)) + 1);
-	printf("remove spaces :%p\n", result);
 	while (str[i] && str[i] == ' ')
 		i++;
 	while (str[i])

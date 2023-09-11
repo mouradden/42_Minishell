@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 13:36:37 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:54:26 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 			}
 			else if (redis && redis->type == HERDOC)
 			{
+				// dprintf(2, "-->%d\n", fdd);
 				if (fdd != -1 && dup2(fdd, STDIN_FILENO) == -1)
 				{
 					perror("dup2");
 					ft_putstr_fd("error dpulication INPUT HERDOC\n", 2);
-					exit (1);
+					exit(1);
 				}
 			}
 			redis = redis->next;

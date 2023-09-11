@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 15:02:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/09 22:22:11 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	free_double(char **str)
 	i = 0;
 	while (str[i])
 	{
-		printf("free line :%p\n", str[i]);
 		free(str[i]);
 		i++;
 	}
@@ -64,7 +63,6 @@ char	*ft_strdup(char *s1)
 	while (s1[len])
 		len++;
 	dst = (char *) malloc (len * sizeof(char) + 1);
-	printf("dst : %p\n", dst);
 	if (!dst)
 		return (NULL);
 	while (s1[i] != '\0')

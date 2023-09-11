@@ -1,0 +1,16 @@
+Makefile
+builtins
+errors.c
+exec_utils.c
+execution
+expand.c
+file
+free_data.c
+ft_split.c
+lexing_utils.c
+main.c
+minishell
+minishell.h
+parsing_utils.c
+print_cmd.c
+utils.c

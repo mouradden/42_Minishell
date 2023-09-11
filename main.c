@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 15:31:10 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/10 22:42:42 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void	sig_check(int sig)
 	else if (sig == SIGINT)
 	{
 		printf("\n");
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -208,7 +208,7 @@ int	main(int ac, char **av, char **envp)
 	int		i;
 	int		count_commands;
 	int		fdd;
-	pid_t	*pid;
+	pid_t	pid;
 	int		**fd;
 
 	(void)ac;
@@ -234,26 +234,23 @@ int	main(int ac, char **av, char **envp)
 		add_history(input);
 		env.elem = NULL;
 		read_command(&env.elem, input);
+		// print_elem(env);
 		if (check_syntax_errors(&env))
 		{
 			get_rid_of_spaces(&env.elem);
 			get_rid_of_quotes(&env.elem);
 			expand(&env);
-			// while (env.elem)
-			// {
-			// 	printf("content : |%s|  type :|%d|\n", env.elem->content, env.elem->type);
-			// 	env.elem = env.elem->next;
-			// }
+			
 			env.cmd = NULL;
 			split_line(&env.cmd, &env.elem);
 			// printf_cmd(&env);
 			t_cmd *cmd = env.cmd;
-			// printf("cmd : %p\n", env.);
 			if (cmd)
 			{
 				i = 0;
 				count_commands = count_delimter_pipe(env.elem) + 1;
 				fdd = duplicate_redir(&env);
+				// ft_putstr_fd("hi\n", 2);
 				if (count_commands == 1 && !is_builting(cmd->cmd_line[0]))
 				{
 					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
@@ -273,10 +270,8 @@ int	main(int ac, char **av, char **envp)
 				}
 				else
 				{
-					pid = malloc(sizeof(pid_t) * count_commands);
-					printf("--%p\n", pid);
+					// pid = malloc(sizeof(pid_t) * count_commands);
 					fd = malloc(sizeof(int *) * (count_commands - 1));
-					printf("==%p\n", fd);
 					if (!fd)
 					{
 						printf("error malloc\n");
@@ -295,23 +290,17 @@ int	main(int ac, char **av, char **envp)
 						i++;
 					}
 					i = 0;
-					// int status1;
-					while (i < count_commands)
+ 					while (i < count_commands)
 					{
 						dup2(env.in, STDIN_FILENO);
 						dup2(env.out, STDOUT_FILENO);
-						pid[i] = fork();
-						// if (env->cmd->redir && env->cmd->redir->type == HERDOC)
-						// {
-						// 	exec_one_command_herdoc(env, envp);
-						// 	waitpid(pid[i], &status1, 0);
-						// 	dprintf(2, "pid %d finished\n", i);
-						// }
-						if (pid[i] == 0)
+						pid = fork();
+						if (pid == 0)
 						{
 							if (count_commands > 1)
 								duplicate_fd(fd, count_commands, i);
 							exec_one_command(&env, cmd, envp, fdd);
+							close(fdd);
 							exit(1337);
 						}
 						cmd = cmd->next;
@@ -324,31 +313,22 @@ int	main(int ac, char **av, char **envp)
 						close(fd[i][1]);
 						i++;
 					}
-					i = 0;
-					while (i < count_commands)
-						waitpid(pid[i++], &status, 0);
+					waitpid(pid, &status, 0);
+					// i = 0;
+					// while (i < count_commands - 1)
+					// {
+					// 	free(fd[i++]);
+					// 	i++;
+					// }
+					// free(fd);
 				}
 			}
-			// free_env(&env);
 		}
-		free_elem(&env);
-		free_cmd(&env);
-		free(input);
-		free(pid);
-		// i = 0;
-		// while (i < count_commands - 1)
-		// {
-		// 	free(fd[i]);
-
-		// 	i++;
-		// }
-		// free(fd[0]);
-		// free(fd[1]);
-		free(fd);
+		free_env(&env, input, fd, count_commands);
 		system("leaks minishell");
 	}
 	clear_history();
-	
+	free_envp(&env);
 	return (0);
 }
 
