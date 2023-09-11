@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 21:03:42 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:35:03 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ void	expand(t_env *env)
 	{
 		while (cursor && cursor->type != VAR)
 			cursor = cursor->next;
+		if (cursor && !ft_strcmp(cursor->state, "$?"))
+		{
+			free(cursor->content);
+			cursor->content = ft_strdup(ft_itoa(env->exit_status));
+		}
 		if (cursor && (cursor->state == NORMAL))
 		{
 			if (!ft_get_env(env, &(cursor->content[1])))

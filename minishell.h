@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/10 17:52:45 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:34:56 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,4 +193,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 void	sig_check(int sig);
 void	sig_check_herdoc(int sig);
+
+int		ft_lentgh(int nb);
+char	*ft_itoa(int nb);
 #endif
