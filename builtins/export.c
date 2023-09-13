@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 22:26:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 18:49:42 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	export(t_envp **envp, char **var)
 	char	**splitted_var;
 
 	i = 0;
-	if (!var[1])
+	if (!var[1] || !var[1][0])
 		display_export(envp);
 	else
 	{
@@ -119,7 +119,7 @@ void	update_node(t_envp **envp, char *var_title, char *var_content)
 		if (cursor->title && var_title && !ft_strcmp(cursor->title, var_title))
 		{
 			free(cursor->content);
-			cursor->content = var_content;
+			cursor->content = ft_strdup(var_content);
 			break ;
 		}
 		cursor = cursor->next;

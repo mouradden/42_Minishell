@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 16:02:58 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:54:20 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	expand(t_env *env)
 					}
 					else
 					{
-						free(cursor->content);
 						var = ft_get_env(env, &(cursor->content[1]));
+						free(cursor->content);
 						cursor->content = remove_spaces(var);
 					}
 				}
@@ -134,8 +134,8 @@ void	expand(t_env *env)
 					}
 					else
 					{
-						free(cursor->content);
 						var = ft_get_env(env, &(cursor->content[1]));
+						free(cursor->content);
 						cursor->content = ft_strdup(var);
 					}
 				}
@@ -166,9 +166,10 @@ char	*remove_spaces(char *str)
 
 	i = 0;
 	index = 0;
-	result = malloc(sizeof(ft_strlen(str)) + 1);
+	result = malloc(ft_strlen(str) + 1);
 	while (str[i] && str[i] == ' ')
 		i++;
+		
 	while (str[i])
 	{
 		if (str[i] && str[i] != ' ')
@@ -181,6 +182,7 @@ char	*remove_spaces(char *str)
 		{
 			while (str[i] && str[i] == ' ')
 				i++;
+			
 			if (str[i])
 			{
 				result[index] = ' ';
@@ -189,5 +191,6 @@ char	*remove_spaces(char *str)
 		}
 	}
 	result[index] = '\0';
+	
 	return (result);
 }

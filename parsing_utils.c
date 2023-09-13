@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 21:26:01 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:00:23 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	{
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
-		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
+		cmd_line = malloc(100 * sizeof(char *));
 		i = 0;
 		if (!cursor)
 			redir = detect_redir_final(start);
@@ -187,8 +187,26 @@ void	split_line(t_cmd **cmd, t_elem **list)
 				&& start->type != REDIR_IN && start->type != REDIR_ADD
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
 			{
-				cmd_line[i] = ft_strdup(start->content);
-				i++;
+				if (is_contains(start->content, ' ') == -1)
+					{cmd_line[i] = ft_strdup(start->content);i++;}
+				else if (start->type == VAR && is_contains(start->content, ' ') > -1)
+				{
+					// if (start->state == NORMAL)
+					// {
+						char **splited = ft_split(start->content, ' ');
+						int j = 0;
+						while (splited[j])
+						{
+							cmd_line[i] = ft_strdup(splited[j]);
+							i++;
+							j++;
+							
+						}
+					free_double(splited);
+					
+				}
+				else
+					{cmd_line[i] = ft_strdup(start->content);i++;}
 			}
 			start = start->next;
 		}

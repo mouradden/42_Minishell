@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 15:43:10 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:54:43 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ void	read_command(t_elem **elem, char *input)
 	{
 		if (input[i] && is_space(input[i]))
 			add_back(elem, new_elem(input, &i, 1, WHITE_SPACE));
+		else if (input[i] && input[i] == '$')
+		{
+			len = 0;
+			j = i;
+			while (input[j])
+			{
+				j++;
+				len++;
+				if (input[j] && is_special(input[j]))
+					break ;
+			}
+			add_back(elem, new_elem(input, &i, len, VAR));
+		}
 		else if (input[i] && !is_special(input[i]))
 		{
 			j = i;
@@ -39,19 +52,6 @@ void	read_command(t_elem **elem, char *input)
 				parse_equal(elem, input, &i, j, len);
 			else
 				add_back(elem, new_elem(input, &i, len, WORD));
-		}
-		else if (input[i] && input[i] == '$')
-		{
-			len = 0;
-			j = i;
-			while (input[j])
-			{
-				j++;
-				len++;
-				if (input[j] && is_special(input[j]))
-					break ;
-			}
-			add_back(elem, new_elem(input, &i, len, VAR));
 		}
 		else if (input[i] && input[i] == '|')
 			add_back(elem, new_elem(input, &i, 1, PIPE));

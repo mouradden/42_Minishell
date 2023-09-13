@@ -3,32 +3,33 @@
 void	printf_cmd(t_env *env)
 {
 	int	i;
-
-	while (env->cmd)
+	t_cmd *cmd = env->cmd;
+	while (cmd)
 	{
 		i = 0;
-		while (env->cmd->cmd_line[i])
+		while (cmd->cmd_line[i])
 		{
-			printf("cmd   |%s| **\n", env->cmd->cmd_line[i]);
+			printf("cmd   |%s| **\n", cmd->cmd_line[i]);
 			i++;
 		}
 		printf("--- redir--\n");
-		while (env->cmd->redir)
+		while (cmd->redir)
 		{
-			printf("====>%d || %s\n", env->cmd->redir->type, env->cmd->redir->file_name);
-			env->cmd->redir = env->cmd->redir->next;
+			printf("====>%d || %s\n", cmd->redir->type, cmd->redir->file_name);
+			cmd->redir = cmd->redir->next;
 		}
 		printf("---end redir--\n");
 		printf("--------------------\n");
-		env->cmd = env->cmd->next;
+		cmd = cmd->next;
 	}
 }
 
 void	print_elem(t_env *env)
 {
-	while (env->elem)
+	t_elem *elem = env->elem;
+	while (elem)
 	{
-		printf("content : |%s|  type :|%d| state : |%d|\n", env->elem->content, env->elem->type, env->elem->state);
-		env->elem = env->elem->next;
+		printf("content : |%s|  type :|%d| state : |%d|\n", elem->content, elem->type, elem->state);
+		elem = elem->next;
 	}
 }
