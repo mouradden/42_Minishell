@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:41:20 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:49:22 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/11 22:25:45 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_env(t_envp **envp)
+{
+	t_envp	*cursor;
+
+	cursor = *envp;
+	while (cursor)
+	{
+		if (cursor->title)
+		{
+			ft_putstr_fd(cursor->title, 1);
+			if (cursor->content && cursor->equal && !ft_strcmp(cursor->equal, "="))
+			{
+				ft_putchar_fd('=', 1);
+				ft_putstr_fd(cursor->content, 1);
+			}
+			ft_putchar_fd('\n', 1);
+		}
+		cursor = cursor->next;
+	}
+}
 
 char	**env_2_d(t_envp *envp)
 {
@@ -108,18 +129,30 @@ void	add_to_env(t_envp **list, char *title, char *content, char *equal)
 	if (check_title(title) && check_duplicate(list, title))
 	{
 		update_node(list, title, content);
+		free(title);
+		free(equal);
 	}
 	else if (check_title(title) && !check_duplicate(list, title))
 	{
 		node = malloc(sizeof(t_envp));
 		if (!node)
 			return ;
-		node->title = title;
-		node->content = content;
-		node->equal = equal;
+		// if(title)
+			node->title = title;
+		// if(content)
+			node->content = content;
+		// if(equal)
+			node->equal = equal;
 		node->next = NULL;
 		add_back_env(list, node);
+		// if(title)
+		// 	free(title);
+		// if(content)
+		// 	free(content);
+		// if(equal)
+		// 	free(equal);
 	}
+	
 }
 
 void	split_env(t_envp **list, char *envp)
@@ -164,6 +197,7 @@ void	split_env(t_envp **list, char *envp)
 		if (envp[i] == '"' || envp[i] == '"')
 			i++;
 	}
+	// printf("-->%p || %p || %p\n", title, content, equal);
 	add_to_env(list, title, content, equal);
 }
 
@@ -181,26 +215,5 @@ void	add_back_env(t_envp **head, t_envp *new)
 		while (cursor->next)
 			cursor = cursor->next;
 		cursor->next = new;
-	}
-}
-
-void	ft_env(t_envp **envp)
-{
-	t_envp	*cursor;
-
-	cursor = *envp;
-	while (cursor)
-	{
-		if (cursor->title)
-		{
-			ft_putstr_fd(cursor->title, 1);
-			if (cursor->equal && !ft_strcmp(cursor->equal, "="))
-			{
-				ft_putchar_fd('=', 1);
-				ft_putstr_fd(cursor->content, 1);
-			}
-			ft_putchar_fd('\n', 1);
-		}
-		cursor = cursor->next;
 	}
 }

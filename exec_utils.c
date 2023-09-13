@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:42:17 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 22:43:16 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 13:54:08 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ char	*get_cmd_path(char *cmd, t_envp *envp)
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], "/");
+		free(paths[i]);
 		str = ft_strjoin(path, cmd);
+		free(path);
 		if (access(str, F_OK) == 0 && access(str, X_OK) == 0)
 			return (str);
 		i++;

@@ -6,33 +6,17 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:14:42 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:21:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env(t_env *env, __unused char *input,__unused int **fd,__unused int count_commands)
+void	free_env(t_env *env, char *input)
 {
-	// int		i;
-// dprintf(2, "--->|%d|\n", count_commands);
 	free_elem(env);
 	free_cmd(env);
 	free(input);
-	// if(*pid > 0)
-	// 	free(pid);
-	// if (count_commands > 1)
-	// {
-		
-		// free(fd);
-	// }
-	// i = 0;
-	// while (i < count_commands - 1)
-	// {
-	// 	free(fd[i++]);
-	// 	i++;
-	// }
-	// free(fd);
 }
 
 void	free_elem(t_env *env)

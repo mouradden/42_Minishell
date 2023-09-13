@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 12:05:48 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:50:43 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,20 @@ void	expand_word(t_env *env)
 		{
 			join = "";
 			i = check_dollar(cursor->content);
-			
+			if (cursor->content[i + 1] && cursor->content[i + 1] == '?')
+			{
+				free(cursor->content);
+				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+				break;
+			}
+			// printf("%d\n", i);
+			int p = 0;
+			// printf("0-->|%s|\n", extract_word(cursor->content, &p, i));
 			if (i != 0)
-				join = ft_strjoin(join, extract_word(cursor->content, 0, i));
+			{
+				join = ft_strjoin(join, extract_word(cursor->content, &p, i));
+				// printf("1-->|%s|\n", join);
+			}	
 			j = i;
 			len = 0;
 			while (cursor && cursor->content[j] != is_special(cursor->content[j])
@@ -41,18 +52,23 @@ void	expand_word(t_env *env)
 				len++;
 			}
 			word = extract_word(cursor->content, &i, len);
+			// printf("word##>|%s|\n", word);printf("expand==>|%s|\n", ft_get_env(env, &(word[1])));
 			if (!ft_get_env(env, &word[1]))
 			{
 				join = ft_strjoin(join, "");
-				free(cursor->content);
-				cursor->content = ft_strdup("");
+				// printf("2-->|%s|\n", join);
+				// cursor->content = ft_stenvrdup("");
 			}
 			else
 			{
 				var = ft_get_env(env, &(word[1]));
-				// cursor->content = remove_spaces(var);
+				
+				// var = remove_spaces(var);
 				join = ft_strjoin(join, var);
+				// free(var);
+				// printf("3-->|%s|\n", join);
 			}
+			free(word);
 			len = 0;
 			j = i;
 			while (cursor->content[j])
@@ -60,8 +76,9 @@ void	expand_word(t_env *env)
 				j++;
 				len++;
 			}
-			join = ft_strjoin(join, extract_word(cursor->content, &i, len));
-			// free(cursor->content);
+			join = ft_strjoin_2(join, extract_word(cursor->content, &i, len));
+			// printf("4-->|%s|\n", join);
+			free(cursor->content);
 			cursor->content = join;
 		}
 		cursor = cursor->next;
@@ -74,19 +91,24 @@ void	expand(t_env *env)
 	char		*var;
 
 	expand_word(env);
+	// printf("hhh---------\n");
+	// print_elem(env);
 	cursor = env->elem;
 	while (cursor)
 	{
 		while (cursor && cursor->type != VAR)
 			cursor = cursor->next;
+		// printf("here\n");
 		if (cursor && (cursor->state == NORMAL))
 		{
+		// printf("hello\n");
 			if (cursor && !ft_strcmp(cursor->content, "$?"))
 			{
 				free(cursor->content);
-				cursor->content = ft_strdup(ft_itoa(env->exit_status));
+				// printf("***%d\n", env->exit_status);
+				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
 			}
-			else if (!ft_get_env(env, &(cursor->content[1])))
+			else if (cursor && !ft_get_env(env, &(cursor->content[1])))
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup("");
@@ -97,13 +119,14 @@ void	expand(t_env *env)
 				var = ft_get_env(env, &(cursor->content[1]));
 				cursor->content = remove_spaces(var);
 			}
+			// printf("==>|%s|\n", cursor->content);
 		}
 		else if (cursor && (cursor->state == IN_DQUOTE))
 		{
 			if (cursor && !ft_strcmp(cursor->content, "$?"))
 			{
 				free(cursor->content);
-				cursor->content = ft_strdup(ft_itoa(env->exit_status));
+				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
 			}
 			else if (!ft_get_env(env, &(cursor->content[1])))
 			{
@@ -116,6 +139,7 @@ void	expand(t_env *env)
 				var = ft_get_env(env, &(cursor->content[1]));
 				cursor->content = ft_strdup(var);
 			}
+			// printf("==>|%s|\n", cursor->content);
 		}
 		if (cursor)
 			cursor = cursor->next;

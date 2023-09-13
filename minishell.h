@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 11:55:52 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/13 11:21:55 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <signal.h>
-
-int	gl_sig;
+extern int gl_exit_status;
+// # ifndef gl_exit_status
+// # define gl_exit_status 0
+// # endif
 
 enum e_state
 {
@@ -94,6 +96,8 @@ typedef struct s_redir
 }	t_redir;
 
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strjoin_2(char *s1, char *s2);
+char	*ft_strdup(char *s1);
 int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
 int		is_space(int c);
@@ -105,7 +109,7 @@ void	isolate_quotes(t_elem **elem);
 int		add_back(t_elem **elem, t_elem *new);
 int		check_dollar(char *str);
 t_elem	*new_elem(char *content, int *index, int len, enum e_token token);
-char	*ft_strdup(char *s1);
+char	*up(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
@@ -142,7 +146,7 @@ void	echo(char **input);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 
-void	cd(char *path);
+void	cd(t_env *env, char *path);
 void	ft_env(t_envp **envp);
 t_envp	*copy_env(char **envp);
 void	split_env(t_envp **list, char *envp);
@@ -172,7 +176,7 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
 
 //-----
 
-void	duplicate_fd(int **fd, int count_pipes, int i);
+void	duplicate_fd(t_env env, int *fd, int count_pipes, int i);
 // void	duplicate_redir(t_env *env);
 void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
@@ -183,7 +187,7 @@ void	free_double(char **str);
 void	free_redir(t_redir *redir);
 void	free_cmd(t_env *env);
 void	free_envp(t_env *env);
-void	free_env(t_env *env, char *input, int **fd, int count_commands);
+void	free_env(t_env *env, char *input);
 void	expand_word(t_env *env);
 char	*expand_input(t_env *env, char *input);
 int		is_contains(char *str, int c);

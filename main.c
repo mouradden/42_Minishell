@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 12:07:02 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/13 12:54:07 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	gl_exit_status = 0;
 
 void	read_command(t_elem **elem, char *input)
 {
@@ -168,10 +170,10 @@ char	*ft_strcat(char *dest, char *src)
 
 int	is_builting(char *cmd)
 {
-	// (void)cmd;
-	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "echo")
-			|| !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
-			|| !ft_strcmp(cmd, "unset")))
+	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd")
+		|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd")
+		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset")))
 		return (0);
 	else
 		return (1);
@@ -187,9 +189,10 @@ void	sig_check(int sig)
 	else if (sig == SIGINT)
 	{
 		printf("\n");
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		gl_exit_status = 1;
 	}
 }
 
@@ -201,22 +204,17 @@ void	sig_check_herdoc(int sig)
 
 int	main(int ac, char **av, char **envp)
 {
-	int		status;
 	char	*input;
 	t_env	env;
-	// t_envp	*copy_envp;
 	int		i;
 	int		count_commands;
 	int		fdd;
 	pid_t	pid;
-	int		**fd;
+	int		fd[2];
 
 	(void)ac;
 	(void)av;
 	
-	// env = NULL;
-	
-	// env->envp = NULL;
 	env.envp = copy_env(envp);
 	env.in = dup(STDIN_FILENO);
 	env.out = dup(STDOUT_FILENO);
@@ -224,12 +222,12 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		signal(SIGINT, sig_check);
-		env.exit_status = 0;
 		input = readline("MINISHELL $ ");
 		if (!input)
 		{
 			// free()
-			exit(0);
+			gl_exit_status = 127;
+			exit(127);
 		}
 		add_history(input);
 		env.elem = NULL;
@@ -250,17 +248,16 @@ int	main(int ac, char **av, char **envp)
 				i = 0;
 				count_commands = count_delimter_pipe(env.elem) + 1;
 				fdd = duplicate_redir(&env);
-				// ft_putstr_fd("hi\n", 2);
 				if (count_commands == 1 && !is_builting(cmd->cmd_line[0]))
 				{
 					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
-						break ;
+						exit(127);
 					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 						pwd();
 					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
 						echo(cmd->cmd_line);
 					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
-						cd(cmd->cmd_line[1]);
+						cd(&env, cmd->cmd_line[1]);
 					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
 						ft_env(&env.envp);
 					else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
@@ -270,62 +267,43 @@ int	main(int ac, char **av, char **envp)
 				}
 				else
 				{
-					// pid = malloc(sizeof(pid_t) * count_commands);
-					fd = malloc(sizeof(int *) * (count_commands - 1));
-					if (!fd)
-					{
-						printf("error malloc\n");
-						exit(1);
-					}
-					while (i < count_commands - 1)
-					{
-						fd[i] = malloc(sizeof(int) * 2);
-						i++;
-					}
-					i = 0;
-					while (i < count_commands - 1)
-					{
-						if (pipe(fd[i]) == -1)
-							exit(EXIT_FAILURE);
-						i++;
-					}
 					i = 0;
  					while (i < count_commands)
 					{
-						dup2(env.in, STDIN_FILENO);
-						dup2(env.out, STDOUT_FILENO);
+						pipe(fd);
 						pid = fork();
 						if (pid == 0)
 						{
-							if (count_commands > 1)
-								duplicate_fd(fd, count_commands, i);
+							close(fd[0]);
+							if (i < count_commands - 1)
+								dup2(fd[1], STDOUT_FILENO);
 							exec_one_command(&env, cmd, envp, fdd);
-							close(fdd);
-							exit(1337);
+							close(fd[1]);
+							exit(0);
 						}
+						close(fd[1]);
+						dup2(fd[0], 0);
+        				waitpid(pid, &gl_exit_status, WNOHANG);
+        				gl_exit_status = WEXITSTATUS(gl_exit_status);
+        				close(fd[0]);
 						cmd = cmd->next;
 						i++;
 					}
-					i = 0;
-					while (i < count_commands - 1)
+					int top = wait(&gl_exit_status);
+					while (top > 0)
 					{
-						close(fd[i][0]);
-						close(fd[i][1]);
-						i++;
+						if (top < pid)
+							gl_exit_status = WEXITSTATUS(gl_exit_status);
+						top = wait(&gl_exit_status);
 					}
-					waitpid(pid, &status, 0);
-					// i = 0;
-					// while (i < count_commands - 1)
-					// {
-					// 	free(fd[i++]);
-					// 	i++;
-					// }
-					// free(fd);
+					gl_exit_status = WEXITSTATUS(gl_exit_status);
+					dup2(env.in, STDIN_FILENO);
+					dup2(env.out, STDOUT_FILENO);
 				}
 			}
+		free_env(&env, input);
 		}
-		free_env(&env, input, fd, count_commands);
-		system("leaks minishell");
+		// system("leaks minishell");
 	}
 	clear_history();
 	free_envp(&env);

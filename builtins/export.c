@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/08 10:30:46 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/11 22:26:23 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	export(t_envp **envp, char **var)
 				while (splitted_var[j])
 				{
 					split_env(envp, splitted_var[j]);
+					
 					j++;
 				}
+				free_double(splitted_var);
 			}
 			else
 				split_env(envp, var[i]);

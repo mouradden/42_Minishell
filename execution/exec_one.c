@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/10 17:54:26 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:27:54 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
 		echo(cmd->cmd_line);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
-		cd(cmd->cmd_line[1]);
+		cd(env, cmd->cmd_line[1]);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
 		ft_env(&env->envp);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
@@ -32,11 +32,19 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 		unset(&env->envp, cmd->cmd_line[1]);
 	else
 	{
-		path = get_cmd_path(cmd->cmd_line[0], env->envp);
-		// if (!path)
-		// {
-		// 	dprintf(2, "%s : command not found\n" , env->cmd->cmd_line[0]);
-		// }
+		if (!access(cmd->cmd_line[0], X_OK))
+			path = cmd->cmd_line[0];
+		else
+		{
+			path = get_cmd_path(cmd->cmd_line[0], env->envp);
+			if (!path)
+			{
+				ft_putstr_fd(cmd->cmd_line[0], 2);
+				ft_putstr_fd(": command not found\n", 2);
+				gl_exit_status = 127;
+				exit(127);
+			}
+		}
 		redis = cmd->redir;
 		while (redis)
 		{
@@ -81,14 +89,19 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 			}
 			redis = redis->next;
 		}
-		if (!access(cmd->cmd_line[0], X_OK))
-			path = cmd->cmd_line[0];
+		// if (!access(cmd->cmd_line[0], X_OK))
+		// 	path = cmd->cmd_line[0];
 		if (cmd->cmd_line[0])
 		{
 			if (execve(path, cmd->cmd_line, envp) == -1)
 			{
-				ft_putstr_fd(cmd->cmd_line[0], 2);
-				ft_putstr_fd(": command not found\n", 2);
+				// printf("before-->%d\n", env->exit_status);
+				// ft_putstr_fd(cmd->cmd_line[0], 2);
+				// ft_putstr_fd(": command not found\n", 2);
+				// gl_exit_status = 127;
+				
+				// printf("after-->%d\n", env->exit_status);
+				// exit(127);
 			}
 		}
 	}
