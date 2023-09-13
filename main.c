@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 12:54:07 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 15:43:10 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,9 +235,9 @@ int	main(int ac, char **av, char **envp)
 		
 		if (check_syntax_errors(&env))
 		{
+			expand(&env);
 			get_rid_of_spaces(&env.elem);
 			get_rid_of_quotes(&env.elem);
-			expand(&env);
 			// print_elem(&env);
 			env.cmd = NULL;
 			split_line(&env.cmd, &env.elem);

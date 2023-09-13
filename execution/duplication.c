@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 18:03:54 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/12 22:38:05 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:43:02 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,11 @@ char	*expand_input(t_env *env, char *input)
 			&& input[len] != '=' && input[len] != '$')
 			len++;
 		res = ft_strjoin(res, extract_word(input, &index, len - index));
-		free(res);
-		if (is_special(input[len]))
+		if (input[len] == ' ')
 		{
 			res = ft_strjoin(res, extract_word(input, &index, 1));
-			free(res);
 		}
+		
 		if (input[index] == '$')
 		{
 			index_dollar = check_dollar(input);
@@ -130,7 +129,6 @@ char	*expand_input(t_env *env, char *input)
 			while (input[len] && !is_special(input[len]) && input[len] != '=')
 				len++;
 			res = ft_strjoin(res, ft_get_env(env, extract_word(input, &index, len - index)));
-			free(res);
 		}
 	}
 	return (res);

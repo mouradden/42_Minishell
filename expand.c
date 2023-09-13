@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/12 15:50:43 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:02:58 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	expand_word(t_env *env)
 	cursor = env->elem;
 	while (cursor)
 	{
-		if (cursor->type == WORD && (check_dollar(cursor->content) > -1))
+		if (cursor && ((cursor->type == VAR && is_contains(cursor->content, '=') > -1)  || cursor->type == WORD)
+			&& (check_dollar(cursor->content) > -1))
 		{
 			join = "";
 			i = check_dollar(cursor->content);
@@ -35,13 +36,10 @@ void	expand_word(t_env *env)
 				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
 				break;
 			}
-			// printf("%d\n", i);
 			int p = 0;
-			// printf("0-->|%s|\n", extract_word(cursor->content, &p, i));
 			if (i != 0)
 			{
 				join = ft_strjoin(join, extract_word(cursor->content, &p, i));
-				// printf("1-->|%s|\n", join);
 			}	
 			j = i;
 			len = 0;
@@ -52,21 +50,14 @@ void	expand_word(t_env *env)
 				len++;
 			}
 			word = extract_word(cursor->content, &i, len);
-			// printf("word##>|%s|\n", word);printf("expand==>|%s|\n", ft_get_env(env, &(word[1])));
 			if (!ft_get_env(env, &word[1]))
 			{
 				join = ft_strjoin(join, "");
-				// printf("2-->|%s|\n", join);
-				// cursor->content = ft_stenvrdup("");
 			}
 			else
 			{
 				var = ft_get_env(env, &(word[1]));
-				
-				// var = remove_spaces(var);
 				join = ft_strjoin(join, var);
-				// free(var);
-				// printf("3-->|%s|\n", join);
 			}
 			free(word);
 			len = 0;
@@ -77,7 +68,6 @@ void	expand_word(t_env *env)
 				len++;
 			}
 			join = ft_strjoin_2(join, extract_word(cursor->content, &i, len));
-			// printf("4-->|%s|\n", join);
 			free(cursor->content);
 			cursor->content = join;
 		}
@@ -91,59 +81,69 @@ void	expand(t_env *env)
 	char		*var;
 
 	expand_word(env);
-	// printf("hhh---------\n");
-	// print_elem(env);
 	cursor = env->elem;
 	while (cursor)
 	{
 		while (cursor && cursor->type != VAR)
 			cursor = cursor->next;
-		// printf("here\n");
-		if (cursor && (cursor->state == NORMAL))
-		{
-		// printf("hello\n");
-			if (cursor && !ft_strcmp(cursor->content, "$?"))
+			if (cursor && cursor->state == NORMAL && check_dollar(cursor->content) > -1)
 			{
-				free(cursor->content);
-				// printf("***%d\n", env->exit_status);
-				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+				if (cursor && !ft_strcmp(cursor->content, "$?"))
+				{
+					free(cursor->content);
+					cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+				}
+				else
+				{
+					if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
+					{
+						free(cursor->content);
+						cursor->content = ft_strdup(&cursor->content[2]);
+					}
+					else if (cursor && !ft_get_env(env, &(cursor->content[1])))
+					{
+						free(cursor->content);
+						cursor->content = ft_strdup("");
+					}
+					else
+					{
+						free(cursor->content);
+						var = ft_get_env(env, &(cursor->content[1]));
+						cursor->content = remove_spaces(var);
+					}
+				}
 			}
-			else if (cursor && !ft_get_env(env, &(cursor->content[1])))
+			else if (cursor && (cursor->state == IN_DQUOTE) && check_dollar(cursor->content) > -1)
 			{
-				free(cursor->content);
-				cursor->content = ft_strdup("");
+				if (cursor && !ft_strcmp(cursor->content, "$?"))
+				{
+					free(cursor->content);
+					cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+				}
+				else
+				{
+					if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
+					{
+						free(cursor->content);
+						cursor->content = ft_strdup(&cursor->content[2]);
+					}
+					else if (!ft_get_env(env, &(cursor->content[1])))
+					{
+						free(cursor->content);
+						cursor->content = ft_strdup("");
+					}
+					else
+					{
+						free(cursor->content);
+						var = ft_get_env(env, &(cursor->content[1]));
+						cursor->content = ft_strdup(var);
+					}
+				}
 			}
-			else
-			{
-				free(cursor->content);
-				var = ft_get_env(env, &(cursor->content[1]));
-				cursor->content = remove_spaces(var);
-			}
-			// printf("==>|%s|\n", cursor->content);
-		}
-		else if (cursor && (cursor->state == IN_DQUOTE))
-		{
-			if (cursor && !ft_strcmp(cursor->content, "$?"))
-			{
-				free(cursor->content);
-				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-			}
-			else if (!ft_get_env(env, &(cursor->content[1])))
-			{
-				free(cursor->content);
-				cursor->content = ft_strdup("");
-			}
-			else
-			{
-				free(cursor->content);
-				var = ft_get_env(env, &(cursor->content[1]));
-				cursor->content = ft_strdup(var);
-			}
-			// printf("==>|%s|\n", cursor->content);
-		}
 		if (cursor)
 			cursor = cursor->next;
 	}
+	
 }
 
 char	*ft_get_env(t_env *env, char *title)

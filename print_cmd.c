@@ -28,7 +28,7 @@ void	print_elem(t_env *env)
 {
 	while (env->elem)
 	{
-		printf("content : |%s|  type :|%d|\n", env->elem->content, env->elem->type);
+		printf("content : |%s|  type :|%d| state : |%d|\n", env->elem->content, env->elem->type, env->elem->state);
 		env->elem = env->elem->next;
 	}
 }
