@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 20:54:43 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:02:01 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ int	main(int ac, char **av, char **envp)
 				i = 0;
 				count_commands = count_delimter_pipe(env.elem) + 1;
 				fdd = duplicate_redir(&env);
-				if (count_commands == 1 && !is_builting(cmd->cmd_line[0]))
+				if (count_commands == 1 && !is_builting(cmd->cmd_line[0]) && !cmd->redir)
 				{
 					if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
 						exit(127);

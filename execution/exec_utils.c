@@ -6,11 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:42:17 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 13:54:08 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:47:35 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*get_cmd_path(char *cmd, t_envp *envp)
 {

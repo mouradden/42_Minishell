@@ -6,12 +6,17 @@
 #    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/26 10:35:31 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/13 20:57:00 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/15 10:13:26 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SOURCES = main.c utils.c parsing_utils.c lexing_utils.c expand.c exec_utils.c errors.c ./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
-./builtins/unset.c ft_split.c ./execution/exec_one.c  ./execution/duplication.c free_data.c print_cmd.c ft_itoa.c
+SOURCES = main.c utils.c utils_1.c parsing_utils.c lexing_utils.c expand.c expand_utils.c\
+./errors/syntax_errors.c ./errors/pipe_errors.c ./errors/redir_errors.c ./errors/quotes_errors.c\
+./errors/redir_errors_utils.c\
+./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
+./builtins/unset.c ./builtins/env_export_utils.c ft_split.c \
+./execution/exec_one.c ./execution/dup_redirections.c ./execution/duplication.c ./execution/exec_utils.c\
+free_data.c print_cmd.c ft_itoa.c \
 
 OBJECTS = ${SOURCES:.c=.o}
 

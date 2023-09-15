@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 13:56:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:26:14 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/14 15:53:33 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,42 @@
 void	echo(char **input)
 {
 	int		i;
-	int		j;
-	int		nfalag;
+	int		nflag;
 
 	i = 1;
-	nfalag = 0;
-	while (input[i] && input[i][0] == '-')
+	nflag = 0;
+	check_option_n(input, &i, &nflag);
+	print_arg(input, i);
+	if (nflag != 1)
+		ft_putchar_fd('\n', 1);
+}
+
+void	check_option_n(char **input, int *i, int *nflag)
+{
+	int		j;
+
+	while (input[*i] && input[*i][0] == '-')
 	{
-		if (input[i][0] && input[i][0] == '-')
+		if (input[*i][0] && input[*i][0] == '-')
 		{
 			j = 1;
-			while (input[i][j] && input[i][j] == 'n')
+			while (input[*i][j] && input[*i][j] == 'n')
 				j++;
-			if (input[i][j] == '\0')
-				nfalag = 1;
+			if (input[*i][j] == '\0')
+				*nflag = 1;
 			else
 			{
-				ft_putstr_fd(input[i], 1);
-				if (input[i + 1] && ft_strcmp(input[i + 1], " "))
+				ft_putstr_fd(input[*i], 1);
+				if (input[*i + 1] && ft_strcmp(input[*i + 1], " "))
 					ft_putchar_fd(' ', 1);
 			}
 		}
-		i++;
+		(*i)++;
 	}
+}
+
+void	print_arg(char **input, int i)
+{
 	while (input[i])
 	{
 		if (input[i] && !ft_strcmp(input[i], " "))
@@ -50,8 +63,6 @@ void	echo(char **input)
 		}
 		i++;
 	}
-	if (nfalag != 1)
-		ft_putchar_fd('\n', 1);
 }
 
 void	ft_putstr_fd(char *s, int fd)

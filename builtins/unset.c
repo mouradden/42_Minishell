@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:18:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:30:46 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/14 15:43:15 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,26 @@ void	unset(t_envp **envp, char *title)
 	if (check_duplicate(envp, title))
 	{
 		remove_node(envp, title);
+	}
+}
+
+void	remove_node(t_envp **envp, char *var)
+{
+	t_envp	*cursor;
+	t_envp	*node_temp;
+
+	cursor = *envp;
+	while (cursor->next)
+	{
+		if (cursor->next->title && var && !ft_strcmp(cursor->next->title, var))
+		{
+			node_temp = cursor->next->next;
+			free(cursor->next->title);
+			free(cursor->next->content);
+			free(cursor->next);
+			cursor->next = node_temp;
+			break ;
+		}
+		cursor = cursor->next;
 	}
 }

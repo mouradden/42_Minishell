@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 11:21:55 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/14 22:35:31 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_elem
 	enum e_token	type;
 	enum e_state	state;
 	struct s_elem	*next;
-	// struct s_elem	*prev;
 }	t_elem;
 
 typedef struct s_cmd
@@ -119,7 +118,9 @@ void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
 
 void	expand(t_env *env);
+void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
 char	*remove_spaces(char *str);
+void	fill_without_spaces(char *str, int *i, char **result, int *index);
 int		check_syntax_errors(t_env *env);
 int		check_quotes(t_env *env);
 int		check_syntax_pipes(t_env *env);
@@ -127,6 +128,8 @@ int		check_consecutive_pipes(t_elem *elem);
 int		check_before_pipe(t_elem *elem);
 int		count_cmd(t_elem **list);
 int		check_after_pipe(t_elem *elem);
+int		check_2_consecutives(t_elem *cursor);
+int		check_separated_consecutives(t_elem *cursor);
 int		check_invalid_redir(t_elem *elem);
 int		check_redir_syntax(t_env *env);
 int		invalid_consecutives_redir(t_elem *elem);
@@ -145,17 +148,21 @@ void	pwd(void);
 void	echo(char **input);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void	print_arg(char **input, int i);
+void	check_option_n(char **input, int *i, int *nflag);
 
 void	cd(t_env *env, char *path);
 void	ft_env(t_envp **envp);
 t_envp	*copy_env(char **envp);
 void	split_env(t_envp **list, char *envp);
 void	add_back_env(t_envp **head, t_envp *new);
-char	**env_2_d(t_envp *envp);
+void parse_envp_line(char *envp, char **tit, char **con, char **eq);
 int		count_nodes_env(t_envp *envp);
-int		count_content_length(t_envp *node);
 void	export(t_envp **envp, char **var);
 void	display_export(t_envp **envp);
+void	print_export_error(char *envp);
+int	check_identifier(char *tit, char *envp);
+int	check_title(char *title);
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
 char	*ft_get_env(t_env *env, char *title);
 int		check_duplicate(t_envp **envp, char *var);
@@ -168,15 +175,23 @@ int		len_word(const char *s, char c);
 char	**ft_split(char const *s, char c);
 
 char	*get_cmd_path(char *cmd, t_envp *envp);
+void	check_and_get_path(t_env *env, t_cmd *cmd, char **path);
 // void	exec_one_command(t_env *env ,char **envp);
 
 //-----
 int		duplicate_redir(t_env *env);
+void	execute_herdoc(t_env *env, t_redir *red, int *fd);
+void	fork_exec_herdoc(t_env *env, t_redir *red, int *fd);
 void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
 
+void	dup_output_add(t_redir *redis);
+void	dup_output_append(t_redir *redis);
+void	dup_input(t_redir *redis);
+void	dup_herdoc(int *fdd);
 //-----
 
 void	duplicate_fd(t_env env, int *fd, int count_pipes, int i);
+
 // void	duplicate_redir(t_env *env);
 void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
@@ -189,7 +204,11 @@ void	free_cmd(t_env *env);
 void	free_envp(t_env *env);
 void	free_env(t_env *env, char *input);
 void	expand_word(t_env *env);
-char	*expand_input(t_env *env, char *input);
+char	*expand_input(t_env *env, char *input, int index);
+void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
+void	expand_normal_state(t_env *env, t_elem *cursor);
+void	expand_dquote_state(t_env *env, t_elem *cursor);
+
 int		is_contains(char *str, int c);
 int		is_contains_before_equal(char *str, int c);
 

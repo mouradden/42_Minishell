@@ -6,26 +6,49 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 20:54:20 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 10:48:28 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	expand(t_env *env)
+{
+	t_elem		*cursor;
+
+	expand_word(env);
+	cursor = env->elem;
+	while (cursor)
+	{
+		while (cursor && cursor->type != VAR)
+			cursor = cursor->next;
+		if (cursor && cursor->state == NORMAL
+			&& check_dollar(cursor->content) > -1)
+		{
+			expand_normal_state(env, cursor);
+		}
+		else if (cursor && (cursor->state == IN_DQUOTE)
+			&& check_dollar(cursor->content) > -1)
+		{
+			expand_dquote_state(env, cursor);
+		}
+		if (cursor)
+			cursor = cursor->next;
+	}
+}
 
 void	expand_word(t_env *env)
 {
 	t_elem	*cursor;
 	char	*join;
 	int		i;
-	int		j;
-	int		len;
-	char	*word;
-	char	*var;
 
 	cursor = env->elem;
 	while (cursor)
 	{
-		if (cursor && ((cursor->type == VAR && is_contains(cursor->content, '=') > -1)  || cursor->type == WORD)
+		if (cursor && ((cursor->type == VAR
+					&& is_contains(cursor->content, '=') > -1)
+				|| cursor->type == WORD)
 			&& (check_dollar(cursor->content) > -1))
 		{
 			join = "";
@@ -34,163 +57,112 @@ void	expand_word(t_env *env)
 			{
 				free(cursor->content);
 				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-				break;
+				break ;
 			}
-			int p = 0;
-			if (i != 0)
-			{
-				join = ft_strjoin(join, extract_word(cursor->content, &p, i));
-			}	
-			j = i;
-			len = 0;
-			while (cursor && cursor->content[j] != is_special(cursor->content[j])
-				&& cursor->content[j] != '=')
-			{
-				j++;
-				len++;
-			}
-			word = extract_word(cursor->content, &i, len);
-			if (!ft_get_env(env, &word[1]))
-			{
-				join = ft_strjoin(join, "");
-			}
-			else
-			{
-				var = ft_get_env(env, &(word[1]));
-				join = ft_strjoin(join, var);
-			}
-			free(word);
-			len = 0;
-			j = i;
-			while (cursor->content[j])
-			{
-				j++;
-				len++;
-			}
-			join = ft_strjoin_2(join, extract_word(cursor->content, &i, len));
+			expand_word_sub(env, cursor, &join, &i);
+		}
+		cursor = cursor->next;
+	}
+}
+
+void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
+{
+	int		p;
+	int		j;
+	char	*word;
+
+	p = 0;
+	if (*i != 0)
+		*join = ft_strjoin(*join, extract_word(cursor->content, &p, *i));
+	j = *i;
+	while (cursor && cursor->content[j] != is_special(cursor->content[j])
+		&& cursor->content[j] != '=')
+		j++;
+	word = extract_word(cursor->content, i, j - *i);
+	if (!ft_get_env(env, &word[1]))
+		*join = ft_strjoin(*join, "");
+	else
+		*join = ft_strjoin(*join, ft_get_env(env, &(word[1])));
+	free(word);
+	j = *i;
+	while (cursor->content[j])
+		j++;
+	*join = ft_strjoin_2(*join, extract_word(cursor->content, i, j - *i));
+	free(cursor->content);
+	cursor->content = *join;
+}
+
+
+void	free_and_assign(char *s, char *conntent)
+{
+	free(s);
+	s = ft_strdup(conntent);
+}
+
+void	expand_normal_state(t_env *env, t_elem *cursor)
+{
+	char	*var;
+
+	if (cursor && !ft_strcmp(cursor->content, "$?"))
+	{
+		// free(cursor->content);
+		// cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+		free_and_assign(cursor->content, ft_itoa(gl_exit_status));
+	}
+	else
+	{
+		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
+		{
+			// free(cursor->content);
+			// cursor->content = ft_strdup(&cursor->content[2]);
+			free_and_assign(cursor->content, &cursor->content[2]);
+
+		}
+		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
+		{
+			// free(cursor->content);
+			// cursor->content = ft_strdup("");
+			free_and_assign(cursor->content, "");
+		}
+		else
+		{
+			var = ft_get_env(env, &(cursor->content[1]));
 			free(cursor->content);
-			cursor->content = join;
+			cursor->content = remove_spaces(var);
 		}
-		cursor = cursor->next;
 	}
 }
 
-void	expand(t_env *env)
+void	expand_dquote_state(t_env *env, t_elem *cursor)
 {
-	t_elem		*cursor;
-	char		*var;
+	char	*var;
 
-	expand_word(env);
-	cursor = env->elem;
-	while (cursor)
+	if (cursor && !ft_strcmp(cursor->content, "$?"))
 	{
-		while (cursor && cursor->type != VAR)
-			cursor = cursor->next;
-			if (cursor && cursor->state == NORMAL && check_dollar(cursor->content) > -1)
-			{
-				if (cursor && !ft_strcmp(cursor->content, "$?"))
-				{
-					free(cursor->content);
-					cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-				}
-				else
-				{
-					if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
-					{
-						free(cursor->content);
-						cursor->content = ft_strdup(&cursor->content[2]);
-					}
-					else if (cursor && !ft_get_env(env, &(cursor->content[1])))
-					{
-						free(cursor->content);
-						cursor->content = ft_strdup("");
-					}
-					else
-					{
-						var = ft_get_env(env, &(cursor->content[1]));
-						free(cursor->content);
-						cursor->content = remove_spaces(var);
-					}
-				}
-			}
-			else if (cursor && (cursor->state == IN_DQUOTE) && check_dollar(cursor->content) > -1)
-			{
-				if (cursor && !ft_strcmp(cursor->content, "$?"))
-				{
-					free(cursor->content);
-					cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-				}
-				else
-				{
-					if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
-					{
-						free(cursor->content);
-						cursor->content = ft_strdup(&cursor->content[2]);
-					}
-					else if (!ft_get_env(env, &(cursor->content[1])))
-					{
-						free(cursor->content);
-						cursor->content = ft_strdup("");
-					}
-					else
-					{
-						var = ft_get_env(env, &(cursor->content[1]));
-						free(cursor->content);
-						cursor->content = ft_strdup(var);
-					}
-				}
-			}
-		if (cursor)
-			cursor = cursor->next;
+		// free(cursor->content);
+		// cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+		free_and_assign(cursor->content, ft_itoa(gl_exit_status));			
 	}
-	
-}
-
-char	*ft_get_env(t_env *env, char *title)
-{
-	t_envp	*cursor;
-
-	cursor = env->envp;
-	while (cursor && cursor->title && title && ft_strcmp(cursor->title, title))
-		cursor = cursor->next;
-	if (cursor && cursor->title && title && !ft_strcmp(cursor->title, title))
-		return (cursor->content);
-	return (NULL);
-}
-
-char	*remove_spaces(char *str)
-{
-	int		i;
-	int		index;
-	char	*result;
-
-	i = 0;
-	index = 0;
-	result = malloc(ft_strlen(str) + 1);
-	while (str[i] && str[i] == ' ')
-		i++;
-		
-	while (str[i])
+	else
 	{
-		if (str[i] && str[i] != ' ')
+		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
 		{
-			result[index] = str[i];
-			index++;
-			i++;
+			// free(cursor->content);
+			// cursor->content = ft_strdup(&cursor->content[2]);
+			free_and_assign(cursor->content, &cursor->content[2]);			
 		}
-		else if (str[i] && str[i] == ' ')
+		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
 		{
-			while (str[i] && str[i] == ' ')
-				i++;
-			
-			if (str[i])
-			{
-				result[index] = ' ';
-				index++;
-			}
+			// free(cursor->content);
+			// cursor->content = ft_strdup("");
+			free_and_assign(cursor->content, "");
+		}
+		else
+		{
+			var = ft_get_env(env, &(cursor->content[1]));
+			// free(cursor->content);
+			// cursor->content = ft_strdup(var);
+			free_and_assign(cursor->content, var);
 		}
 	}
-	result[index] = '\0';
-	
-	return (result);
 }
