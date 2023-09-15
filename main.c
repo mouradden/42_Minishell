@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 10:17:19 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 10:02:01 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:06:27 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,9 +171,9 @@ char	*ft_strcat(char *dest, char *src)
 int	is_builting(char *cmd)
 {
 	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd")
-		|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd")
-		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
-		|| !ft_strcmp(cmd, "unset")))
+			|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd")
+			|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
+			|| !ft_strcmp(cmd, "unset")))
 		return (0);
 	else
 		return (1);
@@ -211,10 +211,11 @@ int	main(int ac, char **av, char **envp)
 	int		fdd;
 	pid_t	pid;
 	int		fd[2];
+	t_cmd	*cmd;
+	int		top;
 
 	(void)ac;
 	(void)av;
-	
 	env.envp = copy_env(envp);
 	env.in = dup(STDIN_FILENO);
 	env.out = dup(STDOUT_FILENO);
@@ -232,7 +233,6 @@ int	main(int ac, char **av, char **envp)
 		add_history(input);
 		env.elem = NULL;
 		read_command(&env.elem, input);
-		
 		if (check_syntax_errors(&env))
 		{
 			expand(&env);
@@ -242,7 +242,7 @@ int	main(int ac, char **av, char **envp)
 			env.cmd = NULL;
 			split_line(&env.cmd, &env.elem);
 			// printf_cmd(&env);
-			t_cmd *cmd = env.cmd;
+			cmd = env.cmd;
 			if (cmd)
 			{
 				i = 0;
@@ -268,7 +268,7 @@ int	main(int ac, char **av, char **envp)
 				else
 				{
 					i = 0;
- 					while (i < count_commands)
+					while (i < count_commands)
 					{
 						pipe(fd);
 						pid = fork();
@@ -283,13 +283,13 @@ int	main(int ac, char **av, char **envp)
 						}
 						close(fd[1]);
 						dup2(fd[0], 0);
-        				waitpid(pid, &gl_exit_status, WNOHANG);
-        				gl_exit_status = WEXITSTATUS(gl_exit_status);
-        				close(fd[0]);
+						waitpid(pid, &gl_exit_status, WNOHANG);
+						gl_exit_status = WEXITSTATUS(gl_exit_status);
+						close(fd[0]);
 						cmd = cmd->next;
 						i++;
 					}
-					int top = wait(&gl_exit_status);
+					top = wait(&gl_exit_status);
 					while (top > 0)
 					{
 						if (top < pid)
@@ -301,7 +301,7 @@ int	main(int ac, char **av, char **envp)
 					dup2(env.out, STDOUT_FILENO);
 				}
 			}
-		free_env(&env, input);
+			free_env(&env, input);
 		}
 		// system("leaks minishell");
 	}
@@ -309,5 +309,3 @@ int	main(int ac, char **av, char **envp)
 	free_envp(&env);
 	return (0);
 }
-
-

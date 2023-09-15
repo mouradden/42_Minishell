@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 18:59:41 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:13:38 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ int	is_space(int c)
 int	is_special(int c)
 {
 	return (c == ' ' || c == '\t' || c == '<' || c == '>'
-		|| c == '\n' || c == '|' || c == '\'' || c == '"'
-		);
+		|| c == '\n' || c == '|' || c == '\'' || c == '"');
 }
 
 int	ft_strcmp(char *s1, char *s2)

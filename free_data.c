@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 11:21:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:02:54 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	free_cmd(t_env *env)
 {
 	t_cmd		*cursor;
 	t_cmd		*tmp;
-	cursor = env->cmd;
 
+	cursor = env->cmd;
 	while (cursor)
 	{
 		tmp = cursor->next;

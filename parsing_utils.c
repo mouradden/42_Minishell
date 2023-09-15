@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/13 21:00:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:11:17 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	int			i;
 	int			count;
 	t_redir		*redir;
+	char		**splited;
+	int			j;
 
 	start = *list;
 	cursor = *list;
@@ -188,25 +190,29 @@ void	split_line(t_cmd **cmd, t_elem **list)
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
 			{
 				if (is_contains(start->content, ' ') == -1)
-					{cmd_line[i] = ft_strdup(start->content);i++;}
+				{
+					cmd_line[i] = ft_strdup(start->content);
+					i++;
+				}
 				else if (start->type == VAR && is_contains(start->content, ' ') > -1)
 				{
 					// if (start->state == NORMAL)
 					// {
-						char **splited = ft_split(start->content, ' ');
-						int j = 0;
-						while (splited[j])
-						{
-							cmd_line[i] = ft_strdup(splited[j]);
-							i++;
-							j++;
-							
-						}
+					splited = ft_split(start->content, ' ');
+					j = 0;
+					while (splited[j])
+					{
+						cmd_line[i] = ft_strdup(splited[j]);
+						i++;
+						j++;
+					}
 					free_double(splited);
-					
 				}
 				else
-					{cmd_line[i] = ft_strdup(start->content);i++;}
+				{
+					cmd_line[i] = ft_strdup(start->content);
+					i++;
+				}
 			}
 			start = start->next;
 		}

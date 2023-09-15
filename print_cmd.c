@@ -2,8 +2,10 @@
 
 void	printf_cmd(t_env *env)
 {
-	int	i;
-	t_cmd *cmd = env->cmd;
+	int		i;
+	t_cmd	*cmd;
+
+	cmd = env->cmd;
 	while (cmd)
 	{
 		i = 0;
@@ -26,7 +28,9 @@ void	printf_cmd(t_env *env)
 
 void	print_elem(t_env *env)
 {
-	t_elem *elem = env->elem;
+	t_elem	*elem;
+
+	elem = env->elem;
 	while (elem)
 	{
 		printf("content : |%s|  type :|%d| state : |%d|\n", elem->content, elem->type, elem->state);

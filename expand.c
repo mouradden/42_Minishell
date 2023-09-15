@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 10:48:28 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:02:26 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ void	expand_normal_state(t_env *env, t_elem *cursor)
 			// free(cursor->content);
 			// cursor->content = ft_strdup(&cursor->content[2]);
 			free_and_assign(cursor->content, &cursor->content[2]);
-
 		}
 		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
 		{
@@ -141,7 +140,7 @@ void	expand_dquote_state(t_env *env, t_elem *cursor)
 	{
 		// free(cursor->content);
 		// cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-		free_and_assign(cursor->content, ft_itoa(gl_exit_status));			
+		free_and_assign(cursor->content, ft_itoa(gl_exit_status));
 	}
 	else
 	{
@@ -149,7 +148,7 @@ void	expand_dquote_state(t_env *env, t_elem *cursor)
 		{
 			// free(cursor->content);
 			// cursor->content = ft_strdup(&cursor->content[2]);
-			free_and_assign(cursor->content, &cursor->content[2]);			
+			free_and_assign(cursor->content, &cursor->content[2]);
 		}
 		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
 		{

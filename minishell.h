@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 22:35:31 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:07:19 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <signal.h>
-extern int gl_exit_status;
+
+extern int	gl_exit_status;
 // # ifndef gl_exit_status
 // # define gl_exit_status 0
 // # endif
@@ -112,7 +113,7 @@ char	*up(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
-void	split_line(t_cmd **cmd ,t_elem **list);
+void	split_line(t_cmd **cmd, t_elem **list);
 t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
@@ -156,13 +157,13 @@ void	ft_env(t_envp **envp);
 t_envp	*copy_env(char **envp);
 void	split_env(t_envp **list, char *envp);
 void	add_back_env(t_envp **head, t_envp *new);
-void parse_envp_line(char *envp, char **tit, char **con, char **eq);
+void	parse_envp_line(char *envp, char **tit, char **con, char **eq);
 int		count_nodes_env(t_envp *envp);
 void	export(t_envp **envp, char **var);
 void	display_export(t_envp **envp);
 void	print_export_error(char *envp);
-int	check_identifier(char *tit, char *envp);
-int	check_title(char *title);
+int		check_identifier(char *tit, char *envp);
+int		check_title(char *title);
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
 char	*ft_get_env(t_env *env, char *title);
 int		check_duplicate(t_envp **envp, char *var);
