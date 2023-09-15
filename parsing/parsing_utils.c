@@ -6,157 +6,17 @@
 /*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
+<<<<<<< HEAD:parsing/parsing_utils.c
+/*   Updated: 2023/09/15 17:29:11 by mdenguir         ###   ########.fr       */
+=======
 /*   Updated: 2023/09/15 12:11:17 by yoamzil          ###   ########.fr       */
+>>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:parsing_utils.c
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	count_delimter_pipe(t_elem *list)
-{
-	t_elem	*cursor;
-	int		count;
 
-	cursor = list;
-	count = 0;
-	while (cursor)
-	{
-		if (cursor->type == PIPE)
-			count++;
-		cursor = cursor->next;
-	}
-	return (count);
-}
-
-int	count_before_pipe(t_elem *list)
-{
-	int		count;
-	t_elem	*cursor;
-
-	count = 0;
-	cursor = list;
-	while (cursor && cursor->type != PIPE)
-	{
-		count++;
-		cursor = cursor->next;
-	}
-	return (count);
-}
-
-void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir)
-{
-	t_cmd		*cursor;
-	t_cmd		*new;
-
-	new = malloc(sizeof(t_cmd));
-	if (!new)
-		return ;
-	new->cmd_line = line;
-	new->redir = redir;
-	new->next = NULL;
-	cursor = *cmd_list;
-	if (!cursor)
-	{
-		*cmd_list = new;
-	}
-	else
-	{
-		cursor = *cmd_list;
-		while (cursor->next)
-			cursor = cursor->next;
-		cursor->next = new;
-	}
-}
-
-int	count_cmd(t_elem **list)
-{
-	int		count;
-	t_elem	*cursor;
-
-	count = 0;
-	cursor = *list;
-	while (cursor)
-	{
-		if (cursor->type == PIPE)
-			count++;
-		cursor = cursor->next;
-	}
-	return (count);
-}
-
-void	get_rid_of_spaces(t_elem **list)
-{
-	t_elem	*cursor;
-	t_elem	*temp;
-
-	if (!(*list))
-		return ;
-	while ((*list)->type == WHITE_SPACE
-		&& (*list)->state == NORMAL)
-	{
-		temp = (*list)->next;
-		free((*list)->content);
-		free(*list);
-		*list = temp;
-		if (!(*list))
-			return ;
-	}
-	if (*list)
-	{
-		cursor = *list;
-		while (cursor->next)
-		{
-			if (cursor->next->type == WHITE_SPACE
-				&& cursor->next->state == NORMAL)
-			{
-				temp = cursor->next;
-				cursor->next = cursor->next->next;
-				free(temp->content);
-				free(temp);
-			}
-			else
-				cursor = cursor->next;
-		}
-	}
-}
-
-void	get_rid_of_quotes(t_elem **list)
-{
-	t_elem	*cursor;
-	t_elem	*temp;
-
-	if (!(*list))
-		return ;
-	if (!(*list))
-		return ;
-	while (((*list)->type == S_QUOTE || (*list)->type == D_QUOTE)
-		&& (*list)->state == NORMAL)
-	{
-		temp = (*list)->next;
-		free((*list)->content);
-		free(*list);
-		*list = temp;
-		if (!(*list))
-			return ;
-	}
-	if (*list)
-	{
-		cursor = *list;
-		while (cursor->next)
-		{
-			if ((cursor->next->type == S_QUOTE || cursor->next->type == D_QUOTE)
-				&& cursor->next->state == NORMAL)
-			{
-				temp = cursor->next;
-				cursor->next = cursor->next->next;
-				free(temp->content);
-				free(temp);
-			}
-			else
-				cursor = cursor->next;
-		}
-	}
-}
 
 void	split_line(t_cmd **cmd, t_elem **list)
 {
@@ -164,14 +24,12 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	t_elem		*cursor;
 	char		**cmd_line;
 	int			i;
-	int			count;
 	t_redir		*redir;
 	char		**splited;
 	int			j;
 
 	start = *list;
 	cursor = *list;
-	count = count_cmd(list) + 1;
 	redir = NULL;
 	while (cursor)
 	{
@@ -185,6 +43,15 @@ void	split_line(t_cmd **cmd, t_elem **list)
 			redir = detect_redir(start, cursor);
 		while (start && start != cursor)
 		{
+<<<<<<< HEAD:parsing/parsing_utils.c
+			iterate_and_extract_args(&start, &cmd_line, &redir, &i);
+			// if (start->content && ft_strcmp_redir(start->content, redir)
+			// 	&& start->type != REDIR_IN && start->type != REDIR_ADD
+			// 	&& start->type != REDIR_APPEND && start->type != HER_DOC)
+			// 	fill_cmd_and_args(start, &cmd_line, &i);
+			// start = start->next;
+			
+=======
 			if (start->content && ft_strcmp_redir(start->content, redir)
 				&& start->type != REDIR_IN && start->type != REDIR_ADD
 				&& start->type != REDIR_APPEND && start->type != HER_DOC)
@@ -215,6 +82,7 @@ void	split_line(t_cmd **cmd, t_elem **list)
 				}
 			}
 			start = start->next;
+>>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:parsing_utils.c
 		}
 		cmd_line[i] = 0;
 		add_back_cmd(cmd, cmd_line, redir);
@@ -223,6 +91,43 @@ void	split_line(t_cmd **cmd, t_elem **list)
 			cursor = cursor->next;
 			start = start->next;
 		}
+	}
+}
+
+void	iterate_and_extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i)
+{
+	if ((*start)->content && ft_strcmp_redir((*start)->content, *redir)
+		&& (*start)->type != REDIR_IN && (*start)->type != REDIR_ADD
+		&& (*start)->type != REDIR_APPEND && (*start)->type != HER_DOC)
+		fill_cmd_and_args(*start, cmd_line, i);
+	(*start) = (*start)->next;
+}
+void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i)
+{
+	char	**splited;
+	int		j;
+
+	if (is_contains(start->content, ' ') == -1)
+	{
+		(*cmd_line)[*i] = ft_strdup(start->content);
+		(*i)++;
+	}
+	else if (start->type == VAR && is_contains(start->content, ' ') > -1)
+	{
+		splited = ft_split(start->content, ' ');
+		j = 0;
+		while (splited[j])
+		{
+			(*cmd_line)[*i] = ft_strdup(splited[j]);
+			(*i)++;
+			j++;
+		}
+		free_double(splited);
+	}
+	else
+	{
+		(*cmd_line)[*i] = ft_strdup(start->content);
+		(*i)++;
 	}
 }
 
@@ -302,33 +207,9 @@ t_redir	*detect_redir_final(t_elem *start)
 	return (redir);
 }
 
-void	add_back_redir(t_redir **redir, t_redir *new)
-{
-	t_redir		*cursor;
 
-	if (*redir == NULL)
-		*redir = new;
-	else
-	{
-		cursor = *redir;
-		while (cursor->next)
-			cursor = cursor->next;
-		cursor->next = new;
-	}
-}
 
-t_redir	*new_redir(enum e_redir type, char *file_name)
-{
-	t_redir		*new;
 
-	new = malloc(sizeof(t_redir));
-	if (!new)
-		return (NULL);
-	new->type = type;
-	new->file_name = file_name;
-	new->next = NULL;
-	return (new);
-}
 
 int	count_nodes(t_elem *start)
 {

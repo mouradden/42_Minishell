@@ -6,11 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:38:53 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/11 10:33:57 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:12:40 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_lentgh(int nb)
 {

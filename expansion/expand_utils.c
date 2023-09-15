@@ -6,11 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 22:24:24 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 10:30:54 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:10:35 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*ft_get_env(t_env *env, char *title)
 {

@@ -6,7 +6,11 @@
 /*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/09/15 17:29:02 by mdenguir         ###   ########.fr       */
+=======
 /*   Updated: 2023/09/15 12:07:19 by yoamzil          ###   ########.fr       */
+>>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +109,7 @@ int		is_special(int c);
 
 void	read_command(t_elem **elem, char *input);
 char	*extract_word(char *input, int *index, int len);
+char	*extract_word_1(char *input, int len);
 void	isolate_quotes(t_elem **elem);
 int		add_back(t_elem **elem, t_elem *new);
 int		check_dollar(char *str);
@@ -113,7 +118,14 @@ char	*up(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
+<<<<<<< HEAD
+void	split_line(t_cmd **cmd ,t_elem **list);
+void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i);
+void	iterate_and_extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
+void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir);
+=======
 void	split_line(t_cmd **cmd, t_elem **list);
+>>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53
 t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
@@ -142,8 +154,13 @@ int		ft_strcmp_redir(char *str, t_redir *redir);
 t_redir	*detect_redir_final(t_elem *start);
 int		is_redir_exist(t_elem *start, t_elem *end);
 void	get_rid_of_spaces(t_elem **list);
+int	trim_front_spaces(t_elem **list);
+void	trim_spaces_btw(t_elem *cursor);
 char	*ft_strcat(char *dest, char *src);
+
 void	get_rid_of_quotes(t_elem **list);
+int		trim_front_quotes(t_elem **list);
+void	trim_quotes_btw(t_elem *cursor);
 
 void	pwd(void);
 void	echo(char **input);
@@ -199,6 +216,7 @@ void	printf_cmd(t_env *env);
 void	print_elem(t_env *env);
 
 // ----CLEAN UP---
+void	free_two(char *s1, char *s2);
 void	free_double(char **str);
 void	free_redir(t_redir *redir);
 void	free_cmd(t_env *env);
@@ -209,6 +227,7 @@ char	*expand_input(t_env *env, char *input, int index);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
 void	expand_normal_state(t_env *env, t_elem *cursor);
 void	expand_dquote_state(t_env *env, t_elem *cursor);
+void	free_and_assign(char *s, char *content);
 
 int		is_contains(char *str, int c);
 int		is_contains_before_equal(char *str, int c);

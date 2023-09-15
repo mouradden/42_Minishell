@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/14 15:44:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 15:44:31 by mdenguir         ###   ########.fr       */
+/*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
+/*   Updated: 2023/09/15 16:48:07 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	is_contains_before_equal(char *str, int c)
-{
-	int		i;
-
-	i = 0;
-	while (str[i] != '=')
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	is_contains(char *str, int c)
+void	free_double(char **str)
 {
 	int		i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == c)
-			return (i);
+		free(str[i]);
 		i++;
 	}
-	return (-1);
+	free(str);
+}
+
+int	is_space(int c)
+{
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
+}
+
+int	is_special(int c)
+{
+	return (c == ' ' || c == '\t' || c == '<' || c == '>'
+		|| c == '\n' || c == '|' || c == '\'' || c == '"');
 }

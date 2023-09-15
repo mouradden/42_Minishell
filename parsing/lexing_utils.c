@@ -6,11 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:25:39 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/09 21:04:12 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:25:01 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*extract_word(char *input, int *index, int len)
 {
@@ -81,4 +81,27 @@ t_elem	*new_elem(char *content, int *index, int len, enum e_token token)
 	new->type = token;
 	new->state = NORMAL;
 	return (new);
+}
+
+char	*extract_word_1(char *input, int len)
+{
+	char	*word;
+	int		i;
+	int		j;
+
+	j = 0;
+	if (len == 0)
+		return (NULL);
+	word = malloc (len + 1);
+	if (!word)
+		return (NULL);
+	i = 0;
+	while (input[j] && i < len)
+	{
+		word[i] = input[j];
+		i++;
+		j++;
+	}
+	word[i] = '\0';
+	return (word);
 }

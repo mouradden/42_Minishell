@@ -6,11 +6,11 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 12:48:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/08/25 12:48:06 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:12:57 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	count_words(const char *s, char c)
 {

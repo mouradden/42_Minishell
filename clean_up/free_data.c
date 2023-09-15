@@ -6,11 +6,15 @@
 /*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
+<<<<<<< HEAD:clean_up/free_data.c
+/*   Updated: 2023/09/15 16:12:31 by mdenguir         ###   ########.fr       */
+=======
 /*   Updated: 2023/09/15 12:02:54 by yoamzil          ###   ########.fr       */
+>>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:free_data.c
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	free_env(t_env *env, char *input)
 {
@@ -43,7 +47,6 @@ void	free_redir(t_redir *redir)
 	while (cursor)
 	{
 		tmp = cursor->next;
-		// free(cursor->file_name);
 		free(cursor);
 		cursor = tmp;
 	}
