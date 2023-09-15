@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-<<<<<<< HEAD:expansion/expand.c
-/*   Updated: 2023/09/15 16:25:40 by mdenguir         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/15 12:02:26 by yoamzil          ###   ########.fr       */
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:expand.c
+/*   Updated: 2023/09/15 17:40:08 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -101,76 +98,5 @@ void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
 void	free_and_assign(char *s, char *content)
 {
 	free(s);
-<<<<<<< HEAD:expansion/expand.c
 	s = content;
-=======
-	s = ft_strdup(conntent);
-}
-
-void	expand_normal_state(t_env *env, t_elem *cursor)
-{
-	char	*var;
-
-	if (cursor && !ft_strcmp(cursor->content, "$?"))
-	{
-		// free(cursor->content);
-		// cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-		free_and_assign(cursor->content, ft_itoa(gl_exit_status));
-	}
-	else
-	{
-		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
-		{
-			// free(cursor->content);
-			// cursor->content = ft_strdup(&cursor->content[2]);
-			free_and_assign(cursor->content, &cursor->content[2]);
-		}
-		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
-		{
-			// free(cursor->content);
-			// cursor->content = ft_strdup("");
-			free_and_assign(cursor->content, "");
-		}
-		else
-		{
-			var = ft_get_env(env, &(cursor->content[1]));
-			free(cursor->content);
-			cursor->content = remove_spaces(var);
-		}
-	}
-}
-
-void	expand_dquote_state(t_env *env, t_elem *cursor)
-{
-	char	*var;
-
-	if (cursor && !ft_strcmp(cursor->content, "$?"))
-	{
-		// free(cursor->content);
-		// cursor->content = ft_strdup(ft_itoa(gl_exit_status));
-		free_and_assign(cursor->content, ft_itoa(gl_exit_status));
-	}
-	else
-	{
-		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
-		{
-			// free(cursor->content);
-			// cursor->content = ft_strdup(&cursor->content[2]);
-			free_and_assign(cursor->content, &cursor->content[2]);
-		}
-		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
-		{
-			// free(cursor->content);
-			// cursor->content = ft_strdup("");
-			free_and_assign(cursor->content, "");
-		}
-		else
-		{
-			var = ft_get_env(env, &(cursor->content[1]));
-			// free(cursor->content);
-			// cursor->content = ft_strdup(var);
-			free_and_assign(cursor->content, var);
-		}
-	}
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:expand.c
 }

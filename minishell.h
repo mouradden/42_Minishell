@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/15 17:29:02 by mdenguir         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/15 12:07:19 by yoamzil          ###   ########.fr       */
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53
+/*   Updated: 2023/09/15 17:48:55 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -118,18 +115,15 @@ char	*up(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
-<<<<<<< HEAD
 void	split_line(t_cmd **cmd ,t_elem **list);
 void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i);
 void	iterate_and_extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
 void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir);
-=======
 void	split_line(t_cmd **cmd, t_elem **list);
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53
 t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
 t_redir	*new_redir(enum e_redir type, char *file_name);
-
+void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir);
 void	expand(t_env *env);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
 char	*remove_spaces(char *str);

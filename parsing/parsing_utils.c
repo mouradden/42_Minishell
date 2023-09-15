@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-<<<<<<< HEAD:parsing/parsing_utils.c
-/*   Updated: 2023/09/15 17:29:11 by mdenguir         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/15 12:11:17 by yoamzil          ###   ########.fr       */
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:parsing_utils.c
+/*   Updated: 2023/09/15 17:52:00 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
 
 void	split_line(t_cmd **cmd, t_elem **list)
 {
@@ -25,8 +19,6 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	char		**cmd_line;
 	int			i;
 	t_redir		*redir;
-	char		**splited;
-	int			j;
 
 	start = *list;
 	cursor = *list;
@@ -35,55 +27,11 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	{
 		while (cursor && cursor->type != PIPE)
 			cursor = cursor->next;
-		cmd_line = malloc(100 * sizeof(char *));
+		cmd_line = malloc(count_before_pipe(start) * sizeof(char *));
 		i = 0;
-		if (!cursor)
-			redir = detect_redir_final(start);
-		else if (cursor->type == PIPE)
-			redir = detect_redir(start, cursor);
+		get_redirs(cursor, start, &redir);
 		while (start && start != cursor)
-		{
-<<<<<<< HEAD:parsing/parsing_utils.c
 			iterate_and_extract_args(&start, &cmd_line, &redir, &i);
-			// if (start->content && ft_strcmp_redir(start->content, redir)
-			// 	&& start->type != REDIR_IN && start->type != REDIR_ADD
-			// 	&& start->type != REDIR_APPEND && start->type != HER_DOC)
-			// 	fill_cmd_and_args(start, &cmd_line, &i);
-			// start = start->next;
-			
-=======
-			if (start->content && ft_strcmp_redir(start->content, redir)
-				&& start->type != REDIR_IN && start->type != REDIR_ADD
-				&& start->type != REDIR_APPEND && start->type != HER_DOC)
-			{
-				if (is_contains(start->content, ' ') == -1)
-				{
-					cmd_line[i] = ft_strdup(start->content);
-					i++;
-				}
-				else if (start->type == VAR && is_contains(start->content, ' ') > -1)
-				{
-					// if (start->state == NORMAL)
-					// {
-					splited = ft_split(start->content, ' ');
-					j = 0;
-					while (splited[j])
-					{
-						cmd_line[i] = ft_strdup(splited[j]);
-						i++;
-						j++;
-					}
-					free_double(splited);
-				}
-				else
-				{
-					cmd_line[i] = ft_strdup(start->content);
-					i++;
-				}
-			}
-			start = start->next;
->>>>>>> 58fc06fcd125f870e055373a2db9a0d82236ea53:parsing_utils.c
-		}
 		cmd_line[i] = 0;
 		add_back_cmd(cmd, cmd_line, redir);
 		if (cursor && start)
@@ -94,6 +42,13 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	}
 }
 
+void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir)
+{
+	if (!cursor)
+		*redir = detect_redir_final(start);
+	else if (cursor->type == PIPE)
+		*redir = detect_redir(start, cursor);
+}
 void	iterate_and_extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i)
 {
 	if ((*start)->content && ft_strcmp_redir((*start)->content, *redir)

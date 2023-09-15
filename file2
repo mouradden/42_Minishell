@@ -1,0 +1,14 @@
+Makefile
+builtins
+clean_up
+errors
+execution
+expansion
+file
+file2
+main.c
+minishell
+minishell.h
+parsing
+print_cmd.c
+utils
