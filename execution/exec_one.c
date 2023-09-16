@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 19:50:55 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:59:39 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	check_and_get_path(t_env *env, t_cmd *cmd, char **path)
 		{
 			ft_putstr_fd(cmd->cmd_line[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			gl_exit_status = 127;
+			g_exit_status = 127;
 			exit(127);
 		}
 	}

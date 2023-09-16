@@ -6,10 +6,9 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 17:48:55 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 22:24:34 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -21,10 +20,7 @@
 # include <fcntl.h>
 # include <signal.h>
 
-extern int	gl_exit_status;
-// # ifndef gl_exit_status
-// # define gl_exit_status 0
-// # endif
+extern int	g_exit_status;
 
 enum e_state
 {
@@ -32,6 +28,7 @@ enum e_state
 	IN_QUOTE,
 	NORMAL,
 };
+
 enum e_token
 {
 	WORD,
@@ -46,6 +43,7 @@ enum e_token
 	HER_DOC,
 	EQUAL,
 };
+
 enum e_redir
 {
 	NONE,
@@ -105,6 +103,9 @@ int		is_space(int c);
 int		is_special(int c);
 
 void	read_command(t_elem **elem, char *input);
+void	get_quotes_or_pipe(t_elem **elem, char *input, int *i);
+void	get_var(t_elem **elem, char *input, int *i);
+void	get_word(t_elem **elem, char *input, int *i);
 char	*extract_word(char *input, int *index, int len);
 char	*extract_word_1(char *input, int len);
 void	isolate_quotes(t_elem **elem);
@@ -115,13 +116,15 @@ char	*up(char *s1);
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
-void	split_line(t_cmd **cmd ,t_elem **list);
+void	split_line(t_cmd **cmd, t_elem **list);
 void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i);
-void	iterate_and_extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
+void	extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
 void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir);
 void	split_line(t_cmd **cmd, t_elem **list);
 t_redir	*detect_redir(t_elem *start, t_elem *end);
 void	add_back_redir(t_redir **redir, t_redir *new);
+void	get_redir_type(t_elem *start, enum e_redir *type, char **file_name);
+void	move_to_next(t_elem *start, t_elem *cursor);
 t_redir	*new_redir(enum e_redir type, char *file_name);
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir);
 void	expand(t_env *env);
@@ -148,7 +151,7 @@ int		ft_strcmp_redir(char *str, t_redir *redir);
 t_redir	*detect_redir_final(t_elem *start);
 int		is_redir_exist(t_elem *start, t_elem *end);
 void	get_rid_of_spaces(t_elem **list);
-int	trim_front_spaces(t_elem **list);
+int		trim_front_spaces(t_elem **list);
 void	trim_spaces_btw(t_elem *cursor);
 char	*ft_strcat(char *dest, char *src);
 
@@ -188,7 +191,6 @@ char	**ft_split(char const *s, char c);
 
 char	*get_cmd_path(char *cmd, t_envp *envp);
 void	check_and_get_path(t_env *env, t_cmd *cmd, char **path);
-// void	exec_one_command(t_env *env ,char **envp);
 
 //-----
 int		duplicate_redir(t_env *env);

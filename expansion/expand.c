@@ -6,10 +6,9 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 17:40:08 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:59:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../minishell.h"
 
@@ -57,7 +56,7 @@ void	expand_word(t_env *env)
 			if (cursor->content[i + 1] && cursor->content[i + 1] == '?')
 			{
 				free(cursor->content);
-				cursor->content = ft_strdup(ft_itoa(gl_exit_status));
+				cursor->content = ft_strdup(ft_itoa(g_exit_status));
 				break ;
 			}
 			expand_word_sub(env, cursor, &join, &i);

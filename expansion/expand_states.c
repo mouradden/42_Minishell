@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:00:10 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:10:43 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:59:44 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	expand_normal_state(t_env *env, t_elem *cursor)
 	char	*var;
 
 	if (cursor && !ft_strcmp(cursor->content, "$?"))
-		free_and_assign(cursor->content, ft_strdup(ft_itoa(gl_exit_status)));
+		free_and_assign(cursor->content, ft_strdup(ft_itoa(g_exit_status)));
 	else
 	{
 		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
@@ -38,7 +38,7 @@ void	expand_dquote_state(t_env *env, t_elem *cursor)
 	char	*var;
 
 	if (cursor && !ft_strcmp(cursor->content, "$?"))
-		free_and_assign(cursor->content, ft_strdup(ft_itoa(gl_exit_status)));
+		free_and_assign(cursor->content, ft_strdup(ft_itoa(g_exit_status)));
 	else
 	{
 		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')

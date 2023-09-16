@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   syntax_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:00:45 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 20:19:15 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:59:36 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ int	check_syntax_errors(t_env *env)
 	if (!check_quotes(env))
 	{
 		printf("syntax error : unclosed quotes\n");
-		gl_exit_status = 258;
+		g_exit_status = 258;
 		return (0);
 	}
 	if (!check_syntax_pipes(env))
 	{
 		printf("syntax error : pipes \n");
-		gl_exit_status = 258;
+		g_exit_status = 258;
 		return (0);
 	}
 	if (!check_redir_syntax(env))
 	{
 		printf("syntax error : redirections \n");
-		gl_exit_status = 258;
+		g_exit_status = 258;
 		return (0);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 #    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/26 10:35:31 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/15 17:15:18 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/15 20:55:03 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ SOURCES = main.c \
 ./errors/redir_errors_utils.c\
 ./parsing/utils.c  ./parsing/parsing_utils.c ./parsing/lexing_utils.c  ./parsing/print_cmd.c\
 ./parsing/cmd_utils.c ./parsing/redir_utils.c ./parsing/quotes.c ./parsing/spaces.c\
+./parsing/extract_args.c \
 ./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
 ./builtins/unset.c ./builtins/env_export_utils.c \
 ./execution/exec_one.c ./execution/dup_redirections.c ./execution/duplication.c ./execution/exec_utils.c\

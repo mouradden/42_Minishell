@@ -6,19 +6,17 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:35:47 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 17:35:49 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 10:10:01 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	gl_exit_status = 0;
+int	g_exit_status = 0;
 
 void	read_command(t_elem **elem, char *input)
 {
 	int				i;
-	int				j;
-	int				len;
 
 	i = 0;
 	while (input[i] && input[i] != '\n')
@@ -26,39 +24,12 @@ void	read_command(t_elem **elem, char *input)
 		if (input[i] && is_space(input[i]))
 			add_back(elem, new_elem(input, &i, 1, WHITE_SPACE));
 		else if (input[i] && input[i] == '$')
-		{
-			len = 0;
-			j = i;
-			while (input[j])
-			{
-				j++;
-				len++;
-				if (input[j] && is_special(input[j]))
-					break ;
-			}
-			add_back(elem, new_elem(input, &i, len, VAR));
-		}
+			get_var(elem, input, &i);
 		else if (input[i] && !is_special(input[i]))
-		{
-			j = i;
-			len = 0;
-			while (input[j] && !is_special(input[j]))
-			{
-				len++;
-				j++;
-			}
-			if (input[j - 1] && input[j - 1] == '='
-				&& (input[j] == '\'' || input[j] == '"'))
-				parse_equal(elem, input, &i, j, len);
-			else
-				add_back(elem, new_elem(input, &i, len, WORD));
-		}
-		else if (input[i] && input[i] == '|')
-			add_back(elem, new_elem(input, &i, 1, PIPE));
-		else if (input[i] && input[i] == '\'')
-			add_back(elem, new_elem(input, &i, 1, S_QUOTE));
-		else if (input[i] && input[i] == '"')
-			add_back(elem, new_elem(input, &i, 1, D_QUOTE));
+			get_word(elem, input, &i);
+		else if (input[i] && (input[i] == '|'
+				|| input[i] == '\'' || input[i] == '"'))
+			get_quotes_or_pipe(elem, input, &i);
 		else if (input[i] && input[i] == '>' && input[i + 1] == '>')
 			add_back(elem, new_elem(input, &i, 2, REDIR_APPEND));
 		else if (input[i] && input[i] == '>')
@@ -69,7 +40,49 @@ void	read_command(t_elem **elem, char *input)
 			add_back(elem, new_elem(input, &i, 1, REDIR_IN));
 	}
 	isolate_quotes(elem);
-	// printf("|%s|\n", (*elem)->content);
+}
+
+void	get_quotes_or_pipe(t_elem **elem, char *input, int *i)
+{
+	if (input[*i] && input[*i] == '\'')
+		add_back(elem, new_elem(input, i, 1, S_QUOTE));
+	else if (input[*i] && input[*i] == '"')
+		add_back(elem, new_elem(input, i, 1, D_QUOTE));
+	else if (input[*i] && input[*i] == '|')
+		add_back(elem, new_elem(input, i, 1, PIPE));
+}
+
+void	get_var(t_elem **elem, char *input, int *i)
+{
+	int		j;
+
+	j = *i;
+	while (input[j])
+	{
+		j++;
+		if (input[j] && is_special(input[j]))
+			break ;
+	}
+	add_back(elem, new_elem(input, i, j - *i, VAR));
+}
+
+void	get_word(t_elem **elem, char *input, int *i)
+{
+	int		j;
+	int		len;
+
+	j = *i;
+	len = 0;
+	while (input[j] && !is_special(input[j]))
+	{
+		len++;
+		j++;
+	}
+	if (input[j - 1] && input[j - 1] == '='
+		&& (input[j] == '\'' || input[j] == '"'))
+		parse_equal(elem, input, i, j, len);
+	else
+		add_back(elem, new_elem(input, i, len, WORD));
 }
 
 void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
@@ -97,7 +110,8 @@ void	parse_equal(t_elem **elem, char *input, int *i, int a, int len)
 				d_q++;
 			if ((input[j] == '"' && input[j + 1] == ' ')
 				|| (input[j] == '\'' && input[j + 1] == ' ')
-				|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q) || (d_q % 2 == 0 && d_q))))
+				|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q)
+						|| (d_q % 2 == 0 && d_q))))
 				break ;
 			len++;
 			j++;
@@ -136,6 +150,10 @@ void	isolate_quotes(t_elem **elem)
 	}
 }
 
+// void	check_s_quote()
+// {
+	
+// }
 char	*ft_strcat(char *dest, char *src)
 {
 	int		i;
@@ -192,7 +210,7 @@ void	sig_check(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		gl_exit_status = 1;
+		g_exit_status = 1;
 	}
 }
 
@@ -227,7 +245,7 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 		{
 			// free()
-			gl_exit_status = 127;
+			g_exit_status = 127;
 			exit(127);
 		}
 		add_history(input);
@@ -283,20 +301,20 @@ int	main(int ac, char **av, char **envp)
 						}
 						close(fd[1]);
 						dup2(fd[0], 0);
-						waitpid(pid, &gl_exit_status, WNOHANG);
-						gl_exit_status = WEXITSTATUS(gl_exit_status);
+						waitpid(pid, &g_exit_status, WNOHANG);
+						g_exit_status = WEXITSTATUS(g_exit_status);
 						close(fd[0]);
 						cmd = cmd->next;
 						i++;
 					}
-					top = wait(&gl_exit_status);
+					top = wait(&g_exit_status);
 					while (top > 0)
 					{
 						if (top < pid)
-							gl_exit_status = WEXITSTATUS(gl_exit_status);
-						top = wait(&gl_exit_status);
+							g_exit_status = WEXITSTATUS(g_exit_status);
+						top = wait(&g_exit_status);
 					}
-					gl_exit_status = WEXITSTATUS(gl_exit_status);
+					g_exit_status = WEXITSTATUS(g_exit_status);
 					dup2(env.in, STDIN_FILENO);
 					dup2(env.out, STDOUT_FILENO);
 				}

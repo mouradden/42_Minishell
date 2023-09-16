@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 20:57:48 by mdenguir          #+#    #+#             */
+/*   Updated: 2023/09/15 20:57:57 by mdenguir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	printf_cmd(t_env *env)
@@ -33,7 +45,8 @@ void	print_elem(t_env *env)
 	elem = env->elem;
 	while (elem)
 	{
-		printf("content : |%s|  type :|%d| state : |%d|\n", elem->content, elem->type, elem->state);
+		printf("content : |%s|  type :|%d| state : |%d|\n",
+			elem->content, elem->type, elem->state);
 		elem = elem->next;
 	}
 }
