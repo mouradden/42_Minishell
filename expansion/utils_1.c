@@ -6,11 +6,22 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 15:44:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:16:25 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 10:35:21 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_builting(char *cmd)
+{
+	if (cmd && (!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "pwd")
+			|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd")
+			|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "export")
+			|| !ft_strcmp(cmd, "unset")))
+		return (0);
+	else
+		return (1);
+}
 
 int	is_contains_before_equal(char *str, int c)
 {

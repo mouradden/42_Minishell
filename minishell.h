@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 22:24:34 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:18:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct s_env
 	int		in;
 	int		out;
 	int		exit_status;
+	int		count_commands;
+	int		index_cmd;
 }	t_env;
 
 typedef struct s_redir
@@ -103,6 +105,7 @@ int		is_space(int c);
 int		is_special(int c);
 
 void	read_command(t_elem **elem, char *input);
+void	get_input(t_env *env);
 void	get_quotes_or_pipe(t_elem **elem, char *input, int *i);
 void	get_var(t_elem **elem, char *input, int *i);
 void	get_word(t_elem **elem, char *input, int *i);
@@ -117,6 +120,7 @@ int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
 void	split_line(t_cmd **cmd, t_elem **list);
+void	iterate_till_pipe(t_elem **cursor);
 void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i);
 void	extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
 void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir);
@@ -197,6 +201,12 @@ int		duplicate_redir(t_env *env);
 void	execute_herdoc(t_env *env, t_redir *red, int *fd);
 void	fork_exec_herdoc(t_env *env, t_redir *red, int *fd);
 void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
+void	exec_cmd(t_env *env, t_cmd *cmd, char **envp, int fdd);
+void	exec_one_builtin(t_env env, t_cmd *cmd);
+void 	parse_elem_to_cmd(t_env *env);
+void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd);
+void	minishell(t_env env, char **envp);
+
 
 void	dup_output_add(t_redir *redis);
 void	dup_output_append(t_redir *redis);
@@ -217,7 +227,7 @@ void	free_double(char **str);
 void	free_redir(t_redir *redir);
 void	free_cmd(t_env *env);
 void	free_envp(t_env *env);
-void	free_env(t_env *env, char *input);
+void	free_env(t_env *env);
 void	expand_word(t_env *env);
 char	*expand_input(t_env *env, char *input, int index);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 20:59:39 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:19:33 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,24 @@ void	exec_builtin(t_env *env, t_cmd *cmd)
 		export(&env->envp, cmd->cmd_line);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "unset"))
 		unset(&env->envp, cmd->cmd_line[1]);
+}
+
+void	exec_one_builtin(t_env env, t_cmd *cmd)
+{
+	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
+		exit(127);
+	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
+		pwd();
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
+		echo(cmd->cmd_line);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
+		cd(&env, cmd->cmd_line[1]);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
+		ft_env(&env.envp);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
+		export(&env.envp, cmd->cmd_line);
+	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "unset"))
+		unset(&env.envp, cmd->cmd_line[1]);
 }
 
 void	check_and_get_path(t_env *env, t_cmd *cmd, char **path)

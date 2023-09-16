@@ -6,17 +6,16 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 18:40:44 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 20:57:32 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:22:52 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_env(t_env *env, char *input)
+void	free_env(t_env *env)
 {
 	free_elem(env);
 	free_cmd(env);
-	free(input);
 }
 
 void	free_elem(t_env *env)

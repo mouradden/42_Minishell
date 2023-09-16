@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:18:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 15:43:15 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:32:33 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	remove_node(t_envp **envp, char *var)
 		{
 			node_temp = cursor->next->next;
 			free(cursor->next->title);
+			free (cursor->next->equal);
 			free(cursor->next->content);
 			free(cursor->next);
 			cursor->next = node_temp;

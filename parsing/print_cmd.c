@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/15 16:19:23 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:57:03 by mdenguir         ###   ########.fr       */
+/*   Created: 2023/09/15 20:57:48 by mdenguir          #+#    #+#             */
+/*   Updated: 2023/09/16 10:48:09 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	printf_cmd(t_env *env)
 
 void	print_elem(t_env *env)
 {
-	t_elem		*elem;
+	t_elem	*elem;
 
 	elem = env->elem;
 	while (elem)

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:48:29 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 10:05:49 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:03:14 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	redir = NULL;
 	while (cursor)
 	{
-		while (cursor && cursor->type != PIPE)
-			cursor = cursor->next;
+		iterate_till_pipe(&cursor);
 		cmd_line = malloc((count_before_pipe(start) + 1) * sizeof(char *));
 		i = 0;
 		get_redirs(cursor, start, &redir);
@@ -42,13 +41,10 @@ void	split_line(t_cmd **cmd, t_elem **list)
 	}
 }
 
-void	move_to_next(t_elem *start, t_elem *cursor)
+void	iterate_till_pipe(t_elem **cursor)
 {
-	if (cursor && start)
-	{
-		cursor = cursor->next;
-		start = start->next;
-	}
+	while (*cursor && (*cursor)->type != PIPE)
+		(*cursor) = (*cursor)->next;
 }
 
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir)

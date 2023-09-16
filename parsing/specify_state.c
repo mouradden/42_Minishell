@@ -1,48 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   specify_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 10:43:03 by mdenguir         ###   ########.fr       */
+/*   Created: 2023/09/16 10:13:59 by mdenguir          #+#    #+#             */
+/*   Updated: 2023/09/16 10:33:35 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_double(char **str)
+void	isolate_quotes(t_elem **elem)
 {
-	int		i;
+	t_elem		*cursor;
 
-	i = 0;
-	while (str[i])
+	cursor = *elem;
+	while (cursor)
 	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-int	is_space(int c)
-{
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
-int	is_special(int c)
-{
-	return (c == ' ' || c == '\t' || c == '<' || c == '>'
-		|| c == '\n' || c == '|' || c == '\'' || c == '"');
-}
-
-void	move_to_next(t_elem *start, t_elem *cursor)
-{
-	if (cursor && start)
-	{
+		if (cursor && cursor->type == S_QUOTE)
+		{
+			cursor = cursor->next;
+			while (cursor && cursor->type != S_QUOTE)
+			{
+				cursor->state = IN_QUOTE;
+				cursor = cursor->next;
+			}
+		}
+		if (cursor && cursor->type == D_QUOTE)
+		{
+			cursor = cursor->next;
+			while (cursor && cursor->type != D_QUOTE)
+			{
+				cursor->state = IN_DQUOTE;
+				cursor = cursor->next;
+			}
+		}
 		cursor = cursor->next;
-		start = start->next;
 	}
 }
