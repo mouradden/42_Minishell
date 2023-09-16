@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 12:18:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:28:24 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,12 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
+typedef struct s_tmp
+{
+	int			j;
+	int			len;
+}	t_tmp;
+
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strjoin_2(char *s1, char *s2);
 char	*ft_strdup(char *s1);
@@ -112,6 +118,7 @@ void	get_word(t_elem **elem, char *input, int *i);
 char	*extract_word(char *input, int *index, int len);
 char	*extract_word_1(char *input, int len);
 void	isolate_quotes(t_elem **elem);
+void	count_quotes(char c, int *d_q, int *s_q);
 int		add_back(t_elem **elem, t_elem *new);
 int		check_dollar(char *str);
 t_elem	*new_elem(char *content, int *index, int len, enum e_token token);
@@ -182,7 +189,7 @@ void	display_export(t_envp **envp);
 void	print_export_error(char *envp);
 int		check_identifier(char *tit, char *envp);
 int		check_title(char *title);
-void	parse_equal(t_elem **elem, char *input, int *i, int a, int len);
+void	parse_equal(t_elem **elem, char *input, int *i, t_tmp tmp);
 char	*ft_get_env(t_env *env, char *title);
 int		check_duplicate(t_envp **envp, char *var);
 void	update_node(t_envp **envp, char *var_title, char *var_content);
@@ -203,10 +210,9 @@ void	fork_exec_herdoc(t_env *env, t_redir *red, int *fd);
 void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
 void	exec_cmd(t_env *env, t_cmd *cmd, char **envp, int fdd);
 void	exec_one_builtin(t_env env, t_cmd *cmd);
-void 	parse_elem_to_cmd(t_env *env);
+void	parse_elem_to_cmd(t_env *env);
 void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd);
 void	minishell(t_env env, char **envp);
-
 
 void	dup_output_add(t_redir *redis);
 void	dup_output_append(t_redir *redis);

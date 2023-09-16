@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 20:59:47 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:15:37 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	expand(t_env *env)
 {
 	t_elem		*cursor;
 
+	expand_word(env);
 	cursor = env->elem;
 	while (cursor)
 	{
@@ -34,7 +35,6 @@ void	expand(t_env *env)
 		if (cursor)
 			cursor = cursor->next;
 	}
-	expand_word(env);
 }
 
 void	expand_word(t_env *env)

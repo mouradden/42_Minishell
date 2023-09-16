@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:02:22 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 17:15:33 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:30:15 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ void	trim_quotes_btw(t_elem *cursor)
 		else
 			cursor = cursor->next;
 	}
+}
+
+void	count_quotes(char c, int *d_q, int *s_q)
+{
+	if (c == '\'')
+		(*s_q)++;
+	if (c == '"')
+		(*d_q)++;
 }

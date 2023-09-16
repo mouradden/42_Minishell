@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 10:43:09 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 11:54:14 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:30:46 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	get_word(t_elem **elem, char *input, int *i)
 {
 	int		j;
 	int		len;
+	t_tmp	tmp;
 
 	j = *i;
 	len = 0;
@@ -83,7 +84,40 @@ void	get_word(t_elem **elem, char *input, int *i)
 	}
 	if (input[j - 1] && input[j - 1] == '='
 		&& (input[j] == '\'' || input[j] == '"'))
-		parse_equal(elem, input, i, j, len);
+	{
+		tmp.j = j;
+		tmp.len = len;
+		parse_equal(elem, input, i, tmp);
+	}
 	else
 		add_back(elem, new_elem(input, i, len, WORD));
+}
+
+void	parse_equal(t_elem **elem, char *input, int *i, t_tmp tmp)
+{
+	int		j;
+	int		s_q;
+	int		d_q;
+
+	j = tmp.j - 1;
+	s_q = 0;
+	d_q = 0;
+	if (input[j] == '=' && input[j + 1]
+		&& (input[j + 1] == '\'' || input[j + 1] == '"'))
+	{
+		count_quotes(input[j + 1], &d_q, &s_q);
+		j += 2;
+		while (input[j] && input[j + 1])
+		{
+			count_quotes(input[j], &d_q, &s_q);
+			if ((input[j] == '"' && input[j + 1] == ' ')
+				|| (input[j] == '\'' && input[j + 1] == ' ')
+				|| (input[j] == ' ' && ((s_q % 2 == 0 && s_q)
+						|| (d_q % 2 == 0 && d_q))))
+				break ;
+			tmp.len++;
+			j++;
+		}
+		add_back(elem, new_elem(input, i, tmp.len + 2, WORD));
+	}
 }
