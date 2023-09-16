@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 10:43:09 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 13:30:46 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 23:40:53 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	get_var(t_elem **elem, char *input, int *i)
 	j = *i;
 	if (input[*i] == '$' && !input[*i + 1])
 		add_back(elem, new_elem(input, i, 1, WORD));
+	else if (input[*i] == '$' && input[*i + 1] && input[*i + 1] == '?')
+		add_back(elem, new_elem(input, i, 2, WORD));
 	else
 	{
 		while (input[j])

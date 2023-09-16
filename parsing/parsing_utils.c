@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:26:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 20:56:53 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 23:44:11 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,15 @@ t_redir	*detect_redir_final(t_elem *start)
 		if (start && (start->type == REDIR_IN || start->type == REDIR_ADD
 				|| start->type == REDIR_APPEND || start->type == HER_DOC))
 		{
-			get_redir_type(start, &type, &file_name);
-			add_back_redir(&redir, new_redir(type, file_name));
-			if (!start->next)
-				break ;
+			if (start->state == NORMAL)
+			{
+				get_redir_type(start, &type, &file_name);
+				add_back_redir(&redir, new_redir(type, file_name));
+				if (!start->next)
+					break ;
+			}
 		}
-		if (start)
-			start = start->next;
+		move_to_next_1(&start);
 	}
 	return (redir);
 }

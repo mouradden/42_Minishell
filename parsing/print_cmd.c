@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:57:48 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 10:48:09 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 22:35:15 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	printf_cmd(t_env *env)
 		i = 0;
 		while (cmd->cmd_line[i])
 		{
-			printf("cmd   |%s| **\n", cmd->cmd_line[i]);
+			printf("cmd [%d]  |%s| **\n", i, cmd->cmd_line[i]);
 			i++;
 		}
 		printf("--- redir--\n");

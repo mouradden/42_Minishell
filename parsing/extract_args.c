@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:48:29 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 11:03:14 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 23:40:24 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,15 @@ void	split_line(t_cmd **cmd, t_elem **list)
 
 void	iterate_till_pipe(t_elem **cursor)
 {
-	while (*cursor && (*cursor)->type != PIPE)
-		(*cursor) = (*cursor)->next;
+	while (*cursor)
+	{
+		if ((*cursor)->type == PIPE && (*cursor)->state == NORMAL)
+			break ;
+		else
+		{
+			*cursor = (*cursor)->next;
+		}
+	}
 }
 
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir)
@@ -58,8 +65,13 @@ void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir)
 void	extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i)
 {
 	if ((*start)->content && ft_strcmp_redir((*start)->content, *redir)
-		&& (*start)->type != REDIR_IN && (*start)->type != REDIR_ADD
-		&& (*start)->type != REDIR_APPEND && (*start)->type != HER_DOC)
+		&& (((*start)->type != REDIR_IN && (*start)->type != REDIR_ADD
+				&& (*start)->type != REDIR_APPEND && (*start)->type != HER_DOC)
+			|| (((*start)->type == REDIR_IN || (*start)->type == REDIR_ADD
+					|| (*start)->type == REDIR_APPEND
+					|| (*start)->type == HER_DOC)
+				&& ((*start)->state == IN_DQUOTE
+					|| (*start)->state == IN_QUOTE))))
 		fill_cmd_and_args(*start, cmd_line, i);
 	(*start) = (*start)->next;
 }

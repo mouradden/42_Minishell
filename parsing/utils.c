@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 11:28:49 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 10:43:03 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 23:44:32 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,10 @@ void	move_to_next(t_elem *start, t_elem *cursor)
 		cursor = cursor->next;
 		start = start->next;
 	}
+}
+
+void	move_to_next_1(t_elem **start)
+{
+	if (*start)
+		*start = (*start)->next;
 }

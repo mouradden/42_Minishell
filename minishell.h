@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 13:28:24 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 23:44:07 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,9 @@ void	parse_envp_line(char *envp, char **tit, char **con, char **eq);
 int		count_nodes_env(t_envp *envp);
 void	export(t_envp **envp, char **var);
 void	display_export(t_envp **envp);
+
+void	move_to_next_1(t_elem **start);
+
 void	print_export_error(char *envp);
 int		check_identifier(char *tit, char *envp);
 int		check_title(char *title);

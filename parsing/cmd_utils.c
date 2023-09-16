@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 16:45:55 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:46:16 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/16 22:52:03 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	count_delimter_pipe(t_elem *list)
 	count = 0;
 	while (cursor)
 	{
-		if (cursor->type == PIPE)
+		if (cursor->type == PIPE && cursor->state == NORMAL)
 			count++;
 		cursor = cursor->next;
 	}
@@ -60,10 +60,15 @@ int	count_before_pipe(t_elem *list)
 
 	count = 0;
 	cursor = list;
-	while (cursor && cursor->type != PIPE)
+	while (cursor)
 	{
-		count++;
-		cursor = cursor->next;
+		if (cursor->type == PIPE && cursor->state == NORMAL)
+			break ;
+		else
+		{
+			count++;
+			cursor = cursor->next;
+		}
 	}
 	return (count);
 }
