@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:57:48 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 22:35:15 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:29:09 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	print_elem(t_env *env)
 	elem = env->elem;
 	while (elem)
 	{
+		printf("---%p----", elem->content);
 		printf("content : |%s|  type :|%d| state : |%d|\n",
 			elem->content, elem->type, elem->state);
 		elem = elem->next;
