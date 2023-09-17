@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 14:32:11 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/17 15:34:09 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/17 20:25:09 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd)
 	env->index_cmd = 0;
 	exec_cmd(env, cmd, envp, fdd);
 	top = wait(&g_exit_status);
+	while (top > 0)
+	{
+		top = wait(&g_exit_status);
+	}
 	g_exit_status = WEXITSTATUS(g_exit_status);
 	dup2(env->in, STDIN_FILENO);
 	dup2(env->out, STDOUT_FILENO);
