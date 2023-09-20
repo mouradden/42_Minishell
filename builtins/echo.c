@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 13:56:05 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 15:53:33 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:19:57 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	echo(char **input)
 	print_arg(input, i);
 	if (nflag != 1)
 		ft_putchar_fd('\n', 1);
+	g_exit_status = 0;
 }
 
 void	check_option_n(char **input, int *i, int *nflag)

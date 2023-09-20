@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 23:44:07 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:26:13 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	get_word(t_elem **elem, char *input, int *i);
 char	*extract_word(char *input, int *index, int len);
 char	*extract_word_1(char *input, int len);
 void	isolate_quotes(t_elem **elem);
+void	to_next(t_elem **cursor);
 void	count_quotes(char c, int *d_q, int *s_q);
 int		add_back(t_elem **elem, t_elem *new);
 int		check_dollar(char *str);
@@ -177,7 +178,7 @@ void	ft_putchar_fd(char c, int fd);
 void	print_arg(char **input, int i);
 void	check_option_n(char **input, int *i, int *nflag);
 
-void	cd(t_env *env, char *path);
+void	cd(char *path);
 void	ft_env(t_envp **envp);
 t_envp	*copy_env(char **envp);
 void	split_env(t_envp **list, char *envp);
@@ -225,7 +226,6 @@ void	dup_herdoc(int *fdd);
 
 void	duplicate_fd(t_env env, int *fd, int count_pipes, int i);
 
-// void	duplicate_redir(t_env *env);
 void	free_elem(t_env *env);
 void	printf_cmd(t_env *env);
 void	print_elem(t_env *env);
@@ -244,8 +244,8 @@ void	expand_normal_state(t_env *env, t_elem *cursor);
 void	expand_dquote_state(t_env *env, t_elem *cursor);
 void	free_and_assign(char *s, char *content);
 
-int		is_contains(char *str, int c);
-int		is_contains_before_equal(char *str, int c);
+int		contains(char *str, int c);
+int		contains_equal(char *str, int c);
 
 void	rl_replace_line(const char *text, int clear_undo);
 

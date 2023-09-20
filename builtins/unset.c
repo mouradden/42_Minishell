@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:18:52 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 11:32:33 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:21:41 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	unset(t_envp **envp, char *title)
 	{
 		remove_node(envp, title);
 	}
+	g_exit_status = 0;
 }
 
 void	remove_node(t_envp **envp, char *var)

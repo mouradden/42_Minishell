@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:02:22 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 13:30:15 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:02:27 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	get_rid_of_quotes(t_elem **list)
 
 	if (!(*list))
 		return ;
-	if (!trim_front_spaces(list))
+	if (!trim_front_quotes(list))
 		return ;
 	if (*list)
 	{

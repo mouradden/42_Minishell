@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/17 19:48:19 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/17 21:34:50 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exec_builtin(t_env *env, t_cmd *cmd)
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
 		echo(cmd->cmd_line);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
-		cd(env, cmd->cmd_line[1]);
+		cd(cmd->cmd_line[1]);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
 		ft_env(&env->envp);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))
@@ -37,7 +37,7 @@ void	exec_one_builtin(t_env env, t_cmd *cmd)
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
 		echo(cmd->cmd_line);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "cd"))
-		cd(&env, cmd->cmd_line[1]);
+		cd(cmd->cmd_line[1]);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "env"))
 		ft_env(&env.envp);
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "export"))

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 10:19:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 10:18:37 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:17:35 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	count_nodes_env(t_envp *envp)
 
 void	print_export_error(char *envp)
 {
-	ft_putstr_fd("export: `", 1);
-	ft_putstr_fd(envp, 1);
-	ft_putstr_fd("`: not a valid identifier\n", 1);
+	ft_putstr_fd("export: `", 2);
+	ft_putstr_fd(envp, 2);
+	ft_putstr_fd("`: not a vaaaaalid identifier\n", 2);
 }
 
 int	check_title(char *title)
@@ -59,6 +59,8 @@ int	check_title(char *title)
 		if (title[i] == '_' || (title[i] >= 'a' && title[i] <= 'z')
 			|| (title[i] >= 'A' && title[i] <= 'Z'))
 			return (1);
+		else
+			printf("==>|%c|  %d\n", title[i], i);
 	}
 	return (0);
 }

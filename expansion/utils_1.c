@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 15:44:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 10:35:21 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:27:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_builting(char *cmd)
 		return (1);
 }
 
-int	is_contains_before_equal(char *str, int c)
+int	contains_equal(char *str, int c)
 {
 	int		i;
 
@@ -37,7 +37,7 @@ int	is_contains_before_equal(char *str, int c)
 	return (0);
 }
 
-int	is_contains(char *str, int c)
+int	contains(char *str, int c)
 {
 	int		i;
 

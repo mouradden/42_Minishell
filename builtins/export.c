@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:06:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/17 14:04:20 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:25:42 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	export(t_envp **envp, char **var)
 		i = 1;
 		while (var[i])
 		{
-			if ((is_contains(var[i], '=') > -1)
-				&& is_contains_before_equal(var[i], ' '))
+			if ((contains(var[i], '=') > -1) && contains_equal(var[i], ' '))
 			{
 				splitted_var = ft_split(var[i], ' ');
 				j = 0;
@@ -39,6 +38,7 @@ void	export(t_envp **envp, char **var)
 			i++;
 		}
 	}
+	g_exit_status = 0;
 }
 
 void	display_export(t_envp **envp)

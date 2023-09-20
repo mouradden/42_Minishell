@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 11:16:27 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/07 17:30:00 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/20 22:21:19 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,5 @@ void	pwd(void)
 
 	getcwd(buffer, sizeof(buffer));
 	printf("%s\n", buffer);
+	g_exit_status = 0;
 }

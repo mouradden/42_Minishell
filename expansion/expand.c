@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 13:15:37 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:26:44 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	expand_word(t_env *env)
 	while (cursor)
 	{
 		if (cursor && cursor->state != IN_QUOTE && ((cursor->type == VAR
-					&& is_contains(cursor->content, '=') > -1)
+					&& contains(cursor->content, '=') > -1)
 				|| cursor->type == WORD)
 			&& (check_dollar(cursor->content) > -1))
 		{

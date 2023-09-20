@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:41:20 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/17 14:01:22 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/20 22:21:13 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_env(t_envp **envp)
 		}
 		cursor = cursor->next;
 	}
+	g_exit_status = 0;
 }
 
 t_envp	*copy_env(char **envp)
