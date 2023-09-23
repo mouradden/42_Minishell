@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/20 22:26:13 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 23:49:35 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,4 +254,6 @@ void	sig_check_herdoc(int sig);
 
 int		ft_lentgh(int nb);
 char	*ft_itoa(int nb);
+
+void	ft_exit(char **args);
 #endif

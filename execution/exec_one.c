@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/23 19:56:26 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:37:23 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	exec_builtin(t_env *env, t_cmd *cmd)
 {
+	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
+		ft_exit(cmd->cmd_line);
 	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 		pwd();
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
@@ -31,7 +33,7 @@ void	exec_builtin(t_env *env, t_cmd *cmd)
 void	exec_one_builtin(t_env env, t_cmd *cmd)
 {
 	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
-		exit(0);
+		ft_exit(cmd->cmd_line);
 	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 		pwd();
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))

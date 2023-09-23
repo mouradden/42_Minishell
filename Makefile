@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
+#    By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/23 10:28:59 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/23 10:29:02 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/23 22:52:58 by yoamzil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SOURCES = main.c \
 ./expansion/expand.c ./expansion/expand_utils.c ./expansion/expand_states.c ./expansion/utils_1.c\
 ./clean_up/free_data.c  \
 ./utils/ft_itoa.c ./utils/ft_split.c ./utils/ft_strcmp.c ./utils/ft_strdup.c ./utils/ft_strjoin.c ./utils/ft_strlen.c\
-signals.c \
+signals.c ./builtins/exit.c \
 
 
 OBJECTS = ${SOURCES:.c=.o}
