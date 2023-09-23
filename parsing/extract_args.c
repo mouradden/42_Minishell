@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:48:29 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/20 22:26:34 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/21 22:38:20 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i)
 	char	**splited;
 	int		j;
 
-	if (contains(start->content, ' ') == -1)
+	if (start->content && contains(start->content, ' ') == -1)
 	{
 		(*cmd_line)[*i] = ft_strdup(start->content);
 		(*i)++;
 	}
-	else if (start->type == VAR && contains(start->content, ' ') > -1)
+	else if (start->type == VAR && start->content &&  contains(start->content, ' ') > -1)
 	{
 		splited = ft_split(start->content, ' ');
 		j = 0;

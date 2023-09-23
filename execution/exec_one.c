@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:48:28 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/17 21:34:50 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:56:26 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	exec_builtin(t_env *env, t_cmd *cmd)
 void	exec_one_builtin(t_env env, t_cmd *cmd)
 {
 	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "exit"))
-		exit(127);
+		exit(0);
 	if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "pwd"))
 		pwd();
 	else if (cmd->cmd_line[0] && !ft_strcmp(cmd->cmd_line[0], "echo"))
@@ -84,7 +84,7 @@ void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd)
 	}
 	if (!is_builting(cmd->cmd_line[0]))
 		exec_builtin(env, cmd);
-	else if (cmd->cmd_line[0])
+	else if (cmd->cmd_line[0] && ft_strcmp(cmd->cmd_line[0], ""))
 	{
 		if (execve(path, cmd->cmd_line, envp) == -1)
 			perror("execv");

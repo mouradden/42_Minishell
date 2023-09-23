@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:24:48 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 20:34:22 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:23:22 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	check_2_consecutives(t_elem *cursor)
 	{
 		if (cursor && cursor->next)
 		{
-			if (cursor->type == PIPE && cursor->next->type == PIPE)
+			if (cursor->type == PIPE && cursor->next->type == PIPE
+			&& cursor->state == NORMAL && cursor->next->state == NORMAL)
 				return (0);
 		}
 		cursor = cursor->next;
@@ -43,13 +44,13 @@ int	check_separated_consecutives(t_elem *cursor)
 {
 	while (cursor)
 	{
-		if (cursor->type == PIPE && cursor->next
-			&& cursor->next->type == WHITE_SPACE)
+		if (cursor->type == PIPE && cursor->state == NORMAL
+		&& cursor->next && cursor->next->type == WHITE_SPACE)
 		{
 			cursor = cursor->next;
 			while (cursor && cursor->type == WHITE_SPACE)
 				cursor = cursor->next;
-			if (cursor && cursor->type == PIPE)
+			if (cursor && cursor->type == PIPE && cursor->state == NORMAL)
 				return (0);
 		}
 		if (cursor)

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 10:19:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/19 15:17:35 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 20:05:05 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	check_title(char *title)
 		if (title[i] == '_' || (title[i] >= 'a' && title[i] <= 'z')
 			|| (title[i] >= 'A' && title[i] <= 'Z'))
 			return (1);
-		else
-			printf("==>|%c|  %d\n", title[i], i);
 	}
 	return (0);
 }

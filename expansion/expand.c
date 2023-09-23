@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/20 22:26:44 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 20:38:33 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ void	expand_word(t_env *env)
 	cursor = env->elem;
 	while (cursor)
 	{
-		if (cursor && cursor->state != IN_QUOTE && ((cursor->type == VAR
+		if (cursor && ((cursor->type == VAR
 					&& contains(cursor->content, '=') > -1)
 				|| cursor->type == WORD)
 			&& (check_dollar(cursor->content) > -1))
 		{
+			printf("here\n");
 			join = NULL;
 			i = check_dollar(cursor->content);
 			if (cursor->content[i + 1] && cursor->content[i + 1] == '?')
@@ -73,11 +74,12 @@ void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
 
 	if (*i != 0)
 		*join = ft_strjoin_2(*join, extract_word_1(cursor->content, *i));
-	j = *i;
+	j = *i;printf("===>|%c|\n", cursor->content[j]);
 	while (cursor && cursor->content[j] != is_special(cursor->content[j])
-		&& cursor->content[j] != '=')
+		&& cursor->content[j] != '=' && cursor->content[j] != '$')
 		j++;
 	word = extract_word(cursor->content, i, j - *i);
+	
 	help = *join;
 	if (!ft_get_env(env, &word[1]))
 		*join = ft_strjoin(*join, "");

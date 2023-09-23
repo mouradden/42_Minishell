@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 14:32:11 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/20 21:58:23 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 20:27:18 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	minishell(t_env env, char **envp)
 		get_input(&env);
 		if (check_syntax_errors(&env))
 		{
+			
 			parse_elem_to_cmd(&env);
+			
 			cmd = env.cmd;
 			if (cmd)
 			{
@@ -37,6 +39,8 @@ void	minishell(t_env env, char **envp)
 			}
 			free_env(&env);
 		}
+		else
+			free_elem(&env);
 	}
 }
 
@@ -59,8 +63,10 @@ void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd)
 void	parse_elem_to_cmd(t_env *env)
 {
 	expand(env);
+	print_elem(env);
 	get_rid_of_spaces(&env->elem);
 	get_rid_of_quotes(&env->elem);
+	
 	env->cmd = NULL;
 	split_line(&env->cmd, &env->elem);
 }

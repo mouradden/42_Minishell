@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:25:02 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/14 20:26:22 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/23 10:22:09 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	count_redir(t_elem *list)
 	cursor = list;
 	while (cursor)
 	{
-		if (is_redir(cursor))
+		if (is_redir(cursor) && cursor->state == NORMAL)
 			count++;
 		cursor = cursor->next;
 	}
