@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:35:55 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/24 10:05:22 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/24 16:38:06 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	num_of_elem(char **args)
 void	ft_exit(char **args)
 {
 	int	count;
-	int	nbr;
 
 	count = num_of_elem(args);
 	if (count == 1)
@@ -82,10 +81,7 @@ void	ft_exit(char **args)
 	else if (count == 2)
 	{
 		if (ft_isdigit(args[1]))
-		{
-			nbr = ft_atoi(args[1]);
-			exit(nbr);
-		}
+			exit(ft_atoi(args[1]));
 		else
 			exit_printing(args[1]);
 	}
@@ -94,6 +90,9 @@ void	ft_exit(char **args)
 		if (!ft_isdigit(args[1]))
 			exit_printing(args[1]);
 		else
+		{
+			g_exit_status = 1;
 			printf("exit: too many arguments\n");
+		}
 	}
 }

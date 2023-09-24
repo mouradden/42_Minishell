@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 10:43:09 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/23 22:20:01 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:40:14 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,15 @@ void	get_var(t_elem **elem, char *input, int *i)
 	int		j;
 
 	j = *i;
-	if (input[*i] == '$' && !input[*i + 1])
-		add_back(elem, new_elem(input, i, 1, WORD));
-	else if (input[*i] == '$' && input[*i + 1] && input[*i + 1] == '?')
+	if (input[*i] == '$' && input[*i + 1] && input[*i + 1] == '?')
 		add_back(elem, new_elem(input, i, 2, WORD));
+	else if (input[j] == '$' && (!input[j + 1]
+			|| (input[j + 1] && input[j + 1] == '$')))
+	{
+		while (input[j] && input[j] == '$')
+			j++;
+		add_back(elem, new_elem(input, i, j - *i, WORD));
+	}
 	else
 	{
 		while (input[j])
@@ -67,8 +72,8 @@ void	get_var(t_elem **elem, char *input, int *i)
 			if (input[j] && (is_special(input[j]) || input[j] == '$'))
 				break ;
 		}
+		add_back(elem, new_elem(input, i, j - *i, VAR));
 	}
-	add_back(elem, new_elem(input, i, j - *i, VAR));
 }
 
 void	get_word(t_elem **elem, char *input, int *i)

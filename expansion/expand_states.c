@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:00:10 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/21 22:36:24 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:44:29 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	expand_normal_state(t_env *env, t_elem *cursor)
 		else
 		{
 			var = ft_get_env(env, &(cursor->content[1]));
-			// free(cursor->content);
 			cursor->content = remove_spaces(var);
 		}
 	}

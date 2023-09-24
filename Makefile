@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+         #
+#    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/23 10:28:59 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/23 22:52:58 by yoamzil          ###   ########.fr        #
+#    Updated: 2023/09/24 16:16:46 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,13 @@ SOURCES = main.c \
 ./parsing/cmd_utils.c ./parsing/redir_utils.c ./parsing/quotes.c ./parsing/spaces.c\
 ./parsing/extract_args.c ./parsing/specify_state.c  ./parsing/lexing.c \
 ./builtins/pwd.c ./builtins/echo.c ./builtins/cd.c ./builtins/env.c ./builtins/export.c\
-./builtins/unset.c ./builtins/env_export_utils.c \
+./builtins/unset.c ./builtins/env_export_utils.c ./builtins/exit.c\
 ./execution/exec_one.c ./execution/dup_redirections.c ./execution/duplication.c ./execution/exec_utils.c\
 ./execution/execution.c\
 ./expansion/expand.c ./expansion/expand_utils.c ./expansion/expand_states.c ./expansion/utils_1.c\
 ./clean_up/free_data.c  \
 ./utils/ft_itoa.c ./utils/ft_split.c ./utils/ft_strcmp.c ./utils/ft_strdup.c ./utils/ft_strjoin.c ./utils/ft_strlen.c\
-signals.c ./builtins/exit.c \
+signals.c  \
 
 
 OBJECTS = ${SOURCES:.c=.o}
@@ -34,7 +34,7 @@ all : ${NAME}
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
 
 %.o:%.c
 	${CC} ${CFLAGS} -o $@ -c $^

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/23 20:38:33 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:03:46 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ void	expand(t_env *env)
 	}
 }
 
+int	count_dollar(char *str)
+{
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 void	expand_word(t_env *env)
 {
 	t_elem	*cursor;
@@ -51,7 +67,6 @@ void	expand_word(t_env *env)
 				|| cursor->type == WORD)
 			&& (check_dollar(cursor->content) > -1))
 		{
-			printf("here\n");
 			join = NULL;
 			i = check_dollar(cursor->content);
 			if (cursor->content[i + 1] && cursor->content[i + 1] == '?')
@@ -60,7 +75,8 @@ void	expand_word(t_env *env)
 				cursor->content = ft_strdup(ft_itoa(g_exit_status));
 				break ;
 			}
-			expand_word_sub(env, cursor, &join, &i);
+			else if (count_dollar(cursor->content) == 1 && cursor->content[1])
+				expand_word_sub(env, cursor, &join, &i);
 		}
 		cursor = cursor->next;
 	}
@@ -74,16 +90,15 @@ void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
 
 	if (*i != 0)
 		*join = ft_strjoin_2(*join, extract_word_1(cursor->content, *i));
-	j = *i;printf("===>|%c|\n", cursor->content[j]);
+	j = *i;
 	while (cursor && cursor->content[j] != is_special(cursor->content[j])
 		&& cursor->content[j] != '=' && cursor->content[j] != '$')
 		j++;
 	word = extract_word(cursor->content, i, j - *i);
-	
 	help = *join;
-	if (!ft_get_env(env, &word[1]))
+	if (word[1] && !ft_get_env(env, &word[1]))
 		*join = ft_strjoin(*join, "");
-	else
+	else if (word[1] && ft_get_env(env, &word[1]))
 		*join = ft_strjoin(*join, ft_get_env(env, &(word[1])));
 	free(help);
 	free(word);

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 14:32:11 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/23 20:27:18 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:50:28 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ void	minishell(t_env env, char **envp)
 
 	while (1)
 	{
-		signal(SIGINT, sig_check);
 		get_input(&env);
 		if (check_syntax_errors(&env))
 		{
-			
 			parse_elem_to_cmd(&env);
-			
 			cmd = env.cmd;
 			if (cmd)
 			{
@@ -63,10 +60,8 @@ void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd)
 void	parse_elem_to_cmd(t_env *env)
 {
 	expand(env);
-	print_elem(env);
 	get_rid_of_spaces(&env->elem);
 	get_rid_of_quotes(&env->elem);
-	
 	env->cmd = NULL;
 	split_line(&env->cmd, &env->elem);
 }
@@ -104,13 +99,15 @@ void	get_input(t_env *env)
 {
 	char		*input;
 
+	signal(SIGINT, sig_check);
 	input = readline("MINISHELL $ ");
 	if (!input)
 	{
 		g_exit_status = 127;
-		exit(127);
+		exit(0);
 	}
-	add_history(input);
+	if (input && input[0] != 0)
+		add_history(input);
 	env->elem = NULL;
 	read_command(&env->elem, input);
 	free(input);

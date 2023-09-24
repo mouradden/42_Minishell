@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:25:39 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:25:01 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:30:18 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ t_elem	*new_elem(char *content, int *index, int len, enum e_token token)
 	char	*s;
 
 	new = malloc(sizeof(t_elem));
-	s = extract_word(content, index, len);
-	if (!s)
+	if (!new)
 		return (NULL);
+	s = extract_word(content, index, len);
 	new->content = s;
 	new->len = len;
 	new->next = NULL;

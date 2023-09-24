@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_args.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:48:29 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/23 23:49:08 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/24 16:50:57 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,9 @@ void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i)
 	int		j;
 
 	if (start->content && contains(start->content, ' ') == -1)
-	{
-		(*cmd_line)[*i] = ft_strdup(start->content);
-		(*i)++;
-	}
-	else if (start->type == VAR && start->content && contains(start->content, ' ') > -1)
+		(*cmd_line)[(*i)++] = ft_strdup(start->content);
+	else if (start->type == VAR && start->content
+		&& contains(start->content, ' ') > -1)
 	{
 		splited = ft_split(start->content, ' ');
 		j = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/23 23:49:35 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/24 10:45:17 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ t_redir	*new_redir(enum e_redir type, char *file_name);
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir);
 void	expand(t_env *env);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
+int		count_dollar(char *str);
 char	*remove_spaces(char *str);
 void	fill_without_spaces(char *str, int *i, char **result, int *index);
 int		check_syntax_errors(t_env *env);
