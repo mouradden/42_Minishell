@@ -6,7 +6,7 @@
 /*   By: yoamzil <yoamzil@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:35:55 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/23 23:49:54 by yoamzil          ###   ########.fr       */
+/*   Updated: 2023/09/24 10:05:22 by yoamzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,30 @@ int	ft_atoi(const char *str)
 	return (number * sign);
 }
 
+void	exit_printing(char *str)
+{
+	printf("exit: %s: numeric argument required\n", str);
+	exit(255);
+}
+
+int	num_of_elem(char **args)
+{
+	int	count;
+
+	count = 0;
+	while (args[count] != NULL)
+		count++;
+	return (count);
+}
+
 void	ft_exit(char **args)
 {
 	int	count;
-	int	i;
 	int	nbr;
 
-	count = 0;
-	i = 0;
-	while (args[count] != NULL)
-		count++;
+	count = num_of_elem(args);
 	if (count == 1)
-	{
-		printf("exit\n");
 		exit(0);
-	}
 	else if (count == 2)
 	{
 		if (ft_isdigit(args[1]))
@@ -78,18 +87,12 @@ void	ft_exit(char **args)
 			exit(nbr);
 		}
 		else
-		{
-			printf("exit: %s: numeric argument required\n", args[1]);
-			exit(255);
-		}
+			exit_printing(args[1]);
 	}
 	else if (count > 2)
 	{
 		if (!ft_isdigit(args[1]))
-		{
-			printf("exit: %s: numeric argument required\n", args[1]);
-			exit(255);
-		}
+			exit_printing(args[1]);
 		else
 			printf("exit: too many arguments\n");
 	}
