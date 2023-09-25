@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/24 10:45:17 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:14:25 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,13 +123,13 @@ void	count_quotes(char c, int *d_q, int *s_q);
 int		add_back(t_elem **elem, t_elem *new);
 int		check_dollar(char *str);
 t_elem	*new_elem(char *content, int *index, int len, enum e_token token);
-char	*up(char *s1);
+
 int		count_delimter_pipe(t_elem *list);
 int		count_before_pipe(t_elem *list);
 int		count_nodes(t_elem *start);
 void	split_line(t_cmd **cmd, t_elem **list);
 void	iterate_till_pipe(t_elem **cursor);
-void	fill_cmd_and_args(t_elem *start, char ***cmd_line, int *i);
+void	fill_cmd_and_args(t_elem **start, char ***cmd_line, int *i);
 void	extract_args(t_elem **start, char ***cmd_line, t_redir **redir, int *i);
 void	add_back_cmd(t_cmd **cmd_list, char **line, t_redir *redir);
 void	split_line(t_cmd **cmd, t_elem **list);
@@ -141,6 +141,7 @@ t_redir	*new_redir(enum e_redir type, char *file_name);
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir);
 void	expand(t_env *env);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
+char	*join_cons_words(t_elem **start);
 int		count_dollar(char *str);
 char	*remove_spaces(char *str);
 void	fill_without_spaces(char *str, int *i, char **result, int *index);

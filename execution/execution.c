@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 14:32:11 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/24 16:50:28 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:34:34 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd)
 void	parse_elem_to_cmd(t_env *env)
 {
 	expand(env);
-	get_rid_of_spaces(&env->elem);
 	get_rid_of_quotes(&env->elem);
 	env->cmd = NULL;
 	split_line(&env->cmd, &env->elem);

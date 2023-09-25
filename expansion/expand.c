@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/24 17:03:46 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:33:59 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
 
 	if (*i != 0)
 		*join = ft_strjoin_2(*join, extract_word_1(cursor->content, *i));
-	j = *i;
-	while (cursor && cursor->content[j] != is_special(cursor->content[j])
+	j = *i + 1;
+	while (cursor && cursor->content[j]
 		&& cursor->content[j] != '=' && cursor->content[j] != '$')
 		j++;
 	word = extract_word(cursor->content, i, j - *i);

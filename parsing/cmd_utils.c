@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 16:45:55 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/16 22:52:03 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/25 21:01:48 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,17 @@ int	count_cmd(t_elem **list)
 		cursor = cursor->next;
 	}
 	return (count);
+}
+
+char	*join_cons_words(t_elem **start)
+{
+	char		*join;
+
+	join = NULL;
+	while ((*start) && (*start)->type != WHITE_SPACE)
+	{
+		join = ft_strjoin(join, (*start)->content);
+		(*start) = (*start)->next;
+	}
+	return (join);
 }
