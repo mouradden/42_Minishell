@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 14:32:11 by yoamzil           #+#    #+#             */
-/*   Updated: 2023/09/25 11:34:34 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:29:15 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	minishell(t_env env, char **envp)
 				fdd = duplicate_redir(&env);
 				if (env.count_commands == 1
 					&& !is_builting(cmd->cmd_line[0]) && !cmd->redir)
-					exec_one_builtin(env, cmd);
+					exec_one_builtin(&env, cmd);
 				else
 					execute(&env, cmd, envp, fdd);
 			}
@@ -39,6 +39,24 @@ void	minishell(t_env env, char **envp)
 		else
 			free_elem(&env);
 	}
+}
+
+void	get_input(t_env *env)
+{
+	char		*input;
+
+	signal(SIGINT, sig_check);
+	input = readline("MINISHELL $ ");
+	if (!input)
+	{
+		g_exit_status = 127;
+		exit(0);
+	}
+	if (input && input[0] != 0)
+		add_history(input);
+	env->elem = NULL;
+	read_command(&env->elem, input);
+	free(input);
 }
 
 void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd)
@@ -92,22 +110,4 @@ void	exec_cmd(t_env *env, t_cmd *cmd, char **envp, int fdd)
 		cmd = cmd->next;
 		env->index_cmd++;
 	}
-}
-
-void	get_input(t_env *env)
-{
-	char		*input;
-
-	signal(SIGINT, sig_check);
-	input = readline("MINISHELL $ ");
-	if (!input)
-	{
-		g_exit_status = 127;
-		exit(0);
-	}
-	if (input && input[0] != 0)
-		add_history(input);
-	env->elem = NULL;
-	read_command(&env->elem, input);
-	free(input);
 }

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:41:20 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 12:58:37 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:12:05 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	ft_env(t_envp **envp)
 	{
 		if (cursor->title)
 		{
-			ft_putstr_fd(cursor->title, 1);
 			if (cursor->content && cursor->equal
 				&& !ft_strcmp(cursor->equal, "="))
 			{
+				ft_putstr_fd(cursor->title, 1);
 				ft_putchar_fd('=', 1);
 				ft_putstr_fd(cursor->content, 1);
+				ft_putchar_fd('\n', 1);
 			}
-			ft_putchar_fd('\n', 1);
 		}
 		cursor = cursor->next;
 	}

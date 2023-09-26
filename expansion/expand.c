@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 15:22:51 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 11:33:59 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:28:09 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ void	expand_word(t_env *env)
 	cursor = env->elem;
 	while (cursor)
 	{
-		if (cursor && ((cursor->type == VAR
-					&& contains(cursor->content, '=') > -1)
-				|| cursor->type == WORD)
+		if (cursor && (cursor->type == WORD || (cursor->type == VAR
+					&& contains(cursor->content, '=') > -1))
 			&& (check_dollar(cursor->content) > -1))
 		{
 			join = NULL;
@@ -75,7 +74,8 @@ void	expand_word(t_env *env)
 				cursor->content = ft_strdup(ft_itoa(g_exit_status));
 				break ;
 			}
-			else if (count_dollar(cursor->content) == 1 && cursor->content[1])
+			else if (count_dollar(cursor->content) == 1 && cursor->content[1]
+				&& cursor->state != IN_QUOTE)
 				expand_word_sub(env, cursor, &join, &i);
 		}
 		cursor = cursor->next;
@@ -105,8 +105,8 @@ void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i)
 	j = *i - 1;
 	while (cursor->content[++j])
 		;
-	*join = ft_strdup(ft_strjoin_2(*join,
-				extract_word(cursor->content, i, j - *i)));
+	*join = ft_strjoin_2(*join,
+			extract_word(cursor->content, i, j - *i));
 	free(cursor->content);
 	cursor->content = *join;
 }

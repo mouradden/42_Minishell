@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 22:24:24 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/15 16:10:35 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 20:13:34 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*remove_spaces(char *str)
 
 	i = 0;
 	index = 0;
+	if (!str)
+		return (NULL);
 	result = malloc(ft_strlen(str) + 1);
 	if (!result)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 20:48:29 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 21:01:13 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:29:33 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	fill_cmd_and_args(t_elem **start, char ***cmd_line, int *i)
 	if ((*start) && ((*start)->type == WORD || (*start)->type == VAR)
 		&& (*start)->next && (*start)->next->type != WHITE_SPACE
 		&& (*start)->next->type != PIPE)
-		(*cmd_line)[(*i)++] = ft_strdup(join_cons_words(start));
+		(*cmd_line)[(*i)++] = join_cons_words(start);
 	else if ((*start) && (*start)->type == VAR && (*start)->content
 		&& contains((*start)->content, ' ') > -1)
 	{
@@ -94,7 +94,8 @@ void	fill_cmd_and_args(t_elem **start, char ***cmd_line, int *i)
 			(*cmd_line)[(*i)++] = ft_strdup(splited[j++]);
 		free_double(splited);
 	}
-	else if ((*start) && (*start)->type != WHITE_SPACE)
+	else if ((*start) && ((*start)->type != WHITE_SPACE
+			|| ((*start)->type == WHITE_SPACE && (*start)->state != NORMAL)))
 	{
 		(*cmd_line)[*i] = ft_strdup((*start)->content);
 		(*i)++;

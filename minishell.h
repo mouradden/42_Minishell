@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 11:14:25 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 20:21:32 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		ft_strlen(char *s);
 int		ft_strcmp(char *s1, char *s2);
 int		is_space(int c);
 int		is_special(int c);
-
+int		is_symbole(char c);
 void	read_command(t_elem **elem, char *input);
 void	get_input(t_env *env);
 void	get_quotes_or_pipe(t_elem **elem, char *input, int *i);
@@ -200,6 +200,7 @@ char	*ft_get_env(t_env *env, char *title);
 int		check_duplicate(t_envp **envp, char *var);
 void	update_node(t_envp **envp, char *var_title, char *var_content);
 void	remove_node(t_envp **envp, char *var);
+void	remove_head(t_envp **envp, char *var);
 void	unset(t_envp **envp, char *title);
 int		is_builting(char *cmd);
 int		count_words(const char *s, char c);
@@ -215,7 +216,7 @@ void	execute_herdoc(t_env *env, t_redir *red, int *fd);
 void	fork_exec_herdoc(t_env *env, t_redir *red, int *fd);
 void	exec_one_command(t_env *env, t_cmd *cmd, char **envp, int fdd);
 void	exec_cmd(t_env *env, t_cmd *cmd, char **envp, int fdd);
-void	exec_one_builtin(t_env env, t_cmd *cmd);
+void	exec_one_builtin(t_env *env, t_cmd *cmd);
 void	parse_elem_to_cmd(t_env *env);
 void	execute(t_env *env, t_cmd *cmd, char **envp, int fdd);
 void	minishell(t_env env, char **envp);

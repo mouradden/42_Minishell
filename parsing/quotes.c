@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:02:22 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/19 15:02:27 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:30:52 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,12 @@ void	count_quotes(char c, int *d_q, int *s_q)
 		(*s_q)++;
 	if (c == '"')
 		(*d_q)++;
+}
+
+int	is_symbole(char c)
+{
+	if ((c > 31 && c < 48) || (c > 57 && c < 64) || (c > 90 && c < 97))
+		return (1);
+	else
+		return (0);
 }

@@ -6,7 +6,7 @@
 #    By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/23 10:28:59 by mdenguir          #+#    #+#              #
-#    Updated: 2023/09/25 20:58:16 by mdenguir         ###   ########.fr        #
+#    Updated: 2023/09/26 22:01:17 by mdenguir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ all : ${NAME}
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 
 %.o:%.c
 	${CC} ${CFLAGS} -o $@ -c $^

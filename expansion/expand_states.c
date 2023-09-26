@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:00:10 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 10:22:28 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:27:17 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	expand_normal_state(t_env *env, t_elem *cursor)
 		else
 		{
 			var = ft_get_env(env, &(cursor->content[1]));
+			free(cursor->content);
 			cursor->content = remove_spaces(var);
 		}
 	}
@@ -48,7 +49,11 @@ void	expand_dquote_state(t_env *env, t_elem *cursor)
 		if (cursor->content[1] >= '0' && cursor->content[1] <= '9')
 			free_and_assign(cursor->content, ft_strdup(&cursor->content[2]));
 		else if (cursor && !ft_get_env(env, &(cursor->content[1])))
-			free_and_assign(cursor->content, ft_strdup(""));
+		{
+			var = ft_strdup("");
+			free(cursor->content);
+			cursor->content = var;
+		}
 		else
 		{
 			var = ft_get_env(env, &(cursor->content[1]));

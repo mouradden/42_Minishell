@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 16:45:55 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 21:01:48 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:20:19 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,14 @@ int	count_cmd(t_elem **list)
 char	*join_cons_words(t_elem **start)
 {
 	char		*join;
+	char		*tmp;
 
 	join = NULL;
 	while ((*start) && (*start)->type != WHITE_SPACE)
 	{
-		join = ft_strjoin(join, (*start)->content);
+		tmp = ft_strjoin(join, (*start)->content);
+		free(join);
+		join = tmp;
 		(*start) = (*start)->next;
 	}
 	return (join);

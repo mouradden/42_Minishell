@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 10:43:09 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/24 16:40:14 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/26 22:29:47 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	get_var(t_elem **elem, char *input, int *i)
 		while (input[j])
 		{
 			j++;
-			if (input[j] && (is_special(input[j]) || input[j] == '$'))
+			if (input[j] && (is_symbole(input[j]) || input[j] == '$'))
 				break ;
 		}
 		add_back(elem, new_elem(input, i, j - *i, VAR));
