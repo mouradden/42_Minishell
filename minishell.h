@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:34:42 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/26 20:21:32 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:53:44 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ t_redir	*new_redir(enum e_redir type, char *file_name);
 void	get_redirs(t_elem *cursor, t_elem *start, t_redir **redir);
 void	expand(t_env *env);
 void	expand_word_sub(t_env *env, t_elem *cursor, char **join, int *i);
+void	fill_and_free(char **content, char *new);
 char	*join_cons_words(t_elem **start);
 int		count_dollar(char *str);
 char	*remove_spaces(char *str);

@@ -6,7 +6,7 @@
 /*   By: mdenguir <mdenguir@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 10:19:00 by mdenguir          #+#    #+#             */
-/*   Updated: 2023/09/25 13:00:19 by mdenguir         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:03:16 by mdenguir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	print_export_error(char *envp)
 {
 	ft_putstr_fd("export: `", 2);
 	ft_putstr_fd(envp, 2);
-	ft_putstr_fd("`: not a vaaaaalid identifier\n", 2);
+	ft_putstr_fd("`: not a valid identifier\n", 2);
 }
 
 int	check_title(char *title)
@@ -56,13 +56,14 @@ int	check_title(char *title)
 	i = 0;
 	if (!title)
 		return (0);
-	if (title[i])
+	while (title[i])
 	{
-		if (title[i] == '_' || (title[i] >= 'a' && title[i] <= 'z')
-			|| (title[i] >= 'A' && title[i] <= 'Z'))
-			return (1);
+		if (title[i] != '_' && (title[i] < 'a' || title[i] > 'z')
+			&& (title[i] < 'A' || title[i] > 'Z'))
+			return (0);
+		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	check_identifier(char *tit, char *envp)
